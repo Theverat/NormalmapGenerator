@@ -47,6 +47,19 @@
         </property>
        </widget>
       </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </item>
     <item>
@@ -63,11 +76,6 @@
         <item>
          <property name="text">
           <string>Sobel</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Prewitt</string>
          </property>
         </item>
        </widget>
@@ -286,6 +294,7 @@
     <bool>false</bool>
    </attribute>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

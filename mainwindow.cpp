@@ -34,6 +34,8 @@ void MainWindow::load() {
         return;
     loadedImagePath = filename;
 
+    ui->statusBar->showMessage("loading Image...");
+
     input = QImage(filename);
 
     //enable gui buttons
@@ -45,9 +47,12 @@ void MainWindow::load() {
     ui->radioButton_input->setChecked(true);
 
     preview();
+    ui->statusBar->clearMessage();
 }
 
 void MainWindow::calc() {
+    ui->statusBar->showMessage("calculating normalmap...");
+
     double strength = ui->doubleSpinBox_strength->value();
     bool invert = ui->checkBox_invertHeight->isChecked();
     bool tileable = ui->checkBox_tileable->isChecked();
@@ -57,9 +62,6 @@ void MainWindow::calc() {
         Sobel sobelGenerator;
         result = sobelGenerator.calculateNormalmap(input, strength, invert, tileable);
     }
-    else if(ui->comboBox->currentIndex() == 1) {
-        QMessageBox::information(this, "Debug", "This Operator is not implemented yet");
-    }
 
     //enable gui buttons
     ui->pushButton_save->setEnabled(true);
@@ -68,6 +70,7 @@ void MainWindow::calc() {
     ui->radioButton_generated->setChecked(true);
 
     preview();
+    ui->statusBar->clearMessage();
 }
 
 void MainWindow::save() {
@@ -83,6 +86,8 @@ void MainWindow::save() {
 
     if(!result.save(filename))
         QMessageBox::information(this, "Error while saving image", "Image not saved!");
+    else
+        ui->statusBar->showMessage("image saved", 2000);
 }
 
 void MainWindow::preview() {

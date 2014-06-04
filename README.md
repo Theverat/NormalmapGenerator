@@ -9,6 +9,7 @@ todo:
 - better and easier control over channels for generating spec- and displacementmaps
 - add contrast controls and similar stuff to spec- and dispmaps
 
+concerning compiling/exporting:
 - add support for CMake
 - figure out how the heck to include the needed .dll files for windows 8
 - alternative: use static build

@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    sobel.cpp \
-    intensitymap.cpp
+    intensitymap.cpp \
+    normalmapgenerator.cpp \
+    specularmapgenerator.cpp
 
 HEADERS  += mainwindow.h \
-    sobel.h \
-    intensitymap.h
+    intensitymap.h \
+    normalmapgenerator.h \
+    specularmapgenerator.h
 
 FORMS    += mainwindow.ui

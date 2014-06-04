@@ -7,11 +7,11 @@ IntensityMap::IntensityMap() {
 
 IntensityMap::IntensityMap(QImage rgbImage, Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
 {
+    map = std::vector< std::vector<double> >(rgbImage.height(), std::vector<double>(rgbImage.width(), 0.0));
+
+    #pragma omp parallel for
     //for every row of the image
     for(int y = 0; y < rgbImage.height(); y++) {
-        //column of pixels to store the intensity values
-        std::vector<double> column;
-
         //for every column of the image
         for(int x = 0; x < rgbImage.width(); x++) {
             double r, g, b, a;
@@ -70,10 +70,8 @@ IntensityMap::IntensityMap(QImage rgbImage, Mode mode, bool useRed, bool useGree
             }
 
             //add resulting pixel intensity to intensity map
-            column.push_back(intensity);
+            this->map.at(y).at(x) = intensity;
         }
-        //add column of resulting pixels to intensity map
-        this->map.push_back(column);
     }
 }
 

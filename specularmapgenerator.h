@@ -6,7 +6,7 @@
 class SpecularmapGenerator
 {
 public:
-    SpecularmapGenerator(IntensityMap::Mode mode, int redMultiplier, int greenMultiplier, int blueMultiplier, int alphaMultiplier);
+    SpecularmapGenerator(IntensityMap::Mode mode, double redMultiplier, double greenMultiplier, double blueMultiplier, double alphaMultiplier);
     QImage calculateSpecmap(QImage input, double scale);
 
 private:

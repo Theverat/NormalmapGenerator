@@ -1,6 +1,6 @@
 #include "specularmapgenerator.h"
 
-SpecularmapGenerator::SpecularmapGenerator(IntensityMap::Mode mode, int redMultiplier, int greenMultiplier, int blueMultiplier, int alphaMultiplier)
+SpecularmapGenerator::SpecularmapGenerator(IntensityMap::Mode mode, double redMultiplier, double greenMultiplier, double blueMultiplier, double alphaMultiplier)
 {
     this->mode = mode;
     this->redMultiplier = redMultiplier;

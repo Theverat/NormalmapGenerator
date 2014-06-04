@@ -12,6 +12,7 @@ SpecularmapGenerator::SpecularmapGenerator(IntensityMap::Mode mode, int redMulti
 QImage SpecularmapGenerator::calculateSpecmap(QImage input, double scale) {
     QImage result(input.width(), input.height(), QImage::Format_ARGB32);
 
+    #pragma omp parallel for  // OpenMP
     //for every row of the image
     for(int y = 0; y < result.height(); y++) {
         //for every column of the image
@@ -48,7 +49,7 @@ QImage SpecularmapGenerator::calculateSpecmap(QImage input, double scale) {
                 intensity = 1.0;
 
             //write color into image pixel
-            int c = 255 * intensity;
+            int c = (int)(255.0 * intensity);
             result.setPixel(x, y, QColor(c, c, c, c).rgba());
         }
     }

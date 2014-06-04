@@ -35,13 +35,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->radioButton_displayAlpha, SIGNAL(clicked()), this, SLOT(displayChannelIntensity()));
     connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked()), this, SLOT(displayChannelIntensity()));
     //autoupdate after changed values
-    // spec
+    // spec autoupdate
     connect(ui->doubleSpinBox_spec_redMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_spec_greenMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_spec_blueMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_spec_alphaMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_spec_scale, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
-    // normal
+    connect(ui->comboBox_mode_spec, SIGNAL(currentIndexChanged(int)), this, SLOT(autoUpdate()));
+    // normal autoupdate
     connect(ui->checkBox_useRed_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->checkBox_useGreen_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->checkBox_useBlue_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
@@ -85,13 +86,21 @@ void MainWindow::load() {
 
     input = QImage(filename);
 
-    //enable ui buttons and tabs
-    ui->tab_normal->setEnabled(true);
-    ui->tab_spec->setEnabled(true);
-    ui->tab_displace->setEnabled(true);
+    //enable ui buttons
     ui->pushButton_calcNormal->setEnabled(true);
     ui->pushButton_calcSpec->setEnabled(true);
     ui->pushButton_calcDisplace->setEnabled(true);
+    //switch active tab to input
+    ui->tabWidget->setCurrentIndex(0);
+
+    //clear all generated images
+    channelIntensity = QImage();
+    normalmap = QImage();
+    specmap = QImage();
+    displacementmap = QImage();
+
+    if(ui->checkBox_displayChannelIntensity->isChecked())
+        displayChannelIntensity();
 
     preview(0);
     ui->statusBar->clearMessage();
@@ -135,6 +144,8 @@ void MainWindow::calcNormal() {
 
     preview(1);
     ui->statusBar->clearMessage();
+    QString msg = generateElapsedTimeMsg(lastCalctime_normal, "normalmap");
+    ui->statusBar->showMessage(msg, 5000);
 }
 
 void MainWindow::calcSpec() {
@@ -167,12 +178,15 @@ void MainWindow::calcSpec() {
 
     preview(2);
     ui->statusBar->clearMessage();
+    QString msg = generateElapsedTimeMsg(lastCalctime_normal, "specularmap");
+    ui->statusBar->showMessage(msg, 5000);
 }
 
 void MainWindow::calcDisplace() {
 
 }
 
+//deprecated
 void MainWindow::save() {
     QString filename = QFileDialog::getSaveFileName(this, "Save as", loadedImagePath,
                                                     "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
@@ -268,10 +282,12 @@ void MainWindow::zoomOut() {
 }
 
 void MainWindow::resetZoom() {
-    //todo
+    ui->graphicsView->resetTransform();
 }
 
 void MainWindow::fitInView() {
+   ui->graphicsView->scene()->setSceneRect(QRectF(0, 0, input.width(), input.height()));
+   ui->graphicsView->setSceneRect(ui->graphicsView->scene()->sceneRect());
    ui->graphicsView->fitInView(ui->graphicsView->scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
@@ -311,4 +327,15 @@ void MainWindow::autoUpdate() {
     default:
         break;
     }
+}
+
+QString MainWindow::generateElapsedTimeMsg(int calcTimeMs, QString mapType) {
+    double calcTimeS = (double)calcTimeMs / 1000.0;
+
+    QString elapsedTimeMsg("calculated ");
+    elapsedTimeMsg.append(mapType);
+    elapsedTimeMsg.append(" (");
+    elapsedTimeMsg.append(QString::number(calcTimeS));
+    elapsedTimeMsg.append(" seconds)");
+    return elapsedTimeMsg;
 }

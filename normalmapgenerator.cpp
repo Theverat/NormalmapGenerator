@@ -20,6 +20,7 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
 
     QImage result(input.width(), input.height(), QImage::Format_ARGB32);
 
+    #pragma omp parallel for  // OpenMP
     //code from http://stackoverflow.com/a/2368794
     for(int y = 0; y < input.height(); y++) {
         for(int x = 0; x < input.width(); x++) {

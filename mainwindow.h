@@ -36,9 +36,10 @@ private:
     QImage specmap;
     QImage displacementmap;
     QString loadedImagePath;
-    long lastCalctime_normal;
-    long lastCalctime_specular;
-    long lastCalctime_displace;
+    int lastCalctime_normal;
+    int lastCalctime_specular;
+    int lastCalctime_displace;
+    QString generateElapsedTimeMsg(int calcTimeMs, QString mapType);
 
 private slots:
     void load();

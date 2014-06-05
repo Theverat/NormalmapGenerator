@@ -1,5 +1,7 @@
 Normalmap Generator
 
+![screenshot](http://www.blendpolis.de/download/file.php?id=93358&mode=view)
+
 todo:
 - image stack processing (whole folders, selection, after pattern?)
 - more normalmap/edge detection filters (prewitt?)

@@ -35,6 +35,16 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButton_openExportFolder">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Open Export Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

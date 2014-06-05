@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QElapsedTimer>
+#include <QDesktopServices>
 #include <iostream>
 #include "normalmapgenerator.h"
 #include "specularmapgenerator.h"
@@ -36,10 +37,12 @@ private:
     QImage specmap;
     QImage displacementmap;
     QString loadedImagePath;
+    QString exportPath;
     int lastCalctime_normal;
     int lastCalctime_specular;
     int lastCalctime_displace;
     QString generateElapsedTimeMsg(int calcTimeMs, QString mapType);
+    void connectSignalSlots();
 
 private slots:
     void load();
@@ -56,6 +59,7 @@ private slots:
     void fitInView();
     void autoUpdate();
     void displayChannelIntensity();
+    void openExportFolder();
 };
 
 #endif // MAINWINDOW_H

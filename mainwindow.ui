@@ -317,6 +317,11 @@
               <string>Sobel</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Prewitt</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item>
@@ -816,6 +821,33 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Autoupdate Max. Calculation Time:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_autoUpdateThreshold">
+        <property name="suffix">
+         <string>s</string>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_lastCalcTime">
+        <property name="text">
+         <string>(Last Calc. Time: 0.00s)</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

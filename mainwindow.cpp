@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QGraphicsScene *scene = new QGraphicsScene();
     ui->graphicsView->setScene(scene);
     scene->setBackgroundBrush(QBrush(Qt::darkGray));
+    ui->graphicsView->setRenderHints(QPainter::HighQualityAntialiasing | QPainter::SmoothPixmapTransform);
 
     //initialize QImage objects to store the calculated maps
     input = QImage();
@@ -36,7 +37,7 @@ MainWindow::~MainWindow()
 void MainWindow::load() {
     QString filename = QFileDialog::getOpenFileName(this,
                                                     "Open Image File",
-                                                    QDir::currentPath(),
+                                                    QDir::homePath(),
                                                     "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
     if(filename.isEmpty())
         return;
@@ -99,6 +100,8 @@ void MainWindow::calcNormal() {
     NormalmapGenerator::Kernel kernel = NormalmapGenerator::SOBEL;
     if(ui->comboBox_method->currentIndex() == 0)
         kernel = NormalmapGenerator::SOBEL;
+    else if(ui->comboBox_method->currentIndex() == 1)
+        kernel = NormalmapGenerator::PREWITT;
 
     //setup generator and calculate map
     NormalmapGenerator normalmapGenerator(mode, useRed, useGreen, useBlue, useAlpha);
@@ -106,10 +109,14 @@ void MainWindow::calcNormal() {
 
     //display time it took to calculate the map
     this->lastCalctime_normal = timer.elapsed();
+    displayCalcTime(lastCalctime_normal, "normalmap", 5000);
+    /*
     std::cout << "normalmap calculated, it took " << lastCalctime_normal << "ms" << std::endl;
     ui->statusBar->clearMessage();
     QString msg = generateElapsedTimeMsg(lastCalctime_normal, "normalmap");
     ui->statusBar->showMessage(msg, 5000);
+    ui->label_lastCalcTime->setText("(Last Calc. Time: " + QString::number((double)lastCalctime_normal / 1000.0) + "s)");
+    */
 
     //enable ui buttons
     ui->pushButton_save->setEnabled(true);
@@ -145,10 +152,7 @@ void MainWindow::calcSpec() {
 
     //display time it took to calculate the map
     this->lastCalctime_specular = timer.elapsed();
-    std::cout << "specmap calculated, it took " << lastCalctime_specular << "ms" << std::endl;
-    ui->statusBar->clearMessage();
-    QString msg = generateElapsedTimeMsg(lastCalctime_normal, "specularmap");
-    ui->statusBar->showMessage(msg, 5000);
+    displayCalcTime(lastCalctime_specular, "specularmap", 5000);
 
     //enable ui buttons
     ui->pushButton_save->setEnabled(true);
@@ -300,19 +304,21 @@ void MainWindow::displayChannelIntensity() {
 //in milliseconds, e.g. 500 (0.5 seconds)
 //this Slot is for parameter input fields/buttons in the gui
 void MainWindow::autoUpdate() {
+    int autoUpdateThreshold_ms = ui->doubleSpinBox_autoUpdateThreshold->value() * 1000.0;
+
     switch(ui->tabWidget->currentIndex()) {
     case 0:
         break;
     case 1:
-        if(lastCalctime_normal < 500)
+        if(lastCalctime_normal < autoUpdateThreshold_ms)
             calcNormal();
         break;
     case 2:
-        if(lastCalctime_specular < 500)
+        if(lastCalctime_specular < autoUpdateThreshold_ms)
             calcSpec();
         break;
     case 3:
-        if(lastCalctime_displace < 500)
+        if(lastCalctime_displace < autoUpdateThreshold_ms)
             calcDisplace();
         break;
     default:
@@ -335,6 +341,14 @@ QString MainWindow::generateElapsedTimeMsg(int calcTimeMs, QString mapType) {
 
 void MainWindow::openExportFolder() {
     QDesktopServices::openUrl(QUrl(exportPath));
+}
+
+void MainWindow::displayCalcTime(int calcTime_ms, QString mapType, int duration_ms) {
+    std::cout << mapType.toStdString() << " calculated, it took " << calcTime_ms << "ms" << std::endl;
+    ui->statusBar->clearMessage();
+    QString msg = generateElapsedTimeMsg(calcTime_ms, mapType);
+    ui->statusBar->showMessage(msg, duration_ms);
+    ui->label_lastCalcTime->setText("(Last Calc. Time: " + QString::number((double)calcTime_ms / 1000.0) + "s)");
 }
 
 //connects gui buttons with Slots in this class

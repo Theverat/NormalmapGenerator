@@ -1,5 +1,4 @@
 #include "normalmapgenerator.h"
-#include <math.h>
 #include <iostream>
 
 NormalmapGenerator::NormalmapGenerator(IntensityMap::Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
@@ -25,22 +24,23 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
     for(int y = 0; y < input.height(); y++) {
         for(int x = 0; x < input.width(); x++) {
 
-            double topLeft = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y - 1, input.height()));
-            double top = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y, input.height()));
-            double topRight = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y + 1, input.height()));
-            double right = intensity.at(handleEdges(x, input.width()), handleEdges(y + 1, input.height()));
-            double bottomRight = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y + 1, input.height()));
-            double bottom = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y, input.height()));
-            double bottomLeft = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y - 1, input.height()));
-            double left = intensity.at(handleEdges(x, input.width()), handleEdges(y - 1, input.height()));
+            double topLeft      = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y - 1, input.height()));
+            double top          = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y,     input.height()));
+            double topRight     = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y + 1, input.height()));
+            double right        = intensity.at(handleEdges(x,     input.width()), handleEdges(y + 1, input.height()));
+            double bottomRight  = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y + 1, input.height()));
+            double bottom       = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y,     input.height()));
+            double bottomLeft   = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y - 1, input.height()));
+            double left         = intensity.at(handleEdges(x,     input.width()), handleEdges(y - 1, input.height()));
 
-            double tmp[] = {topLeft, top, topRight, right, bottomRight, bottom, bottomLeft, left};
-            std::vector<double> neighbours(tmp, tmp + sizeof(tmp) / sizeof(tmp[0]));
-            //                                  0     1      2        3       4           5          6      7
-            //sobel filter
+            double convolution_kernel[3][3] = {{topLeft, top, topRight},
+                                               {left, 0.0, right},
+                                               {bottomLeft, bottom, bottomRight}};
+
+            //sobel filter (original implementation copied from stackoverflow)
             //double dY = (topRight + 2.0 * right + bottomRight) - (topLeft + 2.0 * left + bottomLeft);
             //double dX = (bottomLeft + 2.0 * bottom + bottomRight) - (topLeft + 2.0 * top + topRight);
-            //double dZ = 300.0 / strength;
+            //double dZ = 1.0 / strength;
 
             //QVector3D normal(dX, dY, dZ);
             //normal.normalize();
@@ -48,7 +48,9 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
             QVector3D normal(0, 0, 0);
 
             if(kernel == SOBEL)
-                normal = sobel(neighbours, strength);
+                normal = sobel(convolution_kernel, strength);
+            else if(kernel == PREWITT)
+                normal = prewitt(convolution_kernel, strength);
 
             QColor normalAsRgb(mapComponent(normal.x()), mapComponent(normal.y()), mapComponent(normal.z()));
             result.setPixel(x, y, normalAsRgb.rgb());
@@ -58,9 +60,27 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
     return result;
 }
 
-QVector3D NormalmapGenerator::sobel(std::vector<double> neighbours, double strength) {
-    double dY = (neighbours.at(2) + 2.0 * neighbours.at(3) + neighbours.at(4)) - (neighbours.at(0) + 2.0 * neighbours.at(7) + neighbours.at(6));
-    double dX = (neighbours.at(6) + 2.0 * neighbours.at(5) + neighbours.at(4)) - (neighbours.at(0) + 2.0 * neighbours.at(1) + neighbours.at(2));
+QVector3D NormalmapGenerator::sobel(double convolution_kernel[3][3], double strength) {
+    double top_side    = convolution_kernel[0][0] + 2.0 * convolution_kernel[0][1] + convolution_kernel[0][2];
+    double bottom_side = convolution_kernel[2][0] + 2.0 * convolution_kernel[2][1] + convolution_kernel[2][2];
+    double right_side  = convolution_kernel[0][2] + 2.0 * convolution_kernel[1][2] + convolution_kernel[2][2];
+    double left_side   = convolution_kernel[0][0] + 2.0 * convolution_kernel[1][0] + convolution_kernel[2][0];
+
+    double dY = right_side - left_side;
+    double dX = bottom_side - top_side;
+    double dZ = 1.0 / strength;
+
+    return QVector3D(dX, dY, dZ).normalized();
+}
+
+QVector3D NormalmapGenerator::prewitt(double convolution_kernel[3][3], double strength) {
+    double top_side    = convolution_kernel[0][0] + convolution_kernel[0][1] + convolution_kernel[0][2];
+    double bottom_side = convolution_kernel[2][0] + convolution_kernel[2][1] + convolution_kernel[2][2];
+    double right_side  = convolution_kernel[0][2] + convolution_kernel[1][2] + convolution_kernel[2][2];
+    double left_side   = convolution_kernel[0][0] + convolution_kernel[1][0] + convolution_kernel[2][0];
+
+    double dY = right_side - left_side;
+    double dX = top_side - bottom_side;
     double dZ = 1.0 / strength;
 
     return QVector3D(dX, dY, dZ).normalized();

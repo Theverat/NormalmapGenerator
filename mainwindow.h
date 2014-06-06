@@ -43,6 +43,7 @@ private:
     int lastCalctime_displace;
     QString generateElapsedTimeMsg(int calcTimeMs, QString mapType);
     void connectSignalSlots();
+    void displayCalcTime(int calcTime_ms, QString mapType, int duration_ms);
 
 private slots:
     void load();

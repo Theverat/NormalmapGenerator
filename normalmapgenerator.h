@@ -9,7 +9,8 @@ class NormalmapGenerator
 {
 public:
     enum Kernel {
-        SOBEL
+        SOBEL,
+        PREWITT
     };
 
     NormalmapGenerator(IntensityMap::Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha);
@@ -23,7 +24,8 @@ private:
 
     int handleEdges(int iterator, int max);
     int mapComponent(double value);
-    QVector3D sobel(std::vector<double> neighbours, double strength);
+    QVector3D sobel(double convolution_kernel[3][3], double strength);
+    QVector3D prewitt(double convolution_kernel[3][3], double strength);
 };
 
 #endif // SOBEL_H

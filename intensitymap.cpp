@@ -88,6 +88,7 @@ int IntensityMap::getHeight() {
 }
 
 void IntensityMap::invert() {
+    #pragma omp parallel for
     for(unsigned int y = 0; y < this->map.size(); y++) {
         for(unsigned int x = 0; x < this->map.at(0).size(); x++) {
             double inverted = 1.0 - this->map.at(y).at(x);

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "graphicsscene.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,10 +12,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connectSignalSlots();
 
     //initialize graphicsview
-    QGraphicsScene *scene = new QGraphicsScene();
+    GraphicsScene *scene = new GraphicsScene();
     ui->graphicsView->setScene(scene);
     scene->setBackgroundBrush(QBrush(Qt::darkGray));
+    scene->addText("Start by dragging images here.");
     ui->graphicsView->setRenderHints(QPainter::HighQualityAntialiasing | QPainter::SmoothPixmapTransform);
+    ui->graphicsView->setAcceptDrops(true);
 
     //initialize QImage objects to store the calculated maps
     input = QImage();
@@ -27,6 +30,19 @@ MainWindow::MainWindow(QWidget *parent) :
     lastCalctime_normal = 0;
     lastCalctime_specular = 0;
     lastCalctime_displace = 0;
+
+    //hide queue progress bar
+    ui->progressBar_Queue->hide();
+
+    //initialize stopQueue flag
+    stopQueue = false;
+
+    //show default status message
+    ui->statusBar->showMessage("Drag images into the empty preview window to load them.");
+
+    //hide "change output path" button for queue
+    //todo
+    ui->pushButton_changeOutputPath_Queue->hide();
 }
 
 MainWindow::~MainWindow()
@@ -34,25 +50,43 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::load() {
-    QString filename = QFileDialog::getOpenFileName(this,
-                                                    "Open Image File",
-                                                    QDir::homePath(),
-                                                    "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
+void MainWindow::loadSingleDropped(QUrl url) {
+    QString filename = url.toLocalFile();
+
+    if(load(filename))
+        addImageToQueue(url);
+}
+
+void MainWindow::loadMultipleDropped(QList<QUrl> urls) {
+    //only load first image into preview window
+    if(load(urls.at(0).toLocalFile()))
+        addImageToQueue(urls);
+}
+
+bool MainWindow::load(QString filename) {
     if(filename.isEmpty())
-        return;
+        return false;
     //store the path the image was loaded from (for saving later)
     loadedImagePath = filename;
 
-    ui->statusBar->showMessage("loading Image...");
+    ui->statusBar->showMessage("loading Image: " + filename);
 
     //load the image
     input = QImage(filename);
+
+    if(input.isNull()) {
+        ui->statusBar->showMessage("Error: Image " + filename + " NOT loaded!", 5000);
+        QMessageBox::information(this, "Error while loading image",
+                                 "Image not loaded!\nMost likely the image format is not supported.");
+        return false;
+    }
 
     //enable ui buttons
     ui->pushButton_calcNormal->setEnabled(true);
     ui->pushButton_calcSpec->setEnabled(true);
     ui->pushButton_calcDisplace->setEnabled(true);
+    ui->checkBox_displayChannelIntensity->setEnabled(true);
+    enableAutoupdate(true);
     //switch active tab to input
     ui->tabWidget->setCurrentIndex(0);
 
@@ -69,15 +103,24 @@ void MainWindow::load() {
         preview(0);
 
     ui->statusBar->clearMessage();
+
+    return true;
+}
+
+void MainWindow::loadUserFilePath() {
+    QList<QString> filenames = QFileDialog::getOpenFileNames(this,
+                                                    "Open Image File",
+                                                    QDir::homePath(),
+                                                    "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
+    QList<QUrl> urls;
+    for(int i = 0; i < filenames.size(); i++) {
+        urls.append(QUrl::fromLocalFile(filenames.at(i)));
+    }
+
+    loadMultipleDropped(urls);
 }
 
 void MainWindow::calcNormal() {
-    ui->statusBar->showMessage("calculating normalmap...");
-
-    //timer for measuring calculation time
-    QElapsedTimer timer;
-    timer.start();
-
     //normalmap parameters
     double strength = ui->doubleSpinBox_strength->value();
     bool invert = ui->checkBox_invertHeight->isChecked();
@@ -106,32 +149,9 @@ void MainWindow::calcNormal() {
     //setup generator and calculate map
     NormalmapGenerator normalmapGenerator(mode, useRed, useGreen, useBlue, useAlpha);
     normalmap = normalmapGenerator.calculateNormalmap(input, kernel, strength, invert, tileable);
-
-    //display time it took to calculate the map
-    this->lastCalctime_normal = timer.elapsed();
-    displayCalcTime(lastCalctime_normal, "normalmap", 5000);
-    /*
-    std::cout << "normalmap calculated, it took " << lastCalctime_normal << "ms" << std::endl;
-    ui->statusBar->clearMessage();
-    QString msg = generateElapsedTimeMsg(lastCalctime_normal, "normalmap");
-    ui->statusBar->showMessage(msg, 5000);
-    ui->label_lastCalcTime->setText("(Last Calc. Time: " + QString::number((double)lastCalctime_normal / 1000.0) + "s)");
-    */
-
-    //enable ui buttons
-    ui->pushButton_save->setEnabled(true);
-
-    //preview in normalmap tab
-    preview(1);
 }
 
 void MainWindow::calcSpec() {
-    ui->statusBar->showMessage("calculating specularmap...");
-
-    //timer for measuring calculation time
-    QElapsedTimer timer;
-    timer.start();
-
     //color channel mode
     IntensityMap::Mode mode = IntensityMap::AVERAGE;
     if(ui->comboBox_mode_spec->currentIndex() == 0)
@@ -149,6 +169,43 @@ void MainWindow::calcSpec() {
     //setup generator and calculate map
     SpecularmapGenerator specularmapGenerator(mode, redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
     specmap = specularmapGenerator.calculateSpecmap(input, scale);
+}
+
+void MainWindow::calcDisplace() {
+    //todo
+}
+
+
+void MainWindow::calcNormalAndPreview() {
+    ui->statusBar->showMessage("calculating normalmap...");
+
+    //timer for measuring calculation time
+    QElapsedTimer timer;
+    timer.start();
+
+    //calculate map
+    calcNormal();
+
+    //display time it took to calculate the map
+    this->lastCalctime_normal = timer.elapsed();
+    displayCalcTime(lastCalctime_normal, "normalmap", 5000);
+
+    //enable ui buttons
+    ui->pushButton_save->setEnabled(true);
+
+    //preview in normalmap tab
+    preview(1);
+}
+
+void MainWindow::calcSpecAndPreview() {
+    ui->statusBar->showMessage("calculating specularmap...");
+
+    //timer for measuring calculation time
+    QElapsedTimer timer;
+    timer.start();
+
+    //calculate map
+    calcSpec();
 
     //display time it took to calculate the map
     this->lastCalctime_specular = timer.elapsed();
@@ -161,33 +218,68 @@ void MainWindow::calcSpec() {
     preview(2);
 }
 
-void MainWindow::calcDisplace() {
+void MainWindow::calcDisplaceAndPreview() {
     //todo
 }
 
-//deprecated
-void MainWindow::save() {
-    QString filename = QFileDialog::getSaveFileName(this, "Save as", loadedImagePath,
-                                                    "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
-
-    if(filename.isEmpty())
+void MainWindow::processQueue() {
+    if(ui->listWidget_queue->count() == 0)
         return;
 
-    QFileInfo file(filename);
-    if(!file.baseName().isEmpty() && file.suffix().isEmpty())
-        filename += ".png";
+    //show queue progress bar, enable stop button
+    ui->progressBar_Queue->show();
+    ui->pushButton_stopProcessingQueue->setEnabled(true);
 
-    if(!normalmap.save(filename))
-        QMessageBox::information(this, "Error while saving image", "Image not saved!");
-    else
-        ui->statusBar->showMessage("image saved", 2000);
+    double percentageBase = 100.0 / ui->listWidget_queue->count();
+
+    for(int i = 0; i < ui->listWidget_queue->count(); i++)
+    {
+        if(stopQueue)
+            break;
+
+        QueueItem *item = (QueueItem*)(ui->listWidget_queue->item(i));
+
+        //display status
+        ui->statusBar->showMessage("Processing Queue Item: " + item->text());
+        ui->progressBar_Queue->setValue((int)(percentageBase * i));
+        ui->listWidget_queue->item(i)->setSelected(true);
+
+        //load image
+        load(item->getUrl().toLocalFile());
+
+        //calculate maps
+        calcNormal();
+        calcSpec();
+        calcDisplace();
+
+        //save maps
+        saveQueueProcessed(item->getUrl());
+
+        QCoreApplication::processEvents();
+    }
+
+    ui->progressBar_Queue->hide();
+    ui->pushButton_stopProcessingQueue->setEnabled(false);
+    stopQueue = false;
 }
 
-void MainWindow::saveAll() {
+void MainWindow::stopProcessingQueue() {
+    stopQueue = true;
+}
+
+void MainWindow::saveUserFilePath() {
     QString filename = QFileDialog::getSaveFileName(this,
                                                     "Save as",
                                                     loadedImagePath,
                                                     "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
+    save(filename);
+}
+
+void MainWindow::saveQueueProcessed(QUrl url) {
+    save(url.toLocalFile());
+}
+
+void MainWindow::save(QString filename) {
     //if saving process was aborted
     if(filename.isEmpty())
         return;
@@ -228,6 +320,13 @@ void MainWindow::saveAll() {
     exportPath = file.absolutePath();
     //enable "Open Export Folder" gui button
     ui->pushButton_openExportFolder->setEnabled(true);
+}
+
+void MainWindow::changeOutputPathQueue() {
+    exportPath = QFileDialog::getSaveFileName(this,
+                                              "Save as",
+                                              loadedImagePath,
+                                              "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
 }
 
 //overloaded version of preview that chooses the map to preview automatically
@@ -304,6 +403,9 @@ void MainWindow::displayChannelIntensity() {
 //in milliseconds, e.g. 500 (0.5 seconds)
 //this Slot is for parameter input fields/buttons in the gui
 void MainWindow::autoUpdate() {
+    if(!ui->checkBox_autoUpdate->isChecked() || !ui->checkBox_autoUpdate->isEnabled())
+        return;
+
     int autoUpdateThreshold_ms = ui->doubleSpinBox_autoUpdateThreshold->value() * 1000.0;
 
     switch(ui->tabWidget->currentIndex()) {
@@ -311,15 +413,15 @@ void MainWindow::autoUpdate() {
         break;
     case 1:
         if(lastCalctime_normal < autoUpdateThreshold_ms)
-            calcNormal();
+            calcNormalAndPreview();
         break;
     case 2:
         if(lastCalctime_specular < autoUpdateThreshold_ms)
-            calcSpec();
+            calcSpecAndPreview();
         break;
     case 3:
         if(lastCalctime_displace < autoUpdateThreshold_ms)
-            calcDisplace();
+            calcDisplaceAndPreview();
         break;
     default:
         break;
@@ -344,19 +446,43 @@ void MainWindow::openExportFolder() {
 }
 
 void MainWindow::displayCalcTime(int calcTime_ms, QString mapType, int duration_ms) {
-    std::cout << mapType.toStdString() << " calculated, it took " << calcTime_ms << "ms" << std::endl;
+    std::cout << mapType.toStdString() << " for item " << loadedImagePath.toStdString()
+              << " calculated, it took " << calcTime_ms << "ms" << std::endl;
     ui->statusBar->clearMessage();
     QString msg = generateElapsedTimeMsg(calcTime_ms, mapType);
     ui->statusBar->showMessage(msg, duration_ms);
-    ui->label_lastCalcTime->setText("(Last Calc. Time: " + QString::number((double)calcTime_ms / 1000.0) + "s)");
+    ui->label_autoUpdate_lastCalcTime->setText("(Last Calc. Time: " + QString::number((double)calcTime_ms / 1000.0) + "s)");
+}
+
+void MainWindow::enableAutoupdate(bool on) {
+    ui->checkBox_autoUpdate->setEnabled(on);
+    ui->label_autoUpdate_lastCalcTime->setEnabled(on);
+    ui->label_autoUpdate_text->setEnabled(on);
+    ui->doubleSpinBox_autoUpdateThreshold->setEnabled(on);
+}
+
+void MainWindow::addImageToQueue(QUrl url) {
+
+    QueueItem *item = new QueueItem(url, url.fileName(), ui->listWidget_queue, 0);
+    ui->listWidget_queue->addItem(item);
+}
+
+void MainWindow::addImageToQueue(QList<QUrl> urls) {
+    for(int i = 0; i < urls.size(); i++) {
+        addImageToQueue(urls.at(i));
+    }
+}
+
+void MainWindow::removeImagesFromQueue() {
+    qDeleteAll(ui->listWidget_queue->selectedItems());
 }
 
 //connects gui buttons with Slots in this class
 void MainWindow::connectSignalSlots() {
     //connect signals/slots
     //load/save/open export folder
-    connect(ui->pushButton_load, SIGNAL(clicked()), this, SLOT(load()));
-    connect(ui->pushButton_save, SIGNAL(clicked()), this, SLOT(saveAll()));
+    connect(ui->pushButton_load, SIGNAL(clicked()), this, SLOT(loadUserFilePath()));
+    connect(ui->pushButton_save, SIGNAL(clicked()), this, SLOT(saveUserFilePath()));
     connect(ui->pushButton_openExportFolder, SIGNAL(clicked()), this, SLOT(openExportFolder()));
     //zoom
     connect(ui->pushButton_zoomIn, SIGNAL(clicked()), this, SLOT(zoomIn()));
@@ -364,9 +490,9 @@ void MainWindow::connectSignalSlots() {
     connect(ui->pushButton_resetZoom, SIGNAL(clicked()), this, SLOT(resetZoom()));
     connect(ui->pushButton_fitInView, SIGNAL(clicked()), this, SLOT(fitInView()));
     //calculate
-    connect(ui->pushButton_calcNormal, SIGNAL(clicked()), this, SLOT(calcNormal()));
-    connect(ui->pushButton_calcSpec, SIGNAL(clicked()), this, SLOT(calcSpec()));
-    connect(ui->pushButton_calcDisplace, SIGNAL(clicked()), this, SLOT(calcDisplace()));
+    connect(ui->pushButton_calcNormal, SIGNAL(clicked()), this, SLOT(calcNormalAndPreview()));
+    connect(ui->pushButton_calcSpec, SIGNAL(clicked()), this, SLOT(calcSpecAndPreview()));
+    connect(ui->pushButton_calcDisplace, SIGNAL(clicked()), this, SLOT(calcDisplaceAndPreview()));
     //switch between tabs
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)), this, SLOT(preview(int)));
     //display channel intensity
@@ -399,4 +525,12 @@ void MainWindow::connectSignalSlots() {
     connect(ui->doubleSpinBox_strength, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->checkBox_tileable, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->checkBox_invertHeight, SIGNAL(clicked()), this, SLOT(autoUpdate()));
+    //graphicsview drag and drop
+    connect(ui->graphicsView, SIGNAL(singleImageDropped(QUrl)), this, SLOT(loadSingleDropped(QUrl)));
+    connect(ui->graphicsView, SIGNAL(multipleImagesDropped(QList<QUrl>)), this, SLOT(loadMultipleDropped(QList<QUrl>)));
+    //queue (item widget)
+    connect(ui->pushButton_removeImagesFromQueue, SIGNAL(clicked()), this, SLOT(removeImagesFromQueue()));
+    connect(ui->pushButton_processQueue, SIGNAL(clicked()), this, SLOT(processQueue()));
+    connect(ui->pushButton_stopProcessingQueue, SIGNAL(clicked()), this, SLOT(stopProcessingQueue()));
+    connect(ui->pushButton_changeOutputPath_Queue, SIGNAL(clicked()), this, SLOT(changeOutputPathQueue()));
 }

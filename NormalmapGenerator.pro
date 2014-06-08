@@ -18,11 +18,17 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     intensitymap.cpp \
     normalmapgenerator.cpp \
-    specularmapgenerator.cpp
+    specularmapgenerator.cpp \
+    graphicsscene.cpp \
+    graphicsview.cpp \
+    queueitem.cpp
 
 HEADERS  += mainwindow.h \
     intensitymap.h \
     normalmapgenerator.h \
-    specularmapgenerator.h
+    specularmapgenerator.h \
+    graphicsscene.h \
+    graphicsview.h \
+    queueitem.h
 
 FORMS    += mainwindow.ui

@@ -38,9 +38,8 @@ private:
     QImage normalmap;
     QImage specmap;
     QImage displacementmap;
-    QString loadedImagePath;
-    QString exportPath;
-    QString queueExportPath;
+    QUrl loadedImagePath;
+    QUrl exportPath;
     int lastCalctime_normal;
     int lastCalctime_specular;
     int lastCalctime_displace;
@@ -56,8 +55,8 @@ private:
     void addImageToQueue(QUrl url);
     void addImageToQueue(QList<QUrl> urls);
     void saveQueueProcessed(QUrl folderPath);
-    void save(QString filename);
-    bool load(QString filename);
+    void save(QUrl url);
+    bool load(QUrl url);
 
 private slots:
     void loadUserFilePath();

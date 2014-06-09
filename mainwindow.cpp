@@ -46,38 +46,60 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::loadSingleDropped(QUrl url) {
-    QString filename = url.toLocalFile();
-
-    if(load(filename))
+    if(load(url))
         addImageToQueue(url);
 }
 
 void MainWindow::loadMultipleDropped(QList<QUrl> urls) {
-    //only load first image into preview window
-    if(load(urls.at(0).toLocalFile()))
-        addImageToQueue(urls);
+    //test if image formats are supported
+    bool containedInvalidFormat = false;
+    bool loadedFirstValidImage = false;
+
+    for(int i = 0; i < urls.size(); i++) {
+        QString suffix = QFileInfo(urls.at(i).fileName()).suffix().toLower();
+        QString supported = "png jpg jpeg tiff.ppm bmp xpm";
+
+        if(supported.contains(suffix)) {
+            //image format is supported, add to queue
+            addImageToQueue(urls.at(i));
+            //if it is the first valid image, load and preview it
+            if(!loadedFirstValidImage) {
+                load(urls.at(i));
+                loadedFirstValidImage = true;
+            }
+        }
+        else {
+            containedInvalidFormat = true;
+        }
+    }
+
+    if(containedInvalidFormat)
+        QMessageBox::information(this, "Not All Images Loaded Into Queue",
+                                 "Some images had unsupported formats and where not loaded into the queue!");
 }
 
-bool MainWindow::load(QString filename) {
-    if(filename.isEmpty())
+bool MainWindow::load(QUrl url) {
+    if(!url.isValid()) {
+        throw "[load] invalid url!";
         return false;
+    }
 
-    ui->statusBar->showMessage("loading Image: " + filename);
+    ui->statusBar->showMessage("loading Image: " + url.fileName());
 
     //load the image
-    input = QImage(filename);
+    input = QImage(url.toLocalFile());
 
     if(input.isNull()) {
-        ui->statusBar->showMessage("Error: Image " + filename + " NOT loaded!", 5000);
+        ui->statusBar->showMessage("Error: Image " + url.fileName() + " NOT loaded!", 5000);
         QMessageBox::information(this, "Error while loading image",
                                  "Image not loaded!\nMost likely the image format is not supported.");
         return false;
     }
 
-    if(queueExportPath.isEmpty())
-        queueExportPath = QFileInfo(filename).absolutePath() + "/";
     //store the path the image was loaded from (for saving later)
-    loadedImagePath = filename;
+    if(exportPath.isEmpty())
+        exportPath = url.adjusted(QUrl::RemoveFilename);
+    loadedImagePath = url;
 
     //enable ui buttons
     ui->pushButton_calcNormal->setEnabled(true);
@@ -106,15 +128,10 @@ bool MainWindow::load(QString filename) {
 }
 
 void MainWindow::loadUserFilePath() {
-    QList<QString> filenames = QFileDialog::getOpenFileNames(this,
-                                                    "Open Image File",
-                                                    QDir::homePath(),
-                                                    "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
-    QList<QUrl> urls;
-    for(int i = 0; i < filenames.size(); i++) {
-        urls.append(QUrl::fromLocalFile(filenames.at(i)));
-    }
-
+    QList<QUrl> urls = QFileDialog::getOpenFileUrls(this,
+                                                     "Open Image File",
+                                                     QDir::homePath(),
+                                                     "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
     loadMultipleDropped(urls);
 }
 
@@ -224,6 +241,11 @@ void MainWindow::processQueue() {
     if(ui->listWidget_queue->count() == 0)
         return;
 
+    if(!exportPath.isValid()) {
+        QMessageBox::information(this, "Invalid Export Path", "Export path is invalid!");
+        return;
+    }
+
     //enable stop button
     ui->pushButton_stopProcessingQueue->setEnabled(true);
 
@@ -242,7 +264,7 @@ void MainWindow::processQueue() {
         ui->listWidget_queue->item(i)->setSelected(true);
 
         //load image
-        load(item->getUrl().toLocalFile());
+        load(item->getUrl());
 
         //calculate maps
         calcNormal();
@@ -250,18 +272,19 @@ void MainWindow::processQueue() {
         calcDisplace();
 
         //save maps
-        QUrl exportUrl;
-        if(ui->radioButton_exportToSource->isChecked())
-            exportUrl = item->getUrl();
-        else
-            exportUrl = QUrl::fromLocalFile(queueExportPath + item->text());
-        saveQueueProcessed(exportUrl);
+        QUrl exportUrl = QUrl::fromLocalFile(exportPath.toLocalFile() + "/" + item->text());
+        std::cout << "[Queue] Image " << i + 1 << " exported: "
+                  << exportUrl.toLocalFile().toStdString() << std::endl;
+        save(exportUrl);
 
         QCoreApplication::processEvents();
     }
 
     ui->pushButton_stopProcessingQueue->setEnabled(false);
     stopQueue = false;
+
+    //enable "Open Export Folder" gui button
+    ui->pushButton_openExportFolder->setEnabled(true);
 }
 
 void MainWindow::stopProcessingQueue() {
@@ -269,26 +292,24 @@ void MainWindow::stopProcessingQueue() {
 }
 
 void MainWindow::saveUserFilePath() {
-    QString filename = QFileDialog::getSaveFileName(this,
-                                                    "Save as",
-                                                    loadedImagePath,
-                                                    "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
-    save(filename);
+    QUrl url = QFileDialog::getSaveFileUrl(this,
+                                           "Save as",
+                                           loadedImagePath,
+                                           "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
+    save(url);
 }
 
-void MainWindow::saveQueueProcessed(QUrl url) {
-    save(url.toLocalFile());
-}
-
-void MainWindow::save(QString filename) {
+void MainWindow::save(QUrl url) {
     //if saving process was aborted
-    if(filename.isEmpty())
+    if(!url.isValid())
         return;
 
+    QString path = url.toLocalFile();
+
     //if no file suffix was chosen, automatically use the PNG format
-    QFileInfo file(filename);
+    QFileInfo file(path);
     if(!file.baseName().isEmpty() && file.suffix().isEmpty())
-        filename += ".png";
+        path += ".png";
 
     //append a suffix to the map names (result: path/original_normal.png)
     QString name_normal = file.absolutePath() + "/" + file.baseName() + "_normal." + file.suffix();
@@ -318,17 +339,20 @@ void MainWindow::save(QString filename) {
     }
 
     //store export path
-    exportPath = file.absolutePath();
+    exportPath = url.adjusted(QUrl::RemoveFilename);
     //enable "Open Export Folder" gui button
     ui->pushButton_openExportFolder->setEnabled(true);
 }
 
 void MainWindow::changeOutputPathQueue() {
-    QUrl exportUrl = QFileDialog::getExistingDirectoryUrl(this,
-                                                          "Choose Export Folder",
-                                                          QDir::homePath());
-    queueExportPath = exportUrl.toLocalFile() + "/";
-    std::cout << "export path changed to: " << queueExportPath.toStdString() << std::endl;
+    QUrl startUrl = QDir::homePath();
+    if(exportPath.isValid())
+        startUrl = exportPath;
+
+    exportPath = QFileDialog::getExistingDirectoryUrl(this,
+                                                           "Choose Export Folder",
+                                                           startUrl);
+    std::cout << "export path changed to: " << exportPath.toLocalFile().toStdString() << std::endl;
 }
 
 void MainWindow::updateQueueExportOptions() {
@@ -448,11 +472,11 @@ QString MainWindow::generateElapsedTimeMsg(int calcTimeMs, QString mapType) {
 }
 
 void MainWindow::openExportFolder() {
-    QDesktopServices::openUrl(QUrl(exportPath));
+    QDesktopServices::openUrl(exportPath);
 }
 
 void MainWindow::displayCalcTime(int calcTime_ms, QString mapType, int duration_ms) {
-    std::cout << mapType.toStdString() << " for item " << loadedImagePath.toStdString()
+    std::cout << mapType.toStdString() << " for item " << loadedImagePath.fileName().toStdString()
               << " calculated, it took " << calcTime_ms << "ms" << std::endl;
     ui->statusBar->clearMessage();
     QString msg = generateElapsedTimeMsg(calcTime_ms, mapType);

@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "graphicsscene.h"
 
+#include <QTreeView>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -31,18 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
     lastCalctime_specular = 0;
     lastCalctime_displace = 0;
 
-    //hide queue progress bar
-    ui->progressBar_Queue->hide();
-
     //initialize stopQueue flag
     stopQueue = false;
 
     //show default status message
     ui->statusBar->showMessage("Drag images into the empty preview window to load them.");
-
-    //hide "change output path" button for queue
-    //todo
-    ui->pushButton_changeOutputPath_Queue->hide();
 }
 
 MainWindow::~MainWindow()
@@ -66,8 +61,6 @@ void MainWindow::loadMultipleDropped(QList<QUrl> urls) {
 bool MainWindow::load(QString filename) {
     if(filename.isEmpty())
         return false;
-    //store the path the image was loaded from (for saving later)
-    loadedImagePath = filename;
 
     ui->statusBar->showMessage("loading Image: " + filename);
 
@@ -80,6 +73,11 @@ bool MainWindow::load(QString filename) {
                                  "Image not loaded!\nMost likely the image format is not supported.");
         return false;
     }
+
+    if(queueExportPath.isEmpty())
+        queueExportPath = QFileInfo(filename).absolutePath() + "/";
+    //store the path the image was loaded from (for saving later)
+    loadedImagePath = filename;
 
     //enable ui buttons
     ui->pushButton_calcNormal->setEnabled(true);
@@ -226,8 +224,7 @@ void MainWindow::processQueue() {
     if(ui->listWidget_queue->count() == 0)
         return;
 
-    //show queue progress bar, enable stop button
-    ui->progressBar_Queue->show();
+    //enable stop button
     ui->pushButton_stopProcessingQueue->setEnabled(true);
 
     double percentageBase = 100.0 / ui->listWidget_queue->count();
@@ -241,7 +238,7 @@ void MainWindow::processQueue() {
 
         //display status
         ui->statusBar->showMessage("Processing Queue Item: " + item->text());
-        ui->progressBar_Queue->setValue((int)(percentageBase * i));
+        ui->progressBar_Queue->setValue((int)(percentageBase * (i + 1)));
         ui->listWidget_queue->item(i)->setSelected(true);
 
         //load image
@@ -253,12 +250,16 @@ void MainWindow::processQueue() {
         calcDisplace();
 
         //save maps
-        saveQueueProcessed(item->getUrl());
+        QUrl exportUrl;
+        if(ui->radioButton_exportToSource->isChecked())
+            exportUrl = item->getUrl();
+        else
+            exportUrl = QUrl::fromLocalFile(queueExportPath + item->text());
+        saveQueueProcessed(exportUrl);
 
         QCoreApplication::processEvents();
     }
 
-    ui->progressBar_Queue->hide();
     ui->pushButton_stopProcessingQueue->setEnabled(false);
     stopQueue = false;
 }
@@ -323,10 +324,15 @@ void MainWindow::save(QString filename) {
 }
 
 void MainWindow::changeOutputPathQueue() {
-    exportPath = QFileDialog::getSaveFileName(this,
-                                              "Save as",
-                                              loadedImagePath,
-                                              "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
+    QUrl exportUrl = QFileDialog::getExistingDirectoryUrl(this,
+                                                          "Choose Export Folder",
+                                                          QDir::homePath());
+    queueExportPath = exportUrl.toLocalFile() + "/";
+    std::cout << "export path changed to: " << queueExportPath.toStdString() << std::endl;
+}
+
+void MainWindow::updateQueueExportOptions() {
+    ui->pushButton_changeOutputPath_Queue->setEnabled(ui->radioButton_exportUserDefined->isChecked());
 }
 
 //overloaded version of preview that chooses the map to preview automatically
@@ -533,4 +539,5 @@ void MainWindow::connectSignalSlots() {
     connect(ui->pushButton_processQueue, SIGNAL(clicked()), this, SLOT(processQueue()));
     connect(ui->pushButton_stopProcessingQueue, SIGNAL(clicked()), this, SLOT(stopProcessingQueue()));
     connect(ui->pushButton_changeOutputPath_Queue, SIGNAL(clicked()), this, SLOT(changeOutputPathQueue()));
+    connect(ui->buttonGroup_exportFolder, SIGNAL(buttonClicked(int)), this, SLOT(updateQueueExportOptions()));
 }

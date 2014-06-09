@@ -40,6 +40,7 @@ private:
     QImage displacementmap;
     QString loadedImagePath;
     QString exportPath;
+    QString queueExportPath;
     int lastCalctime_normal;
     int lastCalctime_specular;
     int lastCalctime_displace;
@@ -79,6 +80,7 @@ private slots:
     void openExportFolder();
     void removeImagesFromQueue();
     void changeOutputPathQueue();
+    void updateQueueExportOptions();
 };
 
 #endif // MAINWINDOW_H

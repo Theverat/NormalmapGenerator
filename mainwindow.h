@@ -80,6 +80,7 @@ private slots:
     void removeImagesFromQueue();
     void changeOutputPathQueue();
     void updateQueueExportOptions();
+    void queueItemDoubleClicked(QListWidgetItem *item);
 };
 
 #endif // MAINWINDOW_H

@@ -78,6 +78,7 @@ void MainWindow::loadMultipleDropped(QList<QUrl> urls) {
                                  "Some images had unsupported formats and where not loaded into the queue!");
 }
 
+//load the image specified in the url
 bool MainWindow::load(QUrl url) {
     if(!url.isValid()) {
         throw "[load] invalid url!";
@@ -127,6 +128,7 @@ bool MainWindow::load(QUrl url) {
     return true;
 }
 
+//load images using the file dialog
 void MainWindow::loadUserFilePath() {
     QList<QUrl> urls = QFileDialog::getOpenFileUrls(this,
                                                      "Open Image File",
@@ -251,11 +253,8 @@ void MainWindow::processQueue() {
 
     double percentageBase = 100.0 / ui->listWidget_queue->count();
 
-    for(int i = 0; i < ui->listWidget_queue->count(); i++)
+    for(int i = 0; i < ui->listWidget_queue->count() && !stopQueue; i++)
     {
-        if(stopQueue)
-            break;
-
         QueueItem *item = (QueueItem*)(ui->listWidget_queue->item(i));
 
         //display status
@@ -267,9 +266,12 @@ void MainWindow::processQueue() {
         load(item->getUrl());
 
         //calculate maps
-        calcNormal();
-        calcSpec();
-        calcDisplace();
+        if(ui->checkBox_queue_generateNormal->isChecked())
+            calcNormal();
+        if(ui->checkBox_queue_generateSpec->isChecked())
+            calcSpec();
+        if(ui->checkBox_queue_generateDisplace->isChecked())
+            calcDisplace();
 
         //save maps
         QUrl exportUrl = QUrl::fromLocalFile(exportPath.toLocalFile() + "/" + item->text());
@@ -277,9 +279,11 @@ void MainWindow::processQueue() {
                   << exportUrl.toLocalFile().toStdString() << std::endl;
         save(exportUrl);
 
+        //user interface should stay responsive
         QCoreApplication::processEvents();
     }
 
+    //disable stop button
     ui->pushButton_stopProcessingQueue->setEnabled(false);
     stopQueue = false;
 
@@ -287,10 +291,12 @@ void MainWindow::processQueue() {
     ui->pushButton_openExportFolder->setEnabled(true);
 }
 
+//tell the queue to stop processing
 void MainWindow::stopProcessingQueue() {
     stopQueue = true;
 }
 
+//save maps using the file dialog
 void MainWindow::saveUserFilePath() {
     QUrl url = QFileDialog::getSaveFileUrl(this,
                                            "Save as",
@@ -344,6 +350,7 @@ void MainWindow::save(QUrl url) {
     ui->pushButton_openExportFolder->setEnabled(true);
 }
 
+//change the path the queue exports the maps to
 void MainWindow::changeOutputPathQueue() {
     QUrl startUrl = QDir::homePath();
     if(exportPath.isValid())
@@ -355,6 +362,7 @@ void MainWindow::changeOutputPathQueue() {
     std::cout << "export path changed to: " << exportPath.toLocalFile().toStdString() << std::endl;
 }
 
+//enable/disable custom output path button
 void MainWindow::updateQueueExportOptions() {
     ui->pushButton_changeOutputPath_Queue->setEnabled(ui->radioButton_exportUserDefined->isChecked());
 }
@@ -380,14 +388,29 @@ void MainWindow::preview(int tab) {
         break;
     case 1:
         //normal
+        if(!input.isNull() && normalmap.isNull() && input.width() < 3000 && input.height() < 3000) {
+            //if an image was loaded and a normalmap was not yet generated and the image is not too large
+            //automatically generate the normalmap
+            calcNormal();
+        }
         ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(normalmap));
         break;
     case 2:
         //spec
+        if(!input.isNull() && specmap.isNull() && input.width() < 3000 && input.height() < 3000) {
+            //if an image was loaded and a specmap was not yet generated and the image is not too large
+            //automatically generate the specmap
+            calcSpec();
+        }
         ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(specmap));
         break;
     case 3:
         //displacement
+        if(!input.isNull() && displacementmap.isNull() && input.width() < 3000 && input.height() < 3000) {
+            //if an image was loaded and a dispmap was not yet generated and the image is not too large
+            //automatically generate the displacementmap
+            calcDisplace();
+        }
         ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(displacementmap));
         break;
     }
@@ -475,6 +498,7 @@ void MainWindow::openExportFolder() {
     QDesktopServices::openUrl(exportPath);
 }
 
+//display the last calculation time in the statusbar
 void MainWindow::displayCalcTime(int calcTime_ms, QString mapType, int duration_ms) {
     std::cout << mapType.toStdString() << " for item " << loadedImagePath.fileName().toStdString()
               << " calculated, it took " << calcTime_ms << "ms" << std::endl;
@@ -491,12 +515,13 @@ void MainWindow::enableAutoupdate(bool on) {
     ui->doubleSpinBox_autoUpdateThreshold->setEnabled(on);
 }
 
+//add single image to queue
 void MainWindow::addImageToQueue(QUrl url) {
-
     QueueItem *item = new QueueItem(url, url.fileName(), ui->listWidget_queue, 0);
     ui->listWidget_queue->addItem(item);
 }
 
+//add multiple images to queue
 void MainWindow::addImageToQueue(QList<QUrl> urls) {
     for(int i = 0; i < urls.size(); i++) {
         addImageToQueue(urls.at(i));
@@ -505,6 +530,11 @@ void MainWindow::addImageToQueue(QList<QUrl> urls) {
 
 void MainWindow::removeImagesFromQueue() {
     qDeleteAll(ui->listWidget_queue->selectedItems());
+}
+
+void MainWindow::queueItemDoubleClicked(QListWidgetItem* item) {
+    //load image that was doubleclicked
+    load(((QueueItem*)item)->getUrl());
 }
 
 //connects gui buttons with Slots in this class
@@ -564,4 +594,5 @@ void MainWindow::connectSignalSlots() {
     connect(ui->pushButton_stopProcessingQueue, SIGNAL(clicked()), this, SLOT(stopProcessingQueue()));
     connect(ui->pushButton_changeOutputPath_Queue, SIGNAL(clicked()), this, SLOT(changeOutputPathQueue()));
     connect(ui->buttonGroup_exportFolder, SIGNAL(buttonClicked(int)), this, SLOT(updateQueueExportOptions()));
+    connect(ui->listWidget_queue, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(queueItemDoubleClicked(QListWidgetItem*)));
 }

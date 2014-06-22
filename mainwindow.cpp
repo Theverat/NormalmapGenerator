@@ -391,7 +391,7 @@ void MainWindow::preview(int tab) {
         if(!input.isNull() && normalmap.isNull() && input.width() < 3000 && input.height() < 3000) {
             //if an image was loaded and a normalmap was not yet generated and the image is not too large
             //automatically generate the normalmap
-            calcNormal();
+            calcNormalAndPreview();
         }
         ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(normalmap));
         break;
@@ -400,7 +400,7 @@ void MainWindow::preview(int tab) {
         if(!input.isNull() && specmap.isNull() && input.width() < 3000 && input.height() < 3000) {
             //if an image was loaded and a specmap was not yet generated and the image is not too large
             //automatically generate the specmap
-            calcSpec();
+            calcSpecAndPreview();
         }
         ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(specmap));
         break;
@@ -409,7 +409,7 @@ void MainWindow::preview(int tab) {
         if(!input.isNull() && displacementmap.isNull() && input.width() < 3000 && input.height() < 3000) {
             //if an image was loaded and a dispmap was not yet generated and the image is not too large
             //automatically generate the displacementmap
-            calcDisplace();
+            calcDisplaceAndPreview();
         }
         ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(displacementmap));
         break;

@@ -10,7 +10,6 @@ public:
     QImage calculateSpecmap(QImage input, double scale);
 
 private:
-    IntensityMap intensity;
     double redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier;
     IntensityMap::Mode mode;
 };

@@ -23,8 +23,6 @@ void GraphicsView::dropEvent(QDropEvent* event) {
         QList<QUrl> urls = event->mimeData()->urls();
         if(urls.size() == 1) {
             emit singleImageDropped(urls.at(0));
-            //check if filetype is folder or image
-            //emit different signals
         }
         else {
             emit multipleImagesDropped(urls);

@@ -138,6 +138,9 @@ void MainWindow::loadUserFilePath() {
 }
 
 void MainWindow::calcNormal() {
+    if(input.isNull())
+        return;
+
     //normalmap parameters
     double strength = ui->doubleSpinBox_strength->value();
     bool invert = ui->checkBox_invertHeight->isChecked();
@@ -169,6 +172,9 @@ void MainWindow::calcNormal() {
 }
 
 void MainWindow::calcSpec() {
+    if(input.isNull())
+        return;
+
     //color channel mode
     IntensityMap::Mode mode = IntensityMap::AVERAGE;
     if(ui->comboBox_mode_spec->currentIndex() == 0)
@@ -189,6 +195,9 @@ void MainWindow::calcSpec() {
 }
 
 void MainWindow::calcDisplace() {
+    if(input.isNull())
+        return;
+
     //todo
 }
 
@@ -438,6 +447,9 @@ void MainWindow::fitInView() {
 
 //displays single color channels of the image (handled by an intensitymap)
 void MainWindow::displayChannelIntensity() {
+    if(input.isNull())
+        return;
+
     IntensityMap temp;
     if(ui->radioButton_displayRed->isChecked())
         temp = IntensityMap(input, IntensityMap::AVERAGE, true, false, false, false);

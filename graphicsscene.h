@@ -2,7 +2,6 @@
 #define MYQGRAPHICSSCENE_H
 
 #include <QGraphicsScene>
-#include <QGraphicsSceneDragDropEvent>
 
 class GraphicsScene : public QGraphicsScene
 {

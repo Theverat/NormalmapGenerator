@@ -2,14 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QElapsedTimer>
-#include <QDesktopServices>
 #include <QUrl>
-#include <iostream>
-#include "normalmapgenerator.h"
-#include "specularmapgenerator.h"
 #include "queueitem.h"
 
 namespace Ui {
@@ -57,6 +50,7 @@ private:
     void saveQueueProcessed(QUrl folderPath);
     void save(QUrl url);
     bool load(QUrl url);
+    int calcPercentage(int value, int percentage);
 
 private slots:
     void loadUserFilePath();
@@ -81,6 +75,7 @@ private slots:
     void changeOutputPathQueue();
     void updateQueueExportOptions();
     void queueItemDoubleClicked(QListWidgetItem *item);
+    void normalmapSizeChanged();
 };
 
 #endif // MAINWINDOW_H

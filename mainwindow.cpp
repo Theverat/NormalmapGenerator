@@ -1,8 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "graphicsscene.h"
-
+#include "normalmapgenerator.h"
+#include "specularmapgenerator.h"
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QElapsedTimer>
+#include <QDesktopServices>
 #include <QTreeView>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -107,6 +113,7 @@ bool MainWindow::load(QUrl url) {
     ui->pushButton_calcSpec->setEnabled(true);
     ui->pushButton_calcDisplace->setEnabled(true);
     ui->checkBox_displayChannelIntensity->setEnabled(true);
+    ui->spinBox_normalmapSize->setEnabled(true);
     enableAutoupdate(true);
     //switch active tab to input
     ui->tabWidget->setCurrentIndex(0);
@@ -166,9 +173,19 @@ void MainWindow::calcNormal() {
     else if(ui->comboBox_method->currentIndex() == 1)
         kernel = NormalmapGenerator::PREWITT;
 
+    //scale input image if not 100%
+    QImage inputScaled = input;
+    int sizePercent = ui->spinBox_normalmapSize->value();
+    if(sizePercent != 100) {
+        int scaledWidth = calcPercentage(input.width(), sizePercent);
+        int scaledHeight = calcPercentage(input.height(), sizePercent);
+
+        inputScaled = input.scaled(scaledWidth, scaledHeight, Qt::KeepAspectRatio);
+    }
+
     //setup generator and calculate map
     NormalmapGenerator normalmapGenerator(mode, useRed, useGreen, useBlue, useAlpha);
-    normalmap = normalmapGenerator.calculateNormalmap(input, kernel, strength, invert, tileable);
+    normalmap = normalmapGenerator.calculateNormalmap(inputScaled, kernel, strength, invert, tileable);
 }
 
 void MainWindow::calcSpec() {
@@ -403,6 +420,8 @@ void MainWindow::preview(int tab) {
             calcNormalAndPreview();
         }
         ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(normalmap));
+        //display size of the image
+        normalmapSizeChanged();
         break;
     case 2:
         //spec
@@ -549,6 +568,20 @@ void MainWindow::queueItemDoubleClicked(QListWidgetItem* item) {
     load(((QueueItem*)item)->getUrl());
 }
 
+//calculates the size preview text (e.g. "1024 x 1024 px")
+void MainWindow::normalmapSizeChanged() {
+    int sizePercent = ui->spinBox_normalmapSize->value();
+    QString text = QString::number(calcPercentage(input.width(), sizePercent));
+    text.append(" x ");
+    text.append(QString::number(calcPercentage(input.height(), sizePercent)));
+    text.append(" px");
+    ui->label_normalmapSize->setText(text);
+}
+
+int MainWindow::calcPercentage(int value, int percentage) {
+    return (int) (((double)value / 100.0) * percentage);
+}
+
 //connects gui buttons with Slots in this class
 void MainWindow::connectSignalSlots() {
     //connect signals/slots
@@ -597,6 +630,7 @@ void MainWindow::connectSignalSlots() {
     connect(ui->doubleSpinBox_strength, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->checkBox_tileable, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->checkBox_invertHeight, SIGNAL(clicked()), this, SLOT(autoUpdate()));
+    connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(autoUpdate()));
     //graphicsview drag and drop
     connect(ui->graphicsView, SIGNAL(singleImageDropped(QUrl)), this, SLOT(loadSingleDropped(QUrl)));
     connect(ui->graphicsView, SIGNAL(multipleImagesDropped(QList<QUrl>)), this, SLOT(loadMultipleDropped(QList<QUrl>)));
@@ -607,4 +641,6 @@ void MainWindow::connectSignalSlots() {
     connect(ui->pushButton_changeOutputPath_Queue, SIGNAL(clicked()), this, SLOT(changeOutputPathQueue()));
     connect(ui->buttonGroup_exportFolder, SIGNAL(buttonClicked(int)), this, SLOT(updateQueueExportOptions()));
     connect(ui->listWidget_queue, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(queueItemDoubleClicked(QListWidgetItem*)));
+    //normalmap size preview text
+    connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(normalmapSizeChanged()));
 }

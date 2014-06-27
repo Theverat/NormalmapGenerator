@@ -2,7 +2,6 @@
 #define INTENSITYMAP_H
 
 #include <QImage>
-#include <QColor>
 
 class IntensityMap
 {

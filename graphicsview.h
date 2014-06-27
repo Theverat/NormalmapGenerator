@@ -2,8 +2,7 @@
 #define GRAPHICSVIEW_H
 
 #include <QGraphicsView>
-#include <QMimeData>
-#include <QDropEvent>
+#include <QUrl>
 
 class GraphicsView : public QGraphicsView
 {

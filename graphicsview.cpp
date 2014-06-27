@@ -1,4 +1,6 @@
 #include "graphicsview.h"
+#include <QMimeData>
+#include <QDropEvent>
 
 GraphicsView::GraphicsView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent)
 {

@@ -1,5 +1,6 @@
 #include "normalmapgenerator.h"
-#include <iostream>
+#include <QVector3D>
+#include <QColor>
 
 NormalmapGenerator::NormalmapGenerator(IntensityMap::Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
 {

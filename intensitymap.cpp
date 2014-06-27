@@ -1,5 +1,5 @@
 #include "intensitymap.h"
-#include <iostream>
+#include <QColor>
 
 IntensityMap::IntensityMap() {
 

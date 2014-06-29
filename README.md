@@ -1,6 +1,6 @@
 Normalmap Generator
 
-![screenshot](http://www.blendpolis.de/download/file.php?id=93358&mode=view)
+![screenshot](http://www.blendpolis.de/download/file.php?id=93744&mode=view)
 
 todo:
 - <b>(done)</b> image stack processing (whole folders, selection, <strike>after pattern?</strike>)

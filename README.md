@@ -4,7 +4,7 @@ Normalmap Generator
 
 todo:
 - <b>(done)</b> image stack processing (whole folders, selection, <strike>after pattern?</strike>)
-- more normalmap/edge detection filters (prewitt?)
+- <b>(done)</b> more normalmap/edge detection filters (prewitt?)
 - variable "working size" for these filters, e.g. 5x5 or 9x9
 - add possibility to "blend" two normalmaps with different filter sizes for larger height differences while retaining small details
 - same as above for displacementmaps

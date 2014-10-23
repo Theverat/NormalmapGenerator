@@ -252,7 +252,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -785,7 +785,24 @@
                  <double>0.050000000000000</double>
                 </property>
                 <property name="value">
-                 <double>1.000000000000000</double>
+                 <double>0.550000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_13">
+                <property name="text">
+                 <string>Contrast:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_contrast">
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.600000000000000</double>
                 </property>
                </widget>
               </item>
@@ -838,54 +855,68 @@
               </item>
               <item>
                <widget class="QLabel" name="label_6">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
                 <property name="text">
-                 <string>Use Channels:</string>
+                 <string>Channels:</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="checkBox_useRed_displace">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
+               <widget class="QLabel" name="label_14">
                 <property name="text">
-                 <string>Red</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
+                 <string>Red:</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="checkBox_useGreen_displace">
-                <property name="enabled">
-                 <bool>true</bool>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_redMul">
+                <property name="decimals">
+                 <number>3</number>
                 </property>
-                <property name="text">
-                 <string>Green</string>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
                 </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_useBlue_displace">
-                <property name="text">
-                 <string>Blue</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
+                <property name="value">
+                 <double>1.000000000000000</double>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="checkBox_useAlpha_displace">
+               <widget class="QLabel" name="label_15">
                 <property name="text">
-                 <string>Alpha</string>
+                 <string>Green:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_greenMul">
+                <property name="decimals">
+                 <number>3</number>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_16">
+                <property name="text">
+                 <string>Blue:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_blueMul">
+                <property name="decimals">
+                 <number>3</number>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
                 </property>
                </widget>
               </item>
@@ -919,7 +950,51 @@
              </layout>
             </item>
             <item>
+             <widget class="Line" name="line_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
              <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QLabel" name="label_17">
+                <property name="text">
+                 <string>Scale:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_scale">
+                <property name="decimals">
+                 <number>3</number>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_18">
+                <property name="text">
+                 <string>Contrast:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_contrast">
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
+                </property>
+               </widget>
+              </item>
               <item>
                <spacer name="horizontalSpacer_8">
                 <property name="orientation">
@@ -1120,7 +1195,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_exportFolder"/>
   <buttongroup name="buttonGroup_displayChannelIntensity"/>
+  <buttongroup name="buttonGroup_exportFolder"/>
  </buttongroups>
 </ui>

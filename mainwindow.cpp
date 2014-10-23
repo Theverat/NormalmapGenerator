@@ -205,17 +205,36 @@ void MainWindow::calcSpec() {
     double blueMultiplier = ui->doubleSpinBox_spec_blueMul->value();
     double alphaMultiplier = ui->doubleSpinBox_spec_alphaMul->value();
     double scale = ui->doubleSpinBox_spec_scale->value();
+    double contrast = ui->doubleSpinBox_spec_contrast->value();
 
     //setup generator and calculate map
     SpecularmapGenerator specularmapGenerator(mode, redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
-    specmap = specularmapGenerator.calculateSpecmap(input, scale);
+    specmap = specularmapGenerator.calculateSpecmap(input, scale, contrast);
 }
 
+//the displacement map is generated with the specularmapGenerator (similar controls and output needed)
 void MainWindow::calcDisplace() {
     if(input.isNull())
         return;
 
-    //todo
+    //color channel mode
+    IntensityMap::Mode mode = IntensityMap::AVERAGE;
+    if(ui->comboBox_mode_displace->currentIndex() == 0)
+        mode = IntensityMap::AVERAGE;
+    else if(ui->comboBox_mode_displace->currentIndex() == 1)
+        mode = IntensityMap::MAX;
+
+    //color channel multipliers to use
+    double redMultiplier = ui->doubleSpinBox_displace_redMul->value();
+    double greenMultiplier = ui->doubleSpinBox_displace_greenMul->value();
+    double blueMultiplier = ui->doubleSpinBox_displace_blueMul->value();
+    double alphaMultiplier = 0.0;
+    double scale = ui->doubleSpinBox_displace_scale->value();
+    double contrast = ui->doubleSpinBox_displace_contrast->value();
+
+    //setup generator and calculate map
+    SpecularmapGenerator specularmapGenerator(mode, redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
+    displacementmap = specularmapGenerator.calculateSpecmap(input, scale, contrast);
 }
 
 
@@ -262,7 +281,24 @@ void MainWindow::calcSpecAndPreview() {
 }
 
 void MainWindow::calcDisplaceAndPreview() {
-    //todo
+    ui->statusBar->showMessage("calculating displacementmap...");
+
+    //timer for measuring calculation time
+    QElapsedTimer timer;
+    timer.start();
+
+    //calculate map
+    calcDisplace();
+
+    //display time it took to calculate the map
+    this->lastCalctime_displace = timer.elapsed();
+    displayCalcTime(lastCalctime_displace, "displacementmap", 5000);
+
+    //enable ui buttons
+    ui->pushButton_save->setEnabled(true);
+
+    //preview in displacement map tab
+    preview(3);
 }
 
 void MainWindow::processQueue() {
@@ -414,7 +450,7 @@ void MainWindow::preview(int tab) {
         break;
     case 1:
         //normal
-        if(!input.isNull() && normalmap.isNull() && input.width() < 3000 && input.height() < 3000) {
+        if(!input.isNull() && normalmap.isNull()) {
             //if an image was loaded and a normalmap was not yet generated and the image is not too large
             //automatically generate the normalmap
             calcNormalAndPreview();
@@ -425,7 +461,7 @@ void MainWindow::preview(int tab) {
         break;
     case 2:
         //spec
-        if(!input.isNull() && specmap.isNull() && input.width() < 3000 && input.height() < 3000) {
+        if(!input.isNull() && specmap.isNull()) {
             //if an image was loaded and a specmap was not yet generated and the image is not too large
             //automatically generate the specmap
             calcSpecAndPreview();
@@ -434,7 +470,7 @@ void MainWindow::preview(int tab) {
         break;
     case 3:
         //displacement
-        if(!input.isNull() && displacementmap.isNull() && input.width() < 3000 && input.height() < 3000) {
+        if(!input.isNull() && displacementmap.isNull()) {
             //if an image was loaded and a dispmap was not yet generated and the image is not too large
             //automatically generate the displacementmap
             calcDisplaceAndPreview();
@@ -537,6 +573,15 @@ void MainWindow::displayCalcTime(int calcTime_ms, QString mapType, int duration_
     QString msg = generateElapsedTimeMsg(calcTime_ms, mapType);
     ui->statusBar->showMessage(msg, duration_ms);
     ui->label_autoUpdate_lastCalcTime->setText("(Last Calc. Time: " + QString::number((double)calcTime_ms / 1000.0) + "s)");
+    
+    if(calcTime_ms < ui->doubleSpinBox_autoUpdateThreshold->value() * 1000) {
+        //calcTime was below the threshold, set textcolor to green
+        ui->label_autoUpdate_lastCalcTime->setStyleSheet("QLabel {color: #00AA00;}");
+    }
+    else {
+        //calcTime was above threshold, set textcolor to red to signal user the time was too long for autoupdate
+        ui->label_autoUpdate_lastCalcTime->setStyleSheet("QLabel {color: red;}");
+    }
 }
 
 void MainWindow::enableAutoupdate(bool on) {
@@ -620,6 +665,7 @@ void MainWindow::connectSignalSlots() {
     connect(ui->doubleSpinBox_spec_alphaMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_spec_scale, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->comboBox_mode_spec, SIGNAL(currentIndexChanged(int)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_spec_contrast, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     // normal autoupdate
     connect(ui->checkBox_useRed_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->checkBox_useGreen_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
@@ -631,6 +677,13 @@ void MainWindow::connectSignalSlots() {
     connect(ui->checkBox_tileable, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->checkBox_invertHeight, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(autoUpdate()));
+    // displcacement autoupdate
+    connect(ui->doubleSpinBox_displace_redMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_displace_greenMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_displace_blueMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_displace_scale, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    connect(ui->comboBox_mode_displace, SIGNAL(currentIndexChanged(int)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_displace_contrast, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     //graphicsview drag and drop
     connect(ui->graphicsView, SIGNAL(singleImageDropped(QUrl)), this, SLOT(loadSingleDropped(QUrl)));
     connect(ui->graphicsView, SIGNAL(multipleImagesDropped(QList<QUrl>)), this, SLOT(loadMultipleDropped(QList<QUrl>)));

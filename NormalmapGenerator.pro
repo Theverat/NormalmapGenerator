@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     specularmapgenerator.cpp \
     graphicsscene.cpp \
     graphicsview.cpp \
-    queueitem.cpp
+    queueitem.cpp \
+    queuemanager.cpp
 
 HEADERS  += mainwindow.h \
     intensitymap.h \
@@ -29,6 +30,7 @@ HEADERS  += mainwindow.h \
     specularmapgenerator.h \
     graphicsscene.h \
     graphicsview.h \
-    queueitem.h
+    queueitem.h \
+    queuemanager.h
 
 FORMS    += mainwindow.ui

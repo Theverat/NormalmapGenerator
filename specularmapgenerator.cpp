@@ -10,8 +10,28 @@ SpecularmapGenerator::SpecularmapGenerator(IntensityMap::Mode mode, double redMu
     this->alphaMultiplier = alphaMultiplier;
 }
 
-QImage SpecularmapGenerator::calculateSpecmap(QImage input, double scale) {
+QImage SpecularmapGenerator::calculateSpecmap(QImage input, double scale, double contrast) {
     QImage result(input.width(), input.height(), QImage::Format_ARGB32);
+    
+    //generate contrast lookup table
+    unsigned short contrastLookup[256];
+    double newValue = 0;
+    
+    for(int i = 0; i < 256; i++) {
+        newValue = (double)i;
+        newValue /= 255.0;
+        newValue -= 0.5;
+        newValue *= contrast;
+        newValue += 0.5;
+        newValue *= 255;
+    
+        if(newValue < 0)
+            newValue = 0;
+        if(newValue > 255)
+            newValue = 255;
+        
+        contrastLookup[i] = (unsigned short)newValue;
+    }
 
     #pragma omp parallel for  // OpenMP
     //for every row of the image
@@ -44,14 +64,20 @@ QImage SpecularmapGenerator::calculateSpecmap(QImage input, double scale) {
                 intensity = std::max(tempMaxRG, tempMaxBA);
             }
 
+            //apply scale (brightness)
             intensity *= scale;
 
             if(intensity > 1.0)
                 intensity = 1.0;
 
-            //write color into image pixel
+            //convert intensity to the 0-255 range
             int c = (int)(255.0 * intensity);
-            result.setPixel(x, y, QColor(c, c, c, c).rgba());
+            
+            //apply contrast
+            c = (int)contrastLookup[c];
+            
+            //write color into image pixel
+            result.setPixel(x, y, QColor(c, c, c, pxColor.alpha()).rgba());
         }
     }
 

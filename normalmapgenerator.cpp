@@ -11,7 +11,8 @@ NormalmapGenerator::NormalmapGenerator(IntensityMap::Mode mode, bool useRed, boo
     this->useAlpha = useAlpha;
 }
 
-QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, double strength, bool invert, bool tileable) {
+QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, double strength, bool invert, bool tileable, 
+                                              bool keepLargeDetail, int largeDetailScale, double largeDetailHeight) {
     this->tileable = tileable;
 
     this->intensity = IntensityMap(input, mode, useRed, useGreen, useBlue, useAlpha);
@@ -55,6 +56,36 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
 
             QColor normalAsRgb(mapComponent(normal.x()), mapComponent(normal.y()), mapComponent(normal.z()));
             result.setPixel(x, y, normalAsRgb.rgb());
+        }
+    }
+    
+    if(keepLargeDetail) {
+        //generate a second normalmap from a downscaled input image, then mix both normalmaps
+        
+        int largeDetailMapWidth = (int) (((double)input.width() / 100.0) * largeDetailScale);
+        int largeDetailMapHeight = (int) (((double)input.height() / 100.0) * largeDetailScale);
+        
+        //create downscaled version of input
+        QImage inputScaled = input.scaled(largeDetailMapWidth, largeDetailMapHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        //compute downscaled normalmap
+        QImage largeDetailMap = calculateNormalmap(inputScaled, kernel, largeDetailHeight, invert, tileable, false, 0, 0.0);
+        //scale map up
+        largeDetailMap = largeDetailMap.scaled(input.width(), input.height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        
+        #pragma omp parallel for  // OpenMP
+        //mix the normalmaps
+        for(int y = 0; y < input.height(); y++) {
+            for(int x = 0; x < input.width(); x++) {
+                QColor color1(result.pixel(x, y));
+                QColor color2(largeDetailMap.pixel(x, y));
+                
+                QColor combined;
+                combined.setRgb(blendSoftLight(color1.red(), color2.red()),
+                                blendSoftLight(color1.green(), color2.green()),
+                                blendSoftLight(color1.blue(), color2.blue()));
+                
+                result.setPixel(x, y, combined.rgb());
+            }
         }
     }
 
@@ -110,4 +141,18 @@ int NormalmapGenerator::handleEdges(int iterator, int max) {
 //transform -1..1 to 0..255
 int NormalmapGenerator::mapComponent(double value) {
     return (value + 1.0) * (255.0 / 2.0);
+}
+
+//uses a similar algorithm like "soft light" in PS, 
+//see http://www.michael-kreil.de/algorithmen/photoshop-layer-blending-equations/index.php
+int NormalmapGenerator::blendSoftLight(int color1, int color2) {
+    float a = color1;
+    float b = color2;
+    
+    if(2.0f * b < 255.0f) {
+        return (int) (((a + 127.5f) * b) / 255.0f);
+    }
+    else {
+        return (int) (255.0f - (((382.5f - a) * (255.0f - b)) / 255.0f));
+    }
 }

@@ -13,7 +13,8 @@ public:
     };
 
     NormalmapGenerator(IntensityMap::Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha);
-    QImage calculateNormalmap(QImage input, Kernel kernel, double strength = 2.0, bool invert = false, bool tileable = true);
+    QImage calculateNormalmap(QImage input, Kernel kernel, double strength = 2.0, bool invert = false, 
+                              bool tileable = true, bool keepLargeDetail = true, int largeDetailScale = 25, double largeDetailHeight = 1.0);
 
 private:
     IntensityMap intensity;
@@ -25,6 +26,7 @@ private:
     int mapComponent(double value);
     QVector3D sobel(double convolution_kernel[3][3], double strength);
     QVector3D prewitt(double convolution_kernel[3][3], double strength);
+    int blendSoftLight(int color1, int color2);
 };
 
 #endif // SOBEL_H

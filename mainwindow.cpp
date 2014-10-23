@@ -8,6 +8,7 @@
 #include <QElapsedTimer>
 #include <QDesktopServices>
 #include <QTreeView>
+#include <QGraphicsPixmapItem>
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -172,6 +173,11 @@ void MainWindow::calcNormal() {
         kernel = NormalmapGenerator::SOBEL;
     else if(ui->comboBox_method->currentIndex() == 1)
         kernel = NormalmapGenerator::PREWITT;
+    
+    //keep large detail settings
+    bool keepLargeDetail = ui->checkBox_keepLargeDetail->isChecked();
+    int largeDetailScale = ui->spinBox_largeDetailScale->value();
+    double largeDetailHeight = ui->doubleSpinBox_largeDetailHeight->value();
 
     //scale input image if not 100%
     QImage inputScaled = input;
@@ -180,12 +186,12 @@ void MainWindow::calcNormal() {
         int scaledWidth = calcPercentage(input.width(), sizePercent);
         int scaledHeight = calcPercentage(input.height(), sizePercent);
 
-        inputScaled = input.scaled(scaledWidth, scaledHeight, Qt::KeepAspectRatio);
+        inputScaled = input.scaled(scaledWidth, scaledHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
-
+    
     //setup generator and calculate map
     NormalmapGenerator normalmapGenerator(mode, useRed, useGreen, useBlue, useAlpha);
-    normalmap = normalmapGenerator.calculateNormalmap(inputScaled, kernel, strength, invert, tileable);
+    normalmap = normalmapGenerator.calculateNormalmap(inputScaled, kernel, strength, invert, tileable, keepLargeDetail, largeDetailScale, largeDetailHeight);
 }
 
 void MainWindow::calcSpec() {
@@ -440,43 +446,55 @@ void MainWindow::preview(int tab) {
 
     switch(tab) {
     case 0:
+    {
         //input
         if(ui->checkBox_displayChannelIntensity->isChecked() && !input.isNull()) {
-            ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(channelIntensity));
+            QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(channelIntensity));
+            pixmap->setTransformationMode(Qt::SmoothTransformation);
         }
         else {
             ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(input));
         }
         break;
+    }
     case 1:
+    {
         //normal
         if(!input.isNull() && normalmap.isNull()) {
             //if an image was loaded and a normalmap was not yet generated and the image is not too large
             //automatically generate the normalmap
             calcNormalAndPreview();
         }
-        ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(normalmap));
+        QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(normalmap));
+        pixmap->setTransformationMode(Qt::SmoothTransformation);
         //display size of the image
         normalmapSizeChanged();
         break;
+    }
     case 2:
+    {
         //spec
         if(!input.isNull() && specmap.isNull()) {
             //if an image was loaded and a specmap was not yet generated and the image is not too large
             //automatically generate the specmap
             calcSpecAndPreview();
         }
-        ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(specmap));
+        QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(specmap));
+        pixmap->setTransformationMode(Qt::SmoothTransformation);
         break;
+    }
     case 3:
+    {
         //displacement
         if(!input.isNull() && displacementmap.isNull()) {
             //if an image was loaded and a dispmap was not yet generated and the image is not too large
             //automatically generate the displacementmap
             calcDisplaceAndPreview();
         }
-        ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(displacementmap));
+        QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(displacementmap));
+        pixmap->setTransformationMode(Qt::SmoothTransformation);
         break;
+    }
     }
 }
 

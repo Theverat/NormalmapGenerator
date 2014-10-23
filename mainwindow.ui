@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
-    <height>771</height>
+    <width>1006</width>
+    <height>780</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -252,7 +252,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -548,7 +548,7 @@
               <item>
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Strength:</string>
+                 <string>Height:</string>
                 </property>
                </widget>
               </item>
@@ -592,13 +592,79 @@
                </widget>
               </item>
               <item>
+               <widget class="Line" name="line_9">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox_keepLargeDetail">
+                <property name="text">
+                 <string>Keep Large Detail</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_19">
+                <property name="text">
+                 <string>Scale Factor:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="spinBox_largeDetailScale">
+                <property name="suffix">
+                 <string>%</string>
+                </property>
+                <property name="prefix">
+                 <string/>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="singleStep">
+                 <number>5</number>
+                </property>
+                <property name="value">
+                 <number>25</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_20">
+                <property name="text">
+                 <string>LD Height:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_largeDetailHeight">
+                <property name="minimum">
+                 <double>0.010000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="horizontalSpacer">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
+                  <width>0</width>
                   <height>20</height>
                  </size>
                 </property>
@@ -1193,9 +1259,74 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBox_keepLargeDetail</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_19</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>675</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>764</x>
+     <y>99</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_keepLargeDetail</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBox_largeDetailScale</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>663</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>834</x>
+     <y>94</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_keepLargeDetail</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_20</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>660</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>895</x>
+     <y>97</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_keepLargeDetail</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>doubleSpinBox_largeDetailHeight</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>648</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>954</x>
+     <y>92</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_displayChannelIntensity"/>
   <buttongroup name="buttonGroup_exportFolder"/>
+  <buttongroup name="buttonGroup_displayChannelIntensity"/>
  </buttongroups>
 </ui>

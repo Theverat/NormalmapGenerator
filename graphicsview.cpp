@@ -1,6 +1,7 @@
 #include "graphicsview.h"
 #include <QMimeData>
 #include <QDropEvent>
+#include <iostream>
 
 GraphicsView::GraphicsView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent)
 {
@@ -29,5 +30,27 @@ void GraphicsView::dropEvent(QDropEvent* event) {
         else {
             emit multipleImagesDropped(urls);
         }
+    }
+}
+
+void GraphicsView::mouseReleaseEvent(QMouseEvent *event) {
+    QGraphicsView::mouseReleaseEvent(event);
+    
+    if(event->button() == Qt::RightButton) {
+        //rightclick -> reset image scale to 1:1
+        emit rightClick();
+    }
+    else if(event->button() == Qt::MiddleButton) {
+        //middle click -> fit image to view
+        emit middleClick();
+    }
+}
+
+void GraphicsView::wheelEvent(QWheelEvent *event) {
+    if(event->delta() > 0) {
+        emit zoomIn();
+    }
+    else {
+        emit zoomOut();
     }
 }

@@ -603,6 +603,9 @@
                 <property name="text">
                  <string>Keep Large Detail</string>
                 </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
                 <property name="checked">
                  <bool>true</bool>
                 </property>
@@ -1081,7 +1084,11 @@
          </widget>
         </item>
         <item>
-         <widget class="GraphicsView" name="graphicsView"/>
+         <widget class="GraphicsView" name="graphicsView">
+          <property name="dragMode">
+           <enum>QGraphicsView::NoDrag</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -1326,7 +1333,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_exportFolder"/>
   <buttongroup name="buttonGroup_displayChannelIntensity"/>
+  <buttongroup name="buttonGroup_exportFolder"/>
  </buttongroups>
 </ui>

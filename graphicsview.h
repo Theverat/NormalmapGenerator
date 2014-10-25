@@ -14,11 +14,17 @@ public:
     void dragEnterEvent(QDragEnterEvent* event);
     void dragMoveEvent(QDragMoveEvent* event);
     void dropEvent(QDropEvent* event);
-
+    void mouseReleaseEvent(QMouseEvent* event);
+    void wheelEvent(QWheelEvent *event);
+    
 signals:
     void singleImageDropped(QUrl url);
     void multipleImagesDropped(QList<QUrl> urls);
     void folderDropped(QUrl url);
+    void rightClick();
+    void middleClick();
+    void zoomIn();
+    void zoomOut();
 };
 
 #endif // GRAPHICSVIEW_H

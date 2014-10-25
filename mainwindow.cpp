@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     GraphicsScene *scene = new GraphicsScene();
     ui->graphicsView->setScene(scene);
     scene->setBackgroundBrush(QBrush(Qt::darkGray));
+    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
     scene->addText("Start by dragging images here.");
     ui->graphicsView->setRenderHints(QPainter::HighQualityAntialiasing | QPainter::SmoothPixmapTransform);
     ui->graphicsView->setAcceptDrops(true);
@@ -116,7 +117,21 @@ bool MainWindow::load(QUrl url) {
     ui->checkBox_displayChannelIntensity->setEnabled(true);
     ui->spinBox_normalmapSize->setEnabled(true);
     enableAutoupdate(true);
-    //TODO: algorithm to find best settings for KeepLargeDetail
+    
+    //algorithm to find best settings for KeepLargeDetail
+    int imageSize = std::max(input.width(), input.height());
+    
+    int largeDetailScale = -0.037 * imageSize + 100;
+    ui->checkBox_keepLargeDetail->setChecked(true);
+    
+    if(imageSize < 300) {
+        ui->checkBox_keepLargeDetail->setChecked(false);
+    }
+    else if(imageSize > 2300) {
+        largeDetailScale = 20;
+    }
+    
+    ui->spinBox_largeDetailScale->setValue(largeDetailScale);
     
     //switch active tab to input
     ui->tabWidget->setCurrentIndex(0);
@@ -132,6 +147,13 @@ bool MainWindow::load(QUrl url) {
         displayChannelIntensity();
     else
         preview(0);
+    
+    //image smaller than graphicsview: fitInView, then resetZoom (this way it is centered)
+    //image larger than graphicsview: just fitInView
+    fitInView();
+    if(input.width() < ui->graphicsView->width() || input.height() < ui->graphicsView->height()) {
+        resetZoom();
+    }
 
     ui->statusBar->clearMessage();
 
@@ -455,7 +477,8 @@ void MainWindow::preview(int tab) {
             pixmap->setTransformationMode(Qt::SmoothTransformation);
         }
         else {
-            ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(input));
+            QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(input));
+            pixmap->setTransformationMode(Qt::SmoothTransformation);
         }
         break;
     }
@@ -710,6 +733,11 @@ void MainWindow::connectSignalSlots() {
     //graphicsview drag and drop
     connect(ui->graphicsView, SIGNAL(singleImageDropped(QUrl)), this, SLOT(loadSingleDropped(QUrl)));
     connect(ui->graphicsView, SIGNAL(multipleImagesDropped(QList<QUrl>)), this, SLOT(loadMultipleDropped(QList<QUrl>)));
+    //graphicsview rightclick/middleclick/zoom
+    connect(ui->graphicsView, SIGNAL(rightClick()), this, SLOT(resetZoom()));
+    connect(ui->graphicsView, SIGNAL(middleClick()), this, SLOT(fitInView()));
+    connect(ui->graphicsView, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
+    connect(ui->graphicsView, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
     //queue (item widget)
     connect(ui->pushButton_removeImagesFromQueue, SIGNAL(clicked()), this, SLOT(removeImagesFromQueue()));
     connect(ui->pushButton_processQueue, SIGNAL(clicked()), this, SLOT(processQueue()));

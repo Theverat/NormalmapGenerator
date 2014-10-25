@@ -103,7 +103,7 @@ QImage IntensityMap::convertToQImage() {
     for(int y = 0; y < this->getHeight(); y++) {
         for(int x = 0; x < this->getWidth(); x++) {
             int c = 255 * map.at(y).at(x);
-            result.setPixel(x, y, QColor(c, c, c, c).rgba());
+            result.setPixel(x, y, QColor(c, c, c, 255).rgba());
         }
     }
 

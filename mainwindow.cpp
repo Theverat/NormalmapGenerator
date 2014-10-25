@@ -116,6 +116,8 @@ bool MainWindow::load(QUrl url) {
     ui->checkBox_displayChannelIntensity->setEnabled(true);
     ui->spinBox_normalmapSize->setEnabled(true);
     enableAutoupdate(true);
+    //TODO: algorithm to find best settings for KeepLargeDetail
+    
     //switch active tab to input
     ui->tabWidget->setCurrentIndex(0);
 
@@ -695,6 +697,9 @@ void MainWindow::connectSignalSlots() {
     connect(ui->checkBox_tileable, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->checkBox_invertHeight, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(autoUpdate()));
+    connect(ui->checkBox_keepLargeDetail, SIGNAL(clicked()), this, SLOT(autoUpdate()));
+    connect(ui->spinBox_largeDetailScale, SIGNAL(valueChanged(int)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_largeDetailHeight, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     // displcacement autoupdate
     connect(ui->doubleSpinBox_displace_redMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_displace_greenMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));

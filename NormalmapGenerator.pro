@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     graphicsscene.cpp \
     graphicsview.cpp \
     queueitem.cpp \
-    queuemanager.cpp
+    queuemanager.cpp \
+    gaussianblur.cpp \
+    boxblur.cpp
 
 HEADERS  += mainwindow.h \
     intensitymap.h \
@@ -31,6 +33,8 @@ HEADERS  += mainwindow.h \
     graphicsscene.h \
     graphicsview.h \
     queueitem.h \
-    queuemanager.h
+    queuemanager.h \
+    gaussianblur.h \
+    boxblur.h
 
 FORMS    += mainwindow.ui

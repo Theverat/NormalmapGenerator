@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1006</width>
+    <width>1335</width>
     <height>780</height>
    </rect>
   </property>
@@ -252,7 +252,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -1065,6 +1065,55 @@
                </widget>
               </item>
               <item>
+               <widget class="QCheckBox" name="checkBox_displace_blur">
+                <property name="text">
+                 <string>Blur</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_21">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Radius:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="spinBox_displace_blurRadius">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>999</number>
+                </property>
+                <property name="value">
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox_displace_blur_tileable">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Tileable</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="horizontalSpacer_8">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -1274,12 +1323,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>675</x>
-     <y>93</y>
+     <x>964</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>764</x>
-     <y>99</y>
+     <x>1061</x>
+     <y>138</y>
     </hint>
    </hints>
   </connection>
@@ -1290,12 +1339,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>663</x>
-     <y>94</y>
+     <x>964</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>834</x>
-     <y>94</y>
+     <x>1140</x>
+     <y>138</y>
     </hint>
    </hints>
   </connection>
@@ -1306,12 +1355,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>660</x>
-     <y>94</y>
+     <x>964</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>895</x>
-     <y>97</y>
+     <x>1222</x>
+     <y>138</y>
     </hint>
    </hints>
   </connection>
@@ -1322,12 +1371,60 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>648</x>
-     <y>94</y>
+     <x>964</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>954</x>
-     <y>92</y>
+     <x>1305</x>
+     <y>138</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_displace_blur</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_21</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>606</x>
+     <y>128</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>657</x>
+     <y>121</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_displace_blur</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBox_displace_blurRadius</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>628</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>709</x>
+     <y>118</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_displace_blur</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBox_displace_blur_tileable</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>593</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>794</x>
+     <y>127</y>
     </hint>
    </hints>
   </connection>

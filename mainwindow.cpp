@@ -3,12 +3,16 @@
 #include "graphicsscene.h"
 #include "normalmapgenerator.h"
 #include "specularmapgenerator.h"
+#include "intensitymap.h"
+#include "boxblur.h"
+
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QElapsedTimer>
 #include <QDesktopServices>
 #include <QTreeView>
 #include <QGraphicsPixmapItem>
+
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -265,6 +269,16 @@ void MainWindow::calcDisplace() {
     //setup generator and calculate map
     SpecularmapGenerator specularmapGenerator(mode, redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
     displacementmap = specularmapGenerator.calculateSpecmap(input, scale, contrast);
+
+    if(ui->checkBox_displace_blur->isChecked()) {
+        int radius = ui->spinBox_displace_blurRadius->value();
+        bool tileable = ui->checkBox_displace_blur_tileable->isChecked();
+
+        IntensityMap inputMap(displacementmap, IntensityMap::AVERAGE);
+        BoxBlur filter;
+        IntensityMap outputMap = filter.calculate(inputMap, radius, tileable);
+        displacementmap = outputMap.convertToQImage();
+    }
 }
 
 

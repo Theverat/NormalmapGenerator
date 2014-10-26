@@ -5,6 +5,10 @@ IntensityMap::IntensityMap() {
 
 }
 
+IntensityMap::IntensityMap(int width, int height) {
+    map = std::vector< std::vector<double> >(height, std::vector<double>(width, 0.0));
+}
+
 IntensityMap::IntensityMap(QImage rgbImage, Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
 {
     map = std::vector< std::vector<double> >(rgbImage.height(), std::vector<double>(rgbImage.width(), 0.0));
@@ -77,6 +81,10 @@ IntensityMap::IntensityMap(QImage rgbImage, Mode mode, bool useRed, bool useGree
 
 double IntensityMap::at(int x, int y) {
     return this->map.at(y).at(x);
+}
+
+void IntensityMap::setValue(int x, int y, double value) {
+    this->map.at(y).at(x) = value;
 }
 
 int IntensityMap::getWidth() {

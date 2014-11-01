@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //connect Signals of GUI elements with Slots of this class
+    //connect signals of GUI elements with slots of this class
     connectSignalSlots();
 
     //initialize graphicsview
@@ -50,6 +50,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //show default status message
     ui->statusBar->showMessage("Drag images into the empty preview window to load them.");
+
+    //if the program was opened via "open with" by the OS, extract the image paths from the arguments
+    //(args[0] is the name of the application)
+    QStringList args = QCoreApplication::arguments();
+    if(args.size() > 1) {
+        QList<QUrl> imageUrls;
+
+        for(int i = 1; i < args.size(); i++) {
+            imageUrls.append(QUrl::fromLocalFile(args[i]));
+        }
+
+        loadMultipleDropped(imageUrls);
+    }
 }
 
 MainWindow::~MainWindow()

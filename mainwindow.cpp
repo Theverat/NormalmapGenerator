@@ -69,7 +69,7 @@ void MainWindow::loadMultipleDropped(QList<QUrl> urls) {
 
     for(int i = 0; i < urls.size(); i++) {
         QString suffix = QFileInfo(urls.at(i).fileName()).suffix().toLower();
-        QString supported = "png jpg jpeg tiff.ppm bmp xpm";
+        QString supported = "png jpg jpeg tiff ppm bmp xpm tga";
 
         if(supported.contains(suffix)) {
             //image format is supported, add to queue
@@ -102,10 +102,20 @@ bool MainWindow::load(QUrl url) {
     //load the image
     input = QImage(url.toLocalFile());
 
+    QFileInfo file(url.toLocalFile());
+
     if(input.isNull()) {
+        QString errorMessage("Image not loaded!");
+
+        if(file.suffix().toLower() == "tga") {
+            errorMessage.append("\nOnly uncompressed TGA files are supported.");
+        }
+        else {
+            errorMessage.append("\nMost likely the image format is not supported.");
+        }
+
         ui->statusBar->showMessage("Error: Image " + url.fileName() + " NOT loaded!", 5000);
-        QMessageBox::information(this, "Error while loading image",
-                                 "Image not loaded!\nMost likely the image format is not supported.");
+        QMessageBox::information(this, "Error while loading image", errorMessage);
         return false;
     }
 
@@ -169,7 +179,7 @@ void MainWindow::loadUserFilePath() {
     QList<QUrl> urls = QFileDialog::getOpenFileUrls(this,
                                                      "Open Image File",
                                                      QDir::homePath(),
-                                                     "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
+                                                     "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm *.tga)");
     loadMultipleDropped(urls);
 }
 
@@ -423,10 +433,15 @@ void MainWindow::save(QUrl url) {
     if(!file.baseName().isEmpty() && file.suffix().isEmpty())
         path += ".png";
 
+    QString suffix = file.suffix();
+    //Qt can only read tga, saving is not supported
+    if(suffix.toLower() == "tga")
+        suffix = "png";
+
     //append a suffix to the map names (result: path/original_normal.png)
-    QString name_normal = file.absolutePath() + "/" + file.baseName() + "_normal." + file.suffix();
-    QString name_specular = file.absolutePath() + "/" + file.baseName() + "_spec." + file.suffix();
-    QString name_displace = file.absolutePath() + "/" + file.baseName() + "_displace." + file.suffix();
+    QString name_normal = file.absolutePath() + "/" + file.baseName() + "_normal." + suffix;
+    QString name_specular = file.absolutePath() + "/" + file.baseName() + "_spec." + suffix;
+    QString name_displace = file.absolutePath() + "/" + file.baseName() + "_displace." + suffix;
 
     //check if maps where generated, if yes, check if it could be saved
     if(!normalmap.isNull()) {

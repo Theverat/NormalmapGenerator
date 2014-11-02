@@ -15,6 +15,7 @@ public:
     NormalmapGenerator(IntensityMap::Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha);
     QImage calculateNormalmap(QImage input, Kernel kernel, double strength = 2.0, bool invert = false, 
                               bool tileable = true, bool keepLargeDetail = true, int largeDetailScale = 25, double largeDetailHeight = 1.0);
+    IntensityMap getIntensityMap();
 
 private:
     IntensityMap intensity;

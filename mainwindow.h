@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QUrl>
 #include "queueitem.h"
+#include "intensitymap.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,16 +32,20 @@ private:
     QImage normalmap;
     QImage specmap;
     QImage displacementmap;
+    QImage ssaomap;
+    QImage normalmapRawIntensity;
     QUrl loadedImagePath;
     QUrl exportPath;
     int lastCalctime_normal;
     int lastCalctime_specular;
     int lastCalctime_displace;
+    int lastCalctime_ssao;
     bool stopQueue;
 
     void calcNormal();
     void calcSpec();
     void calcDisplace();
+    void calcSsao();
     QString generateElapsedTimeMsg(int calcTimeMs, QString mapType);
     void connectSignalSlots();
     void displayCalcTime(int calcTime_ms, QString mapType, int duration_ms);
@@ -59,6 +64,7 @@ private slots:
     void calcNormalAndPreview();
     void calcSpecAndPreview();
     void calcDisplaceAndPreview();
+    void calcSsaoAndPreview();
     void processQueue();
     void stopProcessingQueue();
     void saveUserFilePath();

@@ -11,6 +11,10 @@ NormalmapGenerator::NormalmapGenerator(IntensityMap::Mode mode, bool useRed, boo
     this->useAlpha = useAlpha;
 }
 
+IntensityMap NormalmapGenerator::getIntensityMap() {
+    return this->intensity;
+}
+
 QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, double strength, bool invert, bool tileable, 
                                               bool keepLargeDetail, int largeDetailScale, double largeDetailHeight) {
     this->tileable = tileable;

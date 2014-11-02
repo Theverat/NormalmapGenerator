@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     queueitem.cpp \
     queuemanager.cpp \
     gaussianblur.cpp \
-    boxblur.cpp
+    boxblur.cpp \
+    ssaogenerator.cpp
 
 HEADERS  += mainwindow.h \
     intensitymap.h \
@@ -35,6 +36,7 @@ HEADERS  += mainwindow.h \
     queueitem.h \
     queuemanager.h \
     gaussianblur.h \
-    boxblur.h
+    boxblur.h \
+    ssaogenerator.h
 
 FORMS    += mainwindow.ui

@@ -3,6 +3,7 @@
 #include "graphicsscene.h"
 #include "normalmapgenerator.h"
 #include "specularmapgenerator.h"
+#include "ssaogenerator.h"
 #include "intensitymap.h"
 #include "boxblur.h"
 
@@ -39,11 +40,13 @@ MainWindow::MainWindow(QWidget *parent) :
     normalmap = QImage();
     specmap = QImage();
     displacementmap = QImage();
+    ssaomap = QImage();
 
     //initialize calctimes
     lastCalctime_normal = 0;
     lastCalctime_specular = 0;
     lastCalctime_displace = 0;
+    lastCalctime_ssao = 0;
 
     //initialize stopQueue flag
     stopQueue = false;
@@ -141,6 +144,7 @@ bool MainWindow::load(QUrl url) {
     ui->pushButton_calcNormal->setEnabled(true);
     ui->pushButton_calcSpec->setEnabled(true);
     ui->pushButton_calcDisplace->setEnabled(true);
+    ui->pushButton_calcSsao->setEnabled(true);
     ui->checkBox_displayChannelIntensity->setEnabled(true);
     ui->spinBox_normalmapSize->setEnabled(true);
     enableAutoupdate(true);
@@ -168,6 +172,7 @@ bool MainWindow::load(QUrl url) {
     normalmap = QImage();
     specmap = QImage();
     displacementmap = QImage();
+    ssaomap = QImage();
 
     //display single image channels if the option was already chosen
     if(ui->checkBox_displayChannelIntensity->isChecked())
@@ -243,6 +248,7 @@ void MainWindow::calcNormal() {
     //setup generator and calculate map
     NormalmapGenerator normalmapGenerator(mode, useRed, useGreen, useBlue, useAlpha);
     normalmap = normalmapGenerator.calculateNormalmap(inputScaled, kernel, strength, invert, tileable, keepLargeDetail, largeDetailScale, largeDetailHeight);
+    normalmapRawIntensity = normalmapGenerator.getIntensityMap().convertToQImage();
 }
 
 void MainWindow::calcSpec() {
@@ -302,6 +308,26 @@ void MainWindow::calcDisplace() {
         IntensityMap outputMap = filter.calculate(inputMap, radius, tileable);
         displacementmap = outputMap.convertToQImage();
     }
+}
+
+void MainWindow::calcSsao() {
+    if(input.isNull())
+        return;
+
+    //if no normalmap was created yet, calculate it
+    if(normalmap.isNull()) {
+        calcNormal();
+    }
+
+    //scale depthmap (can be smaller than normalmap because of KeepLargeDetail
+    normalmapRawIntensity = normalmapRawIntensity.scaled(normalmap.width(), normalmap.height());
+    float size = ui->doubleSpinBox_ssao_size->value();
+    unsigned int samples = ui->spinBox_ssao_samples->value();
+    unsigned int noiseTexSize = ui->spinBox_ssao_noiseTexSize->value();
+
+    //setup generator and calculate map
+    SsaoGenerator ssaoGenerator;
+    ssaomap = ssaoGenerator.calculateSsaomap(normalmap, normalmapRawIntensity, size, samples, noiseTexSize);
 }
 
 
@@ -366,6 +392,27 @@ void MainWindow::calcDisplaceAndPreview() {
 
     //preview in displacement map tab
     preview(3);
+}
+
+void MainWindow::calcSsaoAndPreview() {
+    ui->statusBar->showMessage("calculating ambient occlusion map...");
+
+    //timer for measuring calculation time
+    QElapsedTimer timer;
+    timer.start();
+
+    //calculate map
+    calcSsao();
+
+    //display time it took to calculate the map
+    this->lastCalctime_ssao = timer.elapsed();
+    displayCalcTime(lastCalctime_ssao, "ambient occlusion map", 5000);
+
+    //enable ui buttons
+    ui->pushButton_save->setEnabled(true);
+
+    //preview in ambient occlusion map tab
+    preview(4);
 }
 
 void MainWindow::processQueue() {
@@ -562,6 +609,18 @@ void MainWindow::preview(int tab) {
         pixmap->setTransformationMode(Qt::SmoothTransformation);
         break;
     }
+    case 4:
+    {
+        //ambient occlusion
+        if(!input.isNull() && ssaomap.isNull()) {
+            //if an image was loaded and a ssaomap was not yet generated and the image is not too large
+            //automatically generate the ambient occlusion map
+            calcSsaoAndPreview();
+        }
+        QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(ssaomap));
+        pixmap->setTransformationMode(Qt::SmoothTransformation);
+        break;
+    }
     }
 }
 
@@ -627,6 +686,10 @@ void MainWindow::autoUpdate() {
     case 3:
         if(lastCalctime_displace < autoUpdateThreshold_ms)
             calcDisplaceAndPreview();
+        break;
+    case 4:
+        if(lastCalctime_ssao < autoUpdateThreshold_ms)
+            calcSsaoAndPreview();
         break;
     default:
         break;
@@ -728,6 +791,7 @@ void MainWindow::connectSignalSlots() {
     connect(ui->pushButton_calcNormal, SIGNAL(clicked()), this, SLOT(calcNormalAndPreview()));
     connect(ui->pushButton_calcSpec, SIGNAL(clicked()), this, SLOT(calcSpecAndPreview()));
     connect(ui->pushButton_calcDisplace, SIGNAL(clicked()), this, SLOT(calcDisplaceAndPreview()));
+    connect(ui->pushButton_calcSsao, SIGNAL(clicked()), this, SLOT(calcSsaoAndPreview()));
     //switch between tabs
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)), this, SLOT(preview(int)));
     //display channel intensity
@@ -772,6 +836,8 @@ void MainWindow::connectSignalSlots() {
     connect(ui->doubleSpinBox_displace_scale, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->comboBox_mode_displace, SIGNAL(currentIndexChanged(int)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_displace_contrast, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    // ssao autoupdate
+    connect(ui->doubleSpinBox_ssao_size, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     //graphicsview drag and drop
     connect(ui->graphicsView, SIGNAL(singleImageDropped(QUrl)), this, SLOT(loadSingleDropped(QUrl)));
     connect(ui->graphicsView, SIGNAL(multipleImagesDropped(QList<QUrl>)), this, SLOT(loadMultipleDropped(QList<QUrl>)));

@@ -82,6 +82,7 @@ private slots:
     void updateQueueExportOptions();
     void queueItemDoubleClicked(QListWidgetItem *item);
     void normalmapSizeChanged();
+    void showAboutDialog();
 };
 
 #endif // MAINWINDOW_H

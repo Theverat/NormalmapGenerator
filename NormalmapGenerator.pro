@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     queuemanager.cpp \
     gaussianblur.cpp \
     boxblur.cpp \
-    ssaogenerator.cpp
+    ssaogenerator.cpp \
+    aboutdialog.cpp
 
 HEADERS  += mainwindow.h \
     intensitymap.h \
@@ -37,6 +38,8 @@ HEADERS  += mainwindow.h \
     queuemanager.h \
     gaussianblur.h \
     boxblur.h \
-    ssaogenerator.h
+    ssaogenerator.h \
+    aboutdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    aboutdialog.ui

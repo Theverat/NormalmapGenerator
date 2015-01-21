@@ -6,6 +6,7 @@
 #include "ssaogenerator.h"
 #include "intensitymap.h"
 #include "boxblur.h"
+#include "aboutdialog.h"
 
 #include <QMessageBox>
 #include <QFileDialog>
@@ -474,10 +475,10 @@ void MainWindow::stopProcessingQueue() {
 
 //save maps using the file dialog
 void MainWindow::saveUserFilePath() {
-    QUrl url = QFileDialog::getSaveFileUrl(this,
-                                           "Save as",
-                                           loadedImagePath,
-                                           "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)");
+    QFileDialog::Options options(QFileDialog::DontConfirmOverwrite);
+    QUrl url = QFileDialog::getSaveFileUrl(this, "Save as", loadedImagePath,
+                                           "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)",
+                                           0, options);
     save(url);
 }
 
@@ -504,21 +505,21 @@ void MainWindow::save(QUrl url) {
     QString name_displace = file.absolutePath() + "/" + file.baseName() + "_displace." + suffix;
 
     //check if maps where generated, if yes, check if it could be saved
-    if(!normalmap.isNull()) {
+    if(!normalmap.isNull() && ui->checkBox_queue_generateNormal->isChecked()) {
         if(!normalmap.save(name_normal))
             QMessageBox::information(this, "Error while saving Normalmap", "Normalmap not saved!");
         else
             ui->statusBar->showMessage("Normalmap saved as \"" + name_normal + "\"", 4000);
     }
 
-    if(!specmap.isNull()) {
+    if(!specmap.isNull() && ui->checkBox_queue_generateSpec->isChecked()) {
         if(!specmap.save(name_specular))
             QMessageBox::information(this, "Error while saving Specularmap", "Specularmap not saved!");
         else
             ui->statusBar->showMessage("Specularmap saved as \"" + name_specular + "\"", 4000);
     }
 
-    if(!displacementmap.isNull()) {
+    if(!displacementmap.isNull() && ui->checkBox_queue_generateDisplace->isChecked()) {
         if(!displacementmap.save(name_displace))
             QMessageBox::information(this, "Error while saving Displacementmap", "Displacementmap not saved!");
         else
@@ -775,6 +776,11 @@ int MainWindow::calcPercentage(int value, int percentage) {
     return (int) (((double)value / 100.0) * percentage);
 }
 
+void MainWindow::showAboutDialog() {
+    AboutDialog *dialog = new AboutDialog(this);
+    dialog->show();
+}
+
 //connects gui buttons with Slots in this class
 void MainWindow::connectSignalSlots() {
     //connect signals/slots
@@ -855,4 +861,6 @@ void MainWindow::connectSignalSlots() {
     connect(ui->listWidget_queue, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(queueItemDoubleClicked(QListWidgetItem*)));
     //normalmap size preview text
     connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(normalmapSizeChanged()));
+    //"About" button
+    connect(ui->pushButton_about, SIGNAL(clicked()), this, SLOT(showAboutDialog()));
 }

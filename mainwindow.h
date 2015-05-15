@@ -48,6 +48,7 @@ private:
     void calcSsao();
     QString generateElapsedTimeMsg(int calcTimeMs, QString mapType);
     void connectSignalSlots();
+    void hideAdvancedSettings();
     void displayCalcTime(int calcTime_ms, QString mapType, int duration_ms);
     void enableAutoupdate(bool on);
     void addImageToQueue(QUrl url);

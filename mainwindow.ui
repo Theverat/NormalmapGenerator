@@ -204,7 +204,7 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>40</width>
+              <width>60</width>
               <height>16777215</height>
              </size>
             </property>
@@ -259,7 +259,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -385,11 +385,24 @@
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
+                <property name="toolTip">
+                 <string>Generate the normalmap (happens automatically when &quot;Autoupdate&quot; is checked and calculation took less than the max. allowed calculation time)</string>
+                </property>
                 <property name="text">
                  <string>Calculate</string>
                 </property>
                 <property name="flat">
                  <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox_advanced_normal">
+                <property name="toolTip">
+                 <string>Configure additional expert settings</string>
+                </property>
+                <property name="text">
+                 <string>Advanced Settings</string>
                 </property>
                </widget>
               </item>
@@ -406,7 +419,7 @@
                  <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>Use Channels:</string>
+                 <string>Channels:</string>
                 </property>
                </widget>
               </item>
@@ -448,6 +461,9 @@
               </item>
               <item>
                <widget class="QCheckBox" name="checkBox_useAlpha_normal">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
                 <property name="text">
                  <string>Alpha</string>
                 </property>
@@ -532,7 +548,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
-               <widget class="QLabel" name="label_3">
+               <widget class="QLabel" name="label_method_normal">
                 <property name="text">
                  <string>Method:</string>
                 </property>
@@ -565,13 +581,13 @@
                  <string/>
                 </property>
                 <property name="decimals">
-                 <number>3</number>
+                 <number>1</number>
                 </property>
                 <property name="minimum">
-                 <double>0.001000000000000</double>
+                 <double>0.000000000000000</double>
                 </property>
                 <property name="maximum">
-                 <double>999.990000000000009</double>
+                 <double>99.000000000000000</double>
                 </property>
                 <property name="singleStep">
                  <double>0.100000000000000</double>
@@ -583,6 +599,9 @@
               </item>
               <item>
                <widget class="QCheckBox" name="checkBox_tileable">
+                <property name="toolTip">
+                 <string>Activate if the input is a tileable texture</string>
+                </property>
                 <property name="text">
                  <string>Tileable</string>
                 </property>
@@ -611,7 +630,7 @@
               <item>
                <widget class="QCheckBox" name="checkBox_keepLargeDetail">
                 <property name="toolTip">
-                 <string>Switch off if you want flat normalmaps</string>
+                 <string>Keep both the main features and the fine details of the texture visible by mixing a scaled-down normalmap (large detail) with the generated normalmap (fine detail)</string>
                 </property>
                 <property name="text">
                  <string>Keep Large Detail</string>
@@ -630,12 +649,15 @@
               <item>
                <widget class="QLabel" name="label_19">
                 <property name="text">
-                 <string>Scale Factor:</string>
+                 <string>LD Size:</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QSpinBox" name="spinBox_largeDetailScale">
+                <property name="toolTip">
+                 <string>Size of the large detail. The optimal setting for the current image size is auto-detected</string>
+                </property>
                 <property name="suffix">
                  <string>%</string>
                 </property>
@@ -665,6 +687,9 @@
               </item>
               <item>
                <widget class="QDoubleSpinBox" name="doubleSpinBox_largeDetailHeight">
+                <property name="toolTip">
+                 <string>Height of the large detail</string>
+                </property>
                 <property name="minimum">
                  <double>0.010000000000000</double>
                 </property>
@@ -743,7 +768,10 @@
               <item>
                <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_redMul">
                 <property name="decimals">
-                 <number>3</number>
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
                  <double>0.100000000000000</double>
@@ -763,7 +791,10 @@
               <item>
                <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_greenMul">
                 <property name="decimals">
-                 <number>3</number>
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
                  <double>0.100000000000000</double>
@@ -783,7 +814,10 @@
               <item>
                <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_blueMul">
                 <property name="decimals">
-                 <number>3</number>
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
                  <double>0.100000000000000</double>
@@ -803,7 +837,10 @@
               <item>
                <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_alphaMul">
                 <property name="decimals">
-                 <number>3</number>
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
                  <double>0.100000000000000</double>
@@ -955,7 +992,10 @@
               <item>
                <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_redMul">
                 <property name="decimals">
-                 <number>3</number>
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
                  <double>0.100000000000000</double>
@@ -975,7 +1015,10 @@
               <item>
                <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_greenMul">
                 <property name="decimals">
-                 <number>3</number>
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
                  <double>0.100000000000000</double>
@@ -995,7 +1038,10 @@
               <item>
                <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_blueMul">
                 <property name="decimals">
-                 <number>3</number>
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
                  <double>0.100000000000000</double>
@@ -1077,6 +1123,13 @@
                 </property>
                 <property name="value">
                  <double>1.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="Line" name="line_11">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
                 </property>
                </widget>
               </item>
@@ -1300,6 +1353,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>Zoom in</string>
+            </property>
             <property name="text">
              <string>+</string>
             </property>
@@ -1318,6 +1374,9 @@
               <width>35</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>Zoom out</string>
             </property>
             <property name="text">
              <string>-</string>
@@ -1341,6 +1400,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>100% view (real size of the image)</string>
+            </property>
             <property name="text">
              <string>1:1</string>
             </property>
@@ -1359,6 +1421,9 @@
               <width>35</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>Fit image into preview window</string>
             </property>
             <property name="text">
              <string>Fit</string>
@@ -1383,6 +1448,9 @@
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="toolTip">
+             <string>Re-calculate the current map when settings where changed</string>
+            </property>
             <property name="text">
              <string>Autoupdate</string>
             </property>
@@ -1405,6 +1473,9 @@
            <widget class="QDoubleSpinBox" name="doubleSpinBox_autoUpdateThreshold">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="toolTip">
+             <string>If it took longer than this to calculate the map, autoupdate will not re-calculate the map</string>
             </property>
             <property name="suffix">
              <string>s</string>
@@ -1473,11 +1544,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>933</x>
      <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1061</x>
+     <x>1030</x>
      <y>138</y>
     </hint>
    </hints>
@@ -1489,11 +1560,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>933</x>
      <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1140</x>
+     <x>1109</x>
      <y>138</y>
     </hint>
    </hints>
@@ -1505,11 +1576,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>933</x>
      <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1222</x>
+     <x>1191</x>
      <y>138</y>
     </hint>
    </hints>
@@ -1521,11 +1592,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>933</x>
      <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1305</x>
+     <x>1274</x>
      <y>138</y>
     </hint>
    </hints>

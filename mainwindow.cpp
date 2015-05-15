@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //connect signals of GUI elements with slots of this class
     connectSignalSlots();
 
+    //hide advanced settings and connect signals/slots to show them
+    hideAdvancedSettings();
+
     //initialize graphicsview
     GraphicsScene *scene = new GraphicsScene();
     ui->graphicsView->setScene(scene);
@@ -863,4 +866,19 @@ void MainWindow::connectSignalSlots() {
     connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(normalmapSizeChanged()));
     //"About" button
     connect(ui->pushButton_about, SIGNAL(clicked()), this, SLOT(showAboutDialog()));
+}
+
+void MainWindow::hideAdvancedSettings() {
+    //Normalmap
+    //"Alpha" checkbox
+    ui->checkBox_useAlpha_normal->setVisible(false);
+    connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->checkBox_useAlpha_normal, SLOT(setVisible(bool)));
+    //"Average/Max" combobox
+    ui->comboBox_mode_normal->setVisible(false);
+    connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->comboBox_mode_normal, SLOT(setVisible(bool)));
+    //"Method" label and combobox
+    ui->comboBox_method->setVisible(false);
+    connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->comboBox_method, SLOT(setVisible(bool)));
+    ui->label_method_normal->setVisible(false);
+    connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->label_method_normal, SLOT(setVisible(bool)));
 }

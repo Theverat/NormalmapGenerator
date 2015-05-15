@@ -72,18 +72,18 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
         #pragma omp parallel for  // OpenMP
         //mix the normalmaps
         for(int y = 0; y < input.height(); y++) {
-            QRgb *scanline = (QRgb*) result.scanLine(y);
+            QRgb *scanlineResult = (QRgb*) result.scanLine(y);
+            QRgb *scanlineLargeDetail = (QRgb*) largeDetailMap.scanLine(y);
 
             for(int x = 0; x < input.width(); x++) {
-                QColor color1(result.pixel(x, y));
-                QColor color2(largeDetailMap.pixel(x, y));
-                
-                QColor combined;
-                combined.setRgb(blendSoftLight(color1.red(), color2.red()),
-                                blendSoftLight(color1.green(), color2.green()),
-                                blendSoftLight(color1.blue(), color2.blue()));
+                QRgb colorResult = scanlineResult[x];
+                QRgb colorLargeDetail = scanlineLargeDetail[x];
 
-                scanline[x] = combined.rgb();
+                int r = blendSoftLight(qRed(colorResult), qRed(colorLargeDetail));
+                int g = blendSoftLight(qGreen(colorResult), qGreen(colorLargeDetail));
+                int b = blendSoftLight(qBlue(colorResult), qBlue(colorLargeDetail));
+
+                scanlineResult[x] = qRgb(r, g, b);
             }
         }
     }

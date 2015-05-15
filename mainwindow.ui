@@ -47,7 +47,7 @@
               <string>Normalmap</string>
              </property>
              <property name="checked">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -57,7 +57,7 @@
               <string>Specularmap</string>
              </property>
              <property name="checked">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -67,21 +67,21 @@
               <string>Displacementmap</string>
              </property>
              <property name="checked">
-              <bool>true</bool>
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_save">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Save Maps</string>
              </property>
             </widget>
            </item>
           </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_save">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Save Maps</string>
-          </property>
          </widget>
         </item>
         <item>
@@ -259,7 +259,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -277,7 +277,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-                 <string>Display Channel Intensity:</string>
+                 <string>Display Channel:</string>
                 </property>
                </widget>
               </item>
@@ -1142,14 +1142,14 @@
                  <string>Blur</string>
                 </property>
                 <property name="checked">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QLabel" name="label_21">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text">
                  <string>Radius:</string>
@@ -1159,7 +1159,7 @@
               <item>
                <widget class="QSpinBox" name="spinBox_displace_blurRadius">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="minimum">
                  <number>1</number>
@@ -1175,7 +1175,7 @@
               <item>
                <widget class="QCheckBox" name="checkBox_displace_blur_tileable">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text">
                  <string>Tileable</string>
@@ -1547,12 +1547,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>933</x>
-     <y>135</y>
+     <x>710</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1030</x>
-     <y>138</y>
+     <x>754</x>
+     <y>103</y>
     </hint>
    </hints>
   </connection>
@@ -1563,12 +1563,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>933</x>
-     <y>135</y>
+     <x>710</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1109</x>
-     <y>138</y>
+     <x>814</x>
+     <y>102</y>
     </hint>
    </hints>
   </connection>
@@ -1579,12 +1579,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>933</x>
-     <y>135</y>
+     <x>710</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1191</x>
-     <y>138</y>
+     <x>870</x>
+     <y>103</y>
     </hint>
    </hints>
   </connection>
@@ -1595,12 +1595,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>933</x>
-     <y>135</y>
+     <x>710</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1274</x>
-     <y>138</y>
+     <x>929</x>
+     <y>102</y>
     </hint>
    </hints>
   </connection>
@@ -1611,12 +1611,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>606</x>
-     <y>128</y>
+     <x>491</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
-     <x>657</x>
-     <y>121</y>
+     <x>533</x>
+     <y>103</y>
     </hint>
    </hints>
   </connection>
@@ -1627,12 +1627,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>628</x>
-     <y>118</y>
+     <x>491</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
-     <x>709</x>
-     <y>118</y>
+     <x>582</x>
+     <y>102</y>
     </hint>
    </hints>
   </connection>
@@ -1643,18 +1643,18 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>593</x>
-     <y>125</y>
+     <x>491</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
-     <x>794</x>
-     <y>127</y>
+     <x>647</x>
+     <y>101</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_displayChannelIntensity"/>
   <buttongroup name="buttonGroup_exportFolder"/>
+  <buttongroup name="buttonGroup_displayChannelIntensity"/>
  </buttongroups>
 </ui>

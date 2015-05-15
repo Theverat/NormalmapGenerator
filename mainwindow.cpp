@@ -192,6 +192,9 @@ bool MainWindow::load(QUrl url) {
     }
 
     ui->statusBar->clearMessage();
+    
+    //enable button to save the maps
+    ui->pushButton_save->setEnabled(true);
 
     return true;
 }
@@ -349,11 +352,11 @@ void MainWindow::calcNormalAndPreview() {
     this->lastCalctime_normal = timer.elapsed();
     displayCalcTime(lastCalctime_normal, "normalmap", 5000);
 
-    //enable ui buttons
-    ui->pushButton_save->setEnabled(true);
-
     //preview in normalmap tab
     preview(1);
+    
+    //activate corresponding save checkbox
+    ui->checkBox_queue_generateNormal->setChecked(true);
 }
 
 void MainWindow::calcSpecAndPreview() {
@@ -370,11 +373,11 @@ void MainWindow::calcSpecAndPreview() {
     this->lastCalctime_specular = timer.elapsed();
     displayCalcTime(lastCalctime_specular, "specularmap", 5000);
 
-    //enable ui buttons
-    ui->pushButton_save->setEnabled(true);
-
     //preview in specular map tab
     preview(2);
+    
+    //activate corresponding save checkbox
+    ui->checkBox_queue_generateSpec->setChecked(true);
 }
 
 void MainWindow::calcDisplaceAndPreview() {
@@ -391,11 +394,11 @@ void MainWindow::calcDisplaceAndPreview() {
     this->lastCalctime_displace = timer.elapsed();
     displayCalcTime(lastCalctime_displace, "displacementmap", 5000);
 
-    //enable ui buttons
-    ui->pushButton_save->setEnabled(true);
-
     //preview in displacement map tab
     preview(3);
+    
+    //activate corresponding save checkbox
+    ui->checkBox_queue_generateDisplace->setChecked(true);
 }
 
 void MainWindow::calcSsaoAndPreview() {
@@ -412,11 +415,11 @@ void MainWindow::calcSsaoAndPreview() {
     this->lastCalctime_ssao = timer.elapsed();
     displayCalcTime(lastCalctime_ssao, "ambient occlusion map", 5000);
 
-    //enable ui buttons
-    ui->pushButton_save->setEnabled(true);
-
     //preview in ambient occlusion map tab
     preview(4);
+    
+    //activate corresponding save checkbox
+    //ui->checkBox_queue_generate ssao ->setChecked(true); //missing until finished
 }
 
 void MainWindow::processQueue() {
@@ -444,15 +447,7 @@ void MainWindow::processQueue() {
 
         //load image
         load(item->getUrl());
-
-        //calculate maps
-        if(ui->checkBox_queue_generateNormal->isChecked())
-            calcNormal();
-        if(ui->checkBox_queue_generateSpec->isChecked())
-            calcSpec();
-        if(ui->checkBox_queue_generateDisplace->isChecked())
-            calcDisplace();
-
+        
         //save maps
         QUrl exportUrl = QUrl::fromLocalFile(exportPath.toLocalFile() + "/" + item->text());
         std::cout << "[Queue] Image " << i + 1 << " exported: "
@@ -507,28 +502,37 @@ void MainWindow::save(QUrl url) {
     QString name_specular = file.absolutePath() + "/" + file.baseName() + "_spec." + suffix;
     QString name_displace = file.absolutePath() + "/" + file.baseName() + "_displace." + suffix;
 
-    //check if maps where generated, if yes, check if it could be saved
-    if(!normalmap.isNull() && ui->checkBox_queue_generateNormal->isChecked()) {
-        if(!normalmap.save(name_normal))
-            QMessageBox::information(this, "Error while saving Normalmap", "Normalmap not saved!");
-        else
-            ui->statusBar->showMessage("Normalmap saved as \"" + name_normal + "\"", 4000);
+    bool successfullySaved = true;
+    
+    if(ui->checkBox_queue_generateNormal->isChecked()) {
+        if(normalmap.isNull())
+            ui->statusBar->showMessage("calculating normalmap...");
+            calcNormal();
+        
+        successfullySaved &= normalmap.save(name_normal);
+    }    
+    
+    if(ui->checkBox_queue_generateSpec->isChecked()) {
+        if(specmap.isNull())
+            ui->statusBar->showMessage("calculating specularmap...");
+            calcSpec();
+        
+        successfullySaved &= specmap.save(name_specular);
     }
 
-    if(!specmap.isNull() && ui->checkBox_queue_generateSpec->isChecked()) {
-        if(!specmap.save(name_specular))
-            QMessageBox::information(this, "Error while saving Specularmap", "Specularmap not saved!");
-        else
-            ui->statusBar->showMessage("Specularmap saved as \"" + name_specular + "\"", 4000);
+    if(ui->checkBox_queue_generateDisplace->isChecked()) {
+        if(displacementmap.isNull())
+            ui->statusBar->showMessage("calculating displacementmap...");
+            calcDisplace();
+        
+        successfullySaved &= displacementmap.save(name_displace);
     }
-
-    if(!displacementmap.isNull() && ui->checkBox_queue_generateDisplace->isChecked()) {
-        if(!displacementmap.save(name_displace))
-            QMessageBox::information(this, "Error while saving Displacementmap", "Displacementmap not saved!");
-        else
-            ui->statusBar->showMessage("Displacementmap saved as \"" + name_displace + "\"", 4000);
-    }
-
+    
+    if(successfullySaved)
+        ui->statusBar->showMessage("Maps successfully saved", 4000);
+    else
+        QMessageBox::information(this, "Maps not saved", "One or more of the maps was NOT saved!");
+    
     //store export path
     exportPath = url.adjusted(QUrl::RemoveFilename);
     //enable "Open Export Folder" gui button
@@ -719,8 +723,8 @@ void MainWindow::openExportFolder() {
 
 //display the last calculation time in the statusbar
 void MainWindow::displayCalcTime(int calcTime_ms, QString mapType, int duration_ms) {
-    std::cout << mapType.toStdString() << " for item " << loadedImagePath.fileName().toStdString()
-              << " calculated, it took " << calcTime_ms << "ms" << std::endl;
+    std::cout << mapType.toStdString() << " for image " << loadedImagePath.fileName().toStdString()
+              << " calculated (" << calcTime_ms << "ms)" << std::endl;
     ui->statusBar->clearMessage();
     QString msg = generateElapsedTimeMsg(calcTime_ms, mapType);
     ui->statusBar->showMessage(msg, duration_ms);

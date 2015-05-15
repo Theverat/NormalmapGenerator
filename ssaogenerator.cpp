@@ -15,6 +15,8 @@ QImage SsaoGenerator::calculateSsaomap(QImage normalmap, QImage depthmap, float 
 
     #pragma omp parallel for  // OpenMP
     for(int y = 0; y < normalmap.height(); y++) {
+        QRgb *scanline = (QRgb*) result.scanLine(y);
+
         for(int x = 0; x < normalmap.width(); x++) {
             QVector3D origin(x, y, 1.0);
 
@@ -55,7 +57,7 @@ QImage SsaoGenerator::calculateSsaomap(QImage normalmap, QImage depthmap, float 
             //convert occlusion to the 0-255 range
             int c = (int)(255.0 * occlusion);
             //write result
-            result.setPixel(x, y, QColor(c, c, c, 255).rgba());
+            scanline[x] = qRgba(c, c, c, 255);
         }
     }
 

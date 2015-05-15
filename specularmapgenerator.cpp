@@ -36,6 +36,8 @@ QImage SpecularmapGenerator::calculateSpecmap(QImage input, double scale, double
     #pragma omp parallel for  // OpenMP
     //for every row of the image
     for(int y = 0; y < result.height(); y++) {
+        QRgb *scanline = (QRgb*) result.scanLine(y);
+
         //for every column of the image
         for(int x = 0; x < result.width(); x++) {
             double r, g, b, a;
@@ -77,7 +79,7 @@ QImage SpecularmapGenerator::calculateSpecmap(QImage input, double scale, double
             c = (int)contrastLookup[c];
             
             //write color into image pixel
-            result.setPixel(x, y, QColor(c, c, c, pxColor.alpha()).rgba());
+            scanline[x] = qRgba(c, c, c, pxColor.alpha());
         }
     }
 

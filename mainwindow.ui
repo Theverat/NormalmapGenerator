@@ -556,6 +556,9 @@
               </item>
               <item>
                <widget class="QComboBox" name="comboBox_method">
+                <property name="toolTip">
+                 <string>Edge detection algorithm to use</string>
+                </property>
                 <item>
                  <property name="text">
                   <string>Sobel</string>

@@ -28,6 +28,8 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
     #pragma omp parallel for  // OpenMP
     //code from http://stackoverflow.com/a/2368794
     for(int y = 0; y < input.height(); y++) {
+        QRgb *scanline = (QRgb*) result.scanLine(y);
+
         for(int x = 0; x < input.width(); x++) {
 
             double topLeft      = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y - 1, input.height()));
@@ -43,14 +45,6 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
                                                {left, 0.0, right},
                                                {bottomLeft, bottom, bottomRight}};
 
-            //sobel filter (original implementation copied from stackoverflow)
-            //double dY = (topRight + 2.0 * right + bottomRight) - (topLeft + 2.0 * left + bottomLeft);
-            //double dX = (bottomLeft + 2.0 * bottom + bottomRight) - (topLeft + 2.0 * top + topRight);
-            //double dZ = 1.0 / strength;
-
-            //QVector3D normal(dX, dY, dZ);
-            //normal.normalize();
-
             QVector3D normal(0, 0, 0);
 
             if(kernel == SOBEL)
@@ -58,8 +52,7 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
             else if(kernel == PREWITT)
                 normal = prewitt(convolution_kernel, strength);
 
-            QColor normalAsRgb(mapComponent(normal.x()), mapComponent(normal.y()), mapComponent(normal.z()));
-            result.setPixel(x, y, normalAsRgb.rgb());
+            scanline[x] = qRgb(mapComponent(normal.x()), mapComponent(normal.y()), mapComponent(normal.z()));
         }
     }
     
@@ -79,6 +72,8 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
         #pragma omp parallel for  // OpenMP
         //mix the normalmaps
         for(int y = 0; y < input.height(); y++) {
+            QRgb *scanline = (QRgb*) result.scanLine(y);
+
             for(int x = 0; x < input.width(); x++) {
                 QColor color1(result.pixel(x, y));
                 QColor color2(largeDetailMap.pixel(x, y));
@@ -87,8 +82,8 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
                 combined.setRgb(blendSoftLight(color1.red(), color2.red()),
                                 blendSoftLight(color1.green(), color2.green()),
                                 blendSoftLight(color1.blue(), color2.blue()));
-                
-                result.setPixel(x, y, combined.rgb());
+
+                scanline[x] = combined.rgb();
             }
         }
     }

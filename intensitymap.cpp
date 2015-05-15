@@ -110,9 +110,11 @@ QImage IntensityMap::convertToQImage() {
     QImage result(this->getWidth(), this->getHeight(), QImage::Format_ARGB32);
 
     for(int y = 0; y < this->getHeight(); y++) {
+        QRgb *scanline = (QRgb*) result.scanLine(y);
+
         for(int x = 0; x < this->getWidth(); x++) {
             int c = 255 * map.at(y).at(x);
-            result.setPixel(x, y, QColor(c, c, c, 255).rgba());
+            scanline[x] = qRgba(c, c, c, 255);
         }
     }
 

@@ -1,12 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "graphicsscene.h"
-#include "normalmapgenerator.h"
-#include "specularmapgenerator.h"
-#include "ssaogenerator.h"
-#include "intensitymap.h"
-#include "boxblur.h"
 #include "aboutdialog.h"
+#include "src_generators/normalmapgenerator.h"
+#include "src_generators/specularmapgenerator.h"
+#include "src_generators/ssaogenerator.h"
+#include "src_generators/intensitymap.h"
+#include "src_generators/boxblur.h"
 
 #include <QMessageBox>
 #include <QFileDialog>

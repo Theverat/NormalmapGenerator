@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QUrl>
 #include "queueitem.h"
-#include "intensitymap.h"
+#include "src_generators/intensitymap.h"
 
 namespace Ui {
 class MainWindow;

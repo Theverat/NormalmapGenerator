@@ -3,8 +3,6 @@
 #include <QMatrix4x4>
 #include <QColor>
 
-#include <iostream>
-
 SsaoGenerator::SsaoGenerator() {
 }
 

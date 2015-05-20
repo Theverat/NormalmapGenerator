@@ -1535,7 +1535,7 @@
   <customwidget>
    <class>GraphicsView</class>
    <extends>QGraphicsView</extends>
-   <header>graphicsview.h</header>
+   <header>src_gui/graphicsview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -1654,7 +1654,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_exportFolder"/>
   <buttongroup name="buttonGroup_displayChannelIntensity"/>
+  <buttongroup name="buttonGroup_exportFolder"/>
  </buttongroups>
 </ui>

@@ -58,6 +58,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //show default status message
     ui->statusBar->showMessage("Drag images into the empty preview window to load them.");
 
+    //hide queue progressbar
+    ui->progressBar_Queue->hide();
+
     //if the program was opened via "open with" by the OS, extract the image paths from the arguments
     //(args[0] is the name of the application)
     QStringList args = QCoreApplication::arguments();
@@ -141,7 +144,7 @@ bool MainWindow::load(QUrl url) {
 
     //store the path the image was loaded from (for saving later)
     if(exportPath.isEmpty())
-        exportPath = url.adjusted(QUrl::RemoveFilename);
+        setExportPath(url.adjusted(QUrl::RemoveFilename));
     loadedImagePath = url;
 
     //enable ui buttons
@@ -426,6 +429,13 @@ void MainWindow::processQueue() {
     if(ui->listWidget_queue->count() == 0)
         return;
 
+    if(!(ui->checkBox_queue_generateNormal->isChecked() ||
+         ui->checkBox_queue_generateSpec->isChecked() ||
+         ui->checkBox_queue_generateDisplace->isChecked())) {
+        QMessageBox::information(this, "Nothing to do", "Select at least one map type to generate from the \"Save\" section");
+        return;
+    }
+
     if(!exportPath.isValid()) {
         QMessageBox::information(this, "Invalid Export Path", "Export path is invalid!");
         return;
@@ -433,16 +443,17 @@ void MainWindow::processQueue() {
 
     //enable stop button
     ui->pushButton_stopProcessingQueue->setEnabled(true);
-
-    double percentageBase = 100.0 / ui->listWidget_queue->count();
+    //show progress bar and adjust maximum to queue size
+    ui->progressBar_Queue->show();
+    ui->progressBar_Queue->setMaximum(ui->listWidget_queue->count());
 
     for(int i = 0; i < ui->listWidget_queue->count() && !stopQueue; i++)
     {
         QueueItem *item = (QueueItem*)(ui->listWidget_queue->item(i));
 
         //display status
-        ui->statusBar->showMessage("Processing Queue Item: " + item->text());
-        ui->progressBar_Queue->setValue((int)(percentageBase * (i + 1)));
+        ui->statusBar->showMessage("Processing Image \"" + item->text() + "\"");
+        ui->progressBar_Queue->setValue(i + 1);
         ui->listWidget_queue->item(i)->setSelected(true);
 
         //load image
@@ -461,6 +472,8 @@ void MainWindow::processQueue() {
     //disable stop button
     ui->pushButton_stopProcessingQueue->setEnabled(false);
     stopQueue = false;
+    //hide queue progress bar
+    ui->progressBar_Queue->hide();
 
     //enable "Open Export Folder" gui button
     ui->pushButton_openExportFolder->setEnabled(true);
@@ -534,26 +547,47 @@ void MainWindow::save(QUrl url) {
         QMessageBox::information(this, "Maps not saved", "One or more of the maps was NOT saved!");
     
     //store export path
-    exportPath = url.adjusted(QUrl::RemoveFilename);
+    setExportPath(url.adjusted(QUrl::RemoveFilename));
     //enable "Open Export Folder" gui button
     ui->pushButton_openExportFolder->setEnabled(true);
 }
 
+bool MainWindow::setExportPath(QUrl path) {
+    QDir testDir(path.toLocalFile());
+    if(testDir.exists() && !path.toLocalFile().isEmpty()) {
+        std::cout << "set export path to " + path.toLocalFile().toStdString() << std::endl;
+        this->exportPath = path;
+        //stop highlighting
+        ui->lineEdit_outputPath->setStyleSheet("");
+        ui->lineEdit_outputPath->setText(path.toLocalFile());
+        return true;
+    }
+    else if(path.toLocalFile().isEmpty()) {
+        //keep previous highlighting
+        return false;
+    }
+    else {
+        //hightlight wrong path in red
+        ui->lineEdit_outputPath->setStyleSheet("color: red;");
+        return false;
+    }
+}
+
 //change the path the queue exports the maps to
-void MainWindow::changeOutputPathQueue() {
+void MainWindow::changeOutputPathQueueDialog() {
     QUrl startUrl = QDir::homePath();
     if(exportPath.isValid())
         startUrl = exportPath;
 
-    exportPath = QFileDialog::getExistingDirectoryUrl(this,
-                                                           "Choose Export Folder",
-                                                           startUrl);
-    std::cout << "export path changed to: " << exportPath.toLocalFile().toStdString() << std::endl;
+    QUrl path = QFileDialog::getExistingDirectoryUrl(this,
+                                                     "Choose Export Folder",
+                                                     startUrl);
+    setExportPath(path);
 }
 
-//enable/disable custom output path button
-void MainWindow::updateQueueExportOptions() {
-    ui->pushButton_changeOutputPath_Queue->setEnabled(ui->radioButton_exportUserDefined->isChecked());
+void MainWindow::editOutputPathQueue() {
+    QString rawPath = ui->lineEdit_outputPath->text();
+    setExportPath(QUrl::fromLocalFile(rawPath));
 }
 
 //overloaded version of preview that chooses the map to preview automatically
@@ -863,8 +897,8 @@ void MainWindow::connectSignalSlots() {
     connect(ui->pushButton_removeImagesFromQueue, SIGNAL(clicked()), this, SLOT(removeImagesFromQueue()));
     connect(ui->pushButton_processQueue, SIGNAL(clicked()), this, SLOT(processQueue()));
     connect(ui->pushButton_stopProcessingQueue, SIGNAL(clicked()), this, SLOT(stopProcessingQueue()));
-    connect(ui->pushButton_changeOutputPath_Queue, SIGNAL(clicked()), this, SLOT(changeOutputPathQueue()));
-    connect(ui->buttonGroup_exportFolder, SIGNAL(buttonClicked(int)), this, SLOT(updateQueueExportOptions()));
+    connect(ui->pushButton_changeOutputPath_Queue, SIGNAL(clicked()), this, SLOT(changeOutputPathQueueDialog()));
+    connect(ui->lineEdit_outputPath, SIGNAL(editingFinished()), this, SLOT(editOutputPathQueue()));
     connect(ui->listWidget_queue, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(queueItemDoubleClicked(QListWidgetItem*)));
     //normalmap size preview text
     connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(normalmapSizeChanged()));

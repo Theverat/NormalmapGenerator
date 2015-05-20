@@ -85,95 +85,118 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_25">
-          <property name="text">
-           <string>Queue:</string>
+         <widget class="QWidget" name="queue_widget" native="true">
+          <property name="enabled">
+           <bool>true</bool>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QListWidget" name="listWidget_queue">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>200</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="selectionMode">
-           <enum>QAbstractItemView::ExtendedSelection</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_removeImagesFromQueue">
-          <property name="text">
-           <string>Remove Selected From Queue</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>Output</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_8">
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <property name="spacing">
+            <number>7</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_13">
-             <item>
-              <widget class="QRadioButton" name="radioButton_exportToSource">
-               <property name="text">
-                <string>Source Folder</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">buttonGroup_exportFolder</string>
-               </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="radioButton_exportUserDefined">
-               <property name="text">
-                <string>Specify</string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">buttonGroup_exportFolder</string>
-               </attribute>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_changeOutputPath_Queue">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
+            <widget class="QLabel" name="label_25">
              <property name="text">
-              <string>Change Output Path</string>
+              <string>Queue:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_openExportFolder">
-             <property name="enabled">
-              <bool>true</bool>
+            <widget class="QListWidget" name="listWidget_queue">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100000</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::ExtendedSelection</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_removeImagesFromQueue">
              <property name="text">
-              <string>Open Export Folder</string>
+              <string>Remove Selected From Queue</string>
              </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>Output</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_13">
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_outputPath">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_changeOutputPath_Queue">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>35</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="sizeIncrement">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_openExportFolder">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Open Output Folder</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
@@ -204,7 +227,7 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>60</width>
+              <width>100000</width>
               <height>16777215</height>
              </size>
             </property>
@@ -226,6 +249,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="maximum">
+           <number>1</number>
+          </property>
           <property name="value">
            <number>0</number>
           </property>
@@ -237,6 +263,9 @@
           </property>
           <property name="textDirection">
            <enum>QProgressBar::TopToBottom</enum>
+          </property>
+          <property name="format">
+           <string>%v/%m</string>
           </property>
          </widget>
         </item>
@@ -601,6 +630,16 @@
                </widget>
               </item>
               <item>
+               <widget class="QCheckBox" name="checkBox_invertHeight">
+                <property name="text">
+                 <string>Invert Height</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QCheckBox" name="checkBox_tileable">
                 <property name="toolTip">
                  <string>Activate if the input is a tileable texture</string>
@@ -610,16 +649,6 @@
                 </property>
                 <property name="checked">
                  <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_invertHeight">
-                <property name="text">
-                 <string>Invert Height</string>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -1216,6 +1245,13 @@
                 </property>
                 <property name="text">
                  <string>Calculate</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>This thing is still in development, the result is probably not usable at the moment</string>
                 </property>
                </widget>
               </item>

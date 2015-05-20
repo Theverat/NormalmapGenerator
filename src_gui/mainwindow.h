@@ -42,6 +42,7 @@ private:
     int lastCalctime_ssao;
     bool stopQueue;
 
+    bool setExportPath(QUrl path);
     void calcNormal();
     void calcSpec();
     void calcDisplace();
@@ -79,8 +80,8 @@ private slots:
     void displayChannelIntensity();
     void openExportFolder();
     void removeImagesFromQueue();
-    void changeOutputPathQueue();
-    void updateQueueExportOptions();
+    void changeOutputPathQueueDialog();
+    void editOutputPathQueue();
     void queueItemDoubleClicked(QListWidgetItem *item);
     void normalmapSizeChanged();
     void showAboutDialog();

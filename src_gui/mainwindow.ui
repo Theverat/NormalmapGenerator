@@ -932,7 +932,7 @@
               <item>
                <widget class="QLabel" name="label_11">
                 <property name="text">
-                 <string>Scale:</string>
+                 <string>Brightness:</string>
                 </property>
                </widget>
               </item>
@@ -1130,7 +1130,7 @@
               <item>
                <widget class="QLabel" name="label_17">
                 <property name="text">
-                 <string>Scale:</string>
+                 <string>Brightness:</string>
                 </property>
                </widget>
               </item>

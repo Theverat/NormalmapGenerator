@@ -89,6 +89,9 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <property name="spacing">
             <number>7</number>
@@ -113,7 +116,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QListWidget" name="listWidget_queue">
+            <widget class="ListWidget" name="listWidget_queue">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -131,6 +134,9 @@
                <width>100000</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="acceptDrops">
+              <bool>true</bool>
              </property>
              <property name="selectionMode">
               <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -1573,6 +1579,11 @@
    <extends>QGraphicsView</extends>
    <header>src_gui/graphicsview.h</header>
   </customwidget>
+  <customwidget>
+   <class>ListWidget</class>
+   <extends>QListWidget</extends>
+   <header>src_gui/listwidget.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -1583,12 +1594,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>710</x>
-     <y>101</y>
+     <x>852</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>754</x>
-     <y>103</y>
+     <x>906</x>
+     <y>119</y>
     </hint>
    </hints>
   </connection>
@@ -1599,12 +1610,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>710</x>
-     <y>101</y>
+     <x>852</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>814</x>
-     <y>102</y>
+     <x>972</x>
+     <y>118</y>
     </hint>
    </hints>
   </connection>
@@ -1615,12 +1626,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>710</x>
-     <y>101</y>
+     <x>852</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>870</x>
-     <y>103</y>
+     <x>1038</x>
+     <y>119</y>
     </hint>
    </hints>
   </connection>
@@ -1631,12 +1642,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>710</x>
-     <y>101</y>
+     <x>852</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>929</x>
-     <y>102</y>
+     <x>1103</x>
+     <y>118</y>
     </hint>
    </hints>
   </connection>
@@ -1647,12 +1658,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>491</x>
-     <y>101</y>
+     <x>590</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>533</x>
-     <y>103</y>
+     <x>640</x>
+     <y>119</y>
     </hint>
    </hints>
   </connection>
@@ -1663,12 +1674,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>491</x>
-     <y>101</y>
+     <x>590</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>582</x>
-     <y>102</y>
+     <x>694</x>
+     <y>118</y>
     </hint>
    </hints>
   </connection>
@@ -1679,18 +1690,17 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>491</x>
-     <y>101</y>
+     <x>590</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>647</x>
-     <y>101</y>
+     <x>773</x>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <buttongroups>
   <buttongroup name="buttonGroup_displayChannelIntensity"/>
-  <buttongroup name="buttonGroup_exportFolder"/>
  </buttongroups>
 </ui>

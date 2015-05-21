@@ -41,7 +41,6 @@ public:
 signals:
     void singleImageDropped(QUrl url);
     void multipleImagesDropped(QList<QUrl> urls);
-    void folderDropped(QUrl url);
     void rightClick();
     void middleClick();
     void zoomIn();

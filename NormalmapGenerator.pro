@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     src_generators/gaussianblur.cpp \
     src_generators/boxblur.cpp \
     src_generators/ssaogenerator.cpp \
-    src_gui/aboutdialog.cpp
+    src_gui/aboutdialog.cpp \
+    src_gui/listwidget.cpp
 
 HEADERS  += src_gui/mainwindow.h \
     src_generators/intensitymap.h \
@@ -54,7 +55,8 @@ HEADERS  += src_gui/mainwindow.h \
     src_generators/gaussianblur.h \
     src_generators/boxblur.h \
     src_generators/ssaogenerator.h \
-    src_gui/aboutdialog.h
+    src_gui/aboutdialog.h \
+    src_gui/listwidget.h
 
 FORMS    += src_gui/mainwindow.ui \
     src_gui/aboutdialog.ui

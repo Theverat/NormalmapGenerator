@@ -925,6 +925,9 @@ void MainWindow::connectSignalSlots() {
     connect(ui->pushButton_changeOutputPath_Queue, SIGNAL(clicked()), this, SLOT(changeOutputPathQueueDialog()));
     connect(ui->lineEdit_outputPath, SIGNAL(editingFinished()), this, SLOT(editOutputPathQueue()));
     connect(ui->listWidget_queue, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(queueItemDoubleClicked(QListWidgetItem*)));
+    //queue drag and drop
+    connect(ui->listWidget_queue, SIGNAL(singleImageDropped(QUrl)), this, SLOT(loadSingleDropped(QUrl)));
+    connect(ui->listWidget_queue, SIGNAL(multipleImagesDropped(QList<QUrl>)), this, SLOT(loadMultipleDropped(QList<QUrl>)));
     //normalmap size preview text
     connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(normalmapSizeChanged()));
     //"About" button

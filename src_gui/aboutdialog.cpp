@@ -32,13 +32,6 @@ AboutDialog::AboutDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QString fileName = QDir(qApp->applicationDirPath()).absoluteFilePath("./LICENSE.txt");
-    QFile license(fileName);
-    license.open(QIODevice::ReadOnly | QFile::Text);
-    QString licenseParsed = license.readAll();
-
-    ui->textBrowser_license->setText(licenseParsed);
-
     connect(ui->pushButton_sourcecode, SIGNAL(clicked()), this, SLOT(openSourcecodeLink()));
     connect(ui->pushButton_latestVersion, SIGNAL(clicked()), this, SLOT(openLatestVersionLink()));
 }

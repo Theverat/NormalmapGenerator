@@ -511,6 +511,10 @@ void MainWindow::saveUserFilePath() {
     QUrl url = QFileDialog::getSaveFileUrl(this, "Save as", loadedImagePath,
                                            "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)",
                                            0, options);
+
+    if(!url.isValid() || url.toLocalFile().isEmpty())
+        return;
+
     save(url);
 }
 

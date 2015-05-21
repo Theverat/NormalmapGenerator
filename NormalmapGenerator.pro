@@ -60,3 +60,5 @@ HEADERS  += src_gui/mainwindow.h \
 
 FORMS    += src_gui/mainwindow.ui \
     src_gui/aboutdialog.ui
+
+win32:RC_FILE = resources.rc

@@ -4,6 +4,8 @@ This is a program to generate normal-, spec- and displacementmaps from image tex
 
 ## Features
 
+### Fully multithreaded with OpenMP
+
 ### Keep Large Detail
 
 One of the things I hate about classic normalmap generators is how they handle large image textures: usually the normalmap is unusable due to fine detail and the whole information about "large detail" (the overall curvature) is lost.

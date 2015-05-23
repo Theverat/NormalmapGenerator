@@ -4,7 +4,9 @@ This is a program to generate normal-, spec- and displacementmaps from image tex
 
 ## Features
 
-### Fully multithreaded with OpenMP
+- Fully multithreaded with OpenMP, will use all available CPU cores
+- Keep Large Detail (see below for details)
+- Fast and easy way to create normal, spec and displacementmaps
 
 ### Keep Large Detail
 
@@ -21,3 +23,8 @@ What the feature I called "Keep Large Detail" does is that it blends a downscale
 
 Rendered, it looks much better:
 ![kld_enabled_render](screenshots/KLD_jpg/KLD_enabled_render_converted.jpg)
+
+## Planned Features
+
+- Better blurring algorithm for displacementmaps
+- Ambient occlusion maps

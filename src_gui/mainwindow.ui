@@ -1670,22 +1670,6 @@
   <connection>
    <sender>checkBox_displace_blur</sender>
    <signal>clicked(bool)</signal>
-   <receiver>spinBox_displace_blurRadius</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>590</x>
-     <y>117</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>694</x>
-     <y>118</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_displace_blur</sender>
-   <signal>clicked(bool)</signal>
    <receiver>checkBox_displace_blur_tileable</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>

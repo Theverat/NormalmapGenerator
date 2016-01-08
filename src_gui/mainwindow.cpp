@@ -27,7 +27,7 @@
 #include "src_generators/specularmapgenerator.h"
 #include "src_generators/ssaogenerator.h"
 #include "src_generators/intensitymap.h"
-#include "src_generators/boxblur.h"
+#include "src_generators/gaussianblur.h"
 
 #include <QMessageBox>
 #include <QFileDialog>
@@ -335,7 +335,7 @@ void MainWindow::calcDisplace() {
         bool tileable = ui->checkBox_displace_blur_tileable->isChecked();
 
         IntensityMap inputMap(displacementmap, IntensityMap::AVERAGE);
-        BoxBlur filter;
+        GaussianBlur filter;
         IntensityMap outputMap = filter.calculate(inputMap, radius, tileable);
         displacementmap = outputMap.convertToQImage();
     }
@@ -901,13 +901,16 @@ void MainWindow::connectSignalSlots() {
     connect(ui->checkBox_keepLargeDetail, SIGNAL(clicked()), this, SLOT(autoUpdate()));
     connect(ui->spinBox_largeDetailScale, SIGNAL(valueChanged(int)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_largeDetailHeight, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
-    // displcacement autoupdate
+    // displacement autoupdate
     connect(ui->doubleSpinBox_displace_redMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_displace_greenMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_displace_blueMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_displace_scale, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->comboBox_mode_displace, SIGNAL(currentIndexChanged(int)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_displace_contrast, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    connect(ui->checkBox_displace_blur, SIGNAL(stateChanged(int)), this, SLOT(autoUpdate()));
+    connect(ui->checkBox_displace_blur_tileable, SIGNAL(stateChanged(int)), this, SLOT(autoUpdate()));
+    connect(ui->spinBox_displace_blurRadius, SIGNAL(valueChanged(int)), this, SLOT(autoUpdate()));
     // ssao autoupdate
     connect(ui->doubleSpinBox_ssao_size, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     //graphicsview drag and drop

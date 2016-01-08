@@ -28,12 +28,15 @@ class GaussianBlur
 {
 public:
     GaussianBlur();
-    IntensityMap calculate(IntensityMap map, int radius);
+    IntensityMap calculate(IntensityMap input, double radius, bool tileable);
 
 private:
-    double* kernel;
-
-    double* computeKernel(int radius);
+    std::vector<double> boxesForGauss(double sigma, int n);
+    void gaussBlur(IntensityMap &input, IntensityMap &result, double radius, bool tileable);
+    void boxBlur(IntensityMap &input, IntensityMap &result, double radius, bool tileable);
+    void boxBlurH(IntensityMap &input, IntensityMap &result, double radius, bool tileable);
+    void boxBlurT(IntensityMap &input, IntensityMap &result, double radius, bool tileable);
+    int handleEdges(int iterator, int max, bool tileable);
 };
 
 #endif // GAUSSIANBLUR_H

@@ -101,19 +101,33 @@ IntensityMap::IntensityMap(QImage rgbImage, Mode mode, bool useRed, bool useGree
     }
 }
 
-double IntensityMap::at(int x, int y) {
+double IntensityMap::at(int x, int y) const {
     return this->map.at(y).at(x);
+}
+
+double IntensityMap::at(int pos) const {
+    int x = pos % this->getWidth();
+    int y = pos / this->getWidth();
+
+    return this->at(x, y);
 }
 
 void IntensityMap::setValue(int x, int y, double value) {
     this->map.at(y).at(x) = value;
 }
 
-int IntensityMap::getWidth() {
+void IntensityMap::setValue(int pos, double value) {
+    int x = pos % this->getWidth();
+    int y = pos / this->getWidth();
+
+    this->map.at(y).at(x) = value;
+}
+
+int IntensityMap::getWidth() const {
     return this->map.at(0).size();
 }
 
-int IntensityMap::getHeight() {
+int IntensityMap::getHeight() const {
     return this->map.size();
 }
 

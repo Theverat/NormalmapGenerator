@@ -36,7 +36,7 @@ IntensityMap GaussianBlur::calculate(IntensityMap input, double radius, bool til
 }
 
 // Gaussian blur implementation adapted from http://blog.ivank.net/fastest-gaussian-blur.html
-// "Algorithm 3" was used because I could not adapt "Algorithm 4" to be tilable
+// "Algorithm 3" was used because I could not adapt "Algorithm 4" to be tileable
 
 void GaussianBlur::gaussBlur(IntensityMap &input, IntensityMap &result, double radius, bool tileable) {
     std::vector<double> boxes = boxesForGauss(radius, 3);

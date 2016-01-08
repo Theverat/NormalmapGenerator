@@ -294,7 +294,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>3</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -1594,12 +1594,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>852</x>
-     <y>117</y>
+     <x>334</x>
+     <y>68</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
-     <y>119</y>
+     <x>340</x>
+     <y>68</y>
     </hint>
    </hints>
   </connection>
@@ -1610,12 +1610,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>852</x>
-     <y>117</y>
+     <x>334</x>
+     <y>68</y>
     </hint>
     <hint type="destinationlabel">
-     <x>972</x>
-     <y>118</y>
+     <x>347</x>
+     <y>68</y>
     </hint>
    </hints>
   </connection>
@@ -1626,12 +1626,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>852</x>
-     <y>117</y>
+     <x>334</x>
+     <y>68</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1038</x>
-     <y>119</y>
+     <x>354</x>
+     <y>68</y>
     </hint>
    </hints>
   </connection>
@@ -1642,12 +1642,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>852</x>
-     <y>117</y>
+     <x>334</x>
+     <y>68</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1103</x>
-     <y>118</y>
+     <x>360</x>
+     <y>68</y>
     </hint>
    </hints>
   </connection>
@@ -1658,12 +1658,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>590</x>
-     <y>117</y>
+     <x>689</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>640</x>
-     <y>119</y>
+     <x>746</x>
+     <y>138</y>
     </hint>
    </hints>
   </connection>
@@ -1674,12 +1674,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>590</x>
-     <y>117</y>
+     <x>689</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>773</x>
-     <y>117</y>
+     <x>905</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_displace_blur</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBox_displace_blurRadius</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>660</x>
+     <y>128</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>790</x>
+     <y>130</y>
     </hint>
    </hints>
   </connection>

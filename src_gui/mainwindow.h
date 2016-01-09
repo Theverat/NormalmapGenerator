@@ -62,6 +62,7 @@ private:
     int lastCalctime_displace;
     int lastCalctime_ssao;
     bool stopQueue;
+    QStringList supportedImageformats;
 
     bool setExportPath(QUrl path);
     void calcNormal();
@@ -78,6 +79,7 @@ private:
     void saveQueueProcessed(QUrl folderPath);
     void save(QUrl url);
     bool load(QUrl url);
+    void loadAllFromDir(QUrl url);
     int calcPercentage(int value, int percentage);
 
 private slots:

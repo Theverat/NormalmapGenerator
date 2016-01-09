@@ -44,6 +44,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    supportedImageformats << "*.png" << "*.jpg" << "*.jpeg" << "*.tiff" << "*.tif"
+               << "*.ppm" << "*.bmp" << "*.xpm" << "*.tga" << "*.gif";
+
     //connect signals of GUI elements with slots of this class
     connectSignalSlots();
 
@@ -112,10 +115,11 @@ void MainWindow::loadMultipleDropped(QList<QUrl> urls) {
     bool loadedFirstValidImage = false;
 
     for(int i = 0; i < urls.size(); i++) {
-        QString suffix = QFileInfo(urls.at(i).fileName()).suffix().toLower();
-        QString supported = "png jpg jpeg tiff ppm bmp xpm tga";
+        QFileInfo fileInfo(QFileInfo(urls.at(i).toLocalFile()));
+        QString suffix = fileInfo.suffix().toLower();
 
-        if(supported.contains(suffix)) {
+        // The supportedImageformats list is of the form "*.jpg", "*.png", ...
+        if(supportedImageformats.contains("*." + suffix, Qt::CaseInsensitive)) {
             //image format is supported, add to queue
             addImageToQueue(urls.at(i));
             //if it is the first valid image, load and preview it
@@ -123,6 +127,9 @@ void MainWindow::loadMultipleDropped(QList<QUrl> urls) {
                 load(urls.at(i));
                 loadedFirstValidImage = true;
             }
+        }
+        else if(fileInfo.isDir()) {
+            loadAllFromDir(urls.at(i));
         }
         else {
             containedInvalidFormat = true;
@@ -134,6 +141,21 @@ void MainWindow::loadMultipleDropped(QList<QUrl> urls) {
                                  "Some images had unsupported formats and where not loaded into the queue!");
 }
 
+void MainWindow::loadAllFromDir(QUrl url) {
+    // Load all images in the directory
+    QDir directory(url.toLocalFile());
+
+    QStringList fileList = directory.entryList(supportedImageformats, QDir::Files);
+    QList<QUrl> urls;
+
+    foreach(QString path, fileList) {
+        QUrl subUrl = QUrl::fromLocalFile(directory.absolutePath() + QDir::separator() + path);
+        urls.append(subUrl);
+    }
+
+    loadMultipleDropped(urls);
+}
+
 //load the image specified in the url
 bool MainWindow::load(QUrl url) {
     if(!url.isValid()) {
@@ -141,12 +163,17 @@ bool MainWindow::load(QUrl url) {
         return false;
     }
 
+    QFileInfo file(url.toLocalFile());
+
+    if(file.isDir()) {
+        loadAllFromDir(url);
+        return false;
+    }
+
     ui->statusBar->showMessage("loading Image: " + url.fileName());
 
     //load the image
     input = QImage(url.toLocalFile());
-
-    QFileInfo file(url.toLocalFile());
 
     if(input.isNull()) {
         QString errorMessage("Image not loaded!");
@@ -225,10 +252,12 @@ bool MainWindow::load(QUrl url) {
 
 //load images using the file dialog
 void MainWindow::loadUserFilePath() {
+    QString filter = "Image Formats (" + supportedImageformats.join(" ") + ")";
+
     QList<QUrl> urls = QFileDialog::getOpenFileUrls(this,
                                                      "Open Image File",
                                                      QDir::homePath(),
-                                                     "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm *.tga)");
+                                                     filter);
     loadMultipleDropped(urls);
 }
 
@@ -809,6 +838,10 @@ void MainWindow::enableAutoupdate(bool on) {
 //add single image to queue
 void MainWindow::addImageToQueue(QUrl url) {
     QueueItem *item = new QueueItem(url, url.fileName(), ui->listWidget_queue, 0);
+
+    QIcon icon(url.toLocalFile());
+    item->setIcon(icon);
+
     ui->listWidget_queue->addItem(item);
 }
 

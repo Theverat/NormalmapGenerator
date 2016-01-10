@@ -44,7 +44,19 @@ public:
     };
 
     explicit MainWindow(QWidget *parent = 0);
+    void closeEvent(QCloseEvent* event);
     ~MainWindow();
+    bool getUseCustomUiColors();
+    QColor getUiColorMain();
+    QColor getUiColorText();
+    QColor getUiColorGraphicsView();
+
+public slots:
+    void setUseCustomUiColors(bool value);
+    void setUiColorMain(QColor value);
+    void setUiColorText(QColor value);
+    void setUiColorGraphicsView(QColor value);
+    void resetUiColors();
     
 private:
     Ui::MainWindow *ui;
@@ -63,6 +75,13 @@ private:
     int lastCalctime_ssao;
     bool stopQueue;
     QStringList supportedImageformats;
+    bool useCustomUiColors;
+    QColor uiColorMainDefault;
+    QColor uiColorTextDefault;
+    QColor uiColorGraphicsViewDefault;
+    QColor uiColorMain;
+    QColor uiColorText;
+    QColor uiColorGraphicsView;
 
     bool setExportPath(QUrl path);
     void calcNormal();
@@ -81,6 +100,9 @@ private:
     bool load(QUrl url);
     void loadAllFromDir(QUrl url);
     int calcPercentage(int value, int percentage);
+    void setUiColors();
+    void writeSettings();
+    void readSettings();
 
 private slots:
     void loadUserFilePath();

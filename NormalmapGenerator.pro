@@ -62,3 +62,6 @@ FORMS    += src_gui/mainwindow.ui \
     src_gui/aboutdialog.ui
 
 win32:RC_FILE = resources.rc
+
+RESOURCES += \
+    stylesheets.qrc

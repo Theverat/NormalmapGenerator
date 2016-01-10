@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Normalmap Generator</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -279,6 +282,9 @@
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="enabled">
@@ -1369,6 +1375,22 @@
          </widget>
         </item>
         <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>6</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="Line" name="line_6">
@@ -1553,12 +1575,12 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>50</width>
+              <width>70</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="text">
-             <string>About</string>
+             <string>Settings</string>
             </property>
            </widget>
           </item>

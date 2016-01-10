@@ -1,0 +1,119 @@
+
+/* Color codenames that will be replaced with actual colors by MainWindow::setUiColors()
+<uiColorMain>
+<uiColorMainLighter_0>
+<uiColorMainLighter_1>
+<uiColorMainLighter_2>
+<uiColorMainDarker>
+<uiColorText>
+<uiColorGraphicsView>
+*/
+
+/* global colors */
+QWidget {
+	background-color: <uiColorMain>;
+	color: <uiColorText>;
+}
+
+/**************************************************/
+
+QGraphicsView {
+	background-color: <uiColorGraphicsView>;
+}
+
+/**************************************************/
+
+QComboBox {
+	padding: 1px 0px 1px 3px; /*This makes text color work*/
+}
+
+/**************************************************/
+
+QPushButton { 
+	background-color: <uiColorMainLighter_1>;
+	border-radius: 4px;
+	padding: 4px;
+}
+
+QPushButton:hover { 
+	background-color: <uiColorMainLighter_2>;
+}
+
+QPushButton:disabled { 
+	background-color: <uiColorMainLighter_0>;
+}
+
+QPushButton:pressed { 
+	background-color: <uiColorMainDarker>;
+}
+
+/**************************************************/
+
+QDoubleSpinBox {
+	background-color: <uiColorMainLighter_1>;
+	border: 1px solid none;
+}
+
+QDoubleSpinBox::up-arrow {
+}
+
+QDoubleSpinBox::down-arrow {
+}
+
+/**************************************************/
+
+QSpinBox {
+	background-color: <uiColorMainLighter_1>;
+	border: 1px solid none;
+}
+
+QSpinBox::up-arrow {
+}
+
+QSpinBox::down-arrow {
+}
+
+/**************************************************/
+
+
+QTabWidget::pane {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+
+	border-top: 2px solid <uiColorMainLighter_1>;
+	border-left: 2px solid <uiColorMainLighter_1>;
+	border-right: 2px solid <uiColorMainLighter_1>;
+	border-bottom: 2px solid <uiColorMainLighter_1>;
+}
+
+
+QTabBar::tab {
+    background-color: <uiColorMainLighter_1>;
+                               
+    border: 2px solid <uiColorMainDarker>;
+    border-bottom: 1 px solid none;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 8ex;
+    padding: 2px;
+}
+
+QTabBar::tab:hover {
+	background-color: <uiColorMainLighter_2>;
+}
+
+QTabBar::tab:selected {
+	color: <uiColorMain>;
+	background-color: <uiColorText>;
+
+    border-color: <uiColorMainDarker>;
+    /*border-bottom-color: <uiColorDarker>;*/
+}
+
+QTabBar::tab:!selected {
+    margin-top: 6px; /* make non-selected tabs look smaller */
+}
+/**************************************************/
+
+
+

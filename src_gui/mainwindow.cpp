@@ -35,6 +35,9 @@
 #include <QDesktopServices>
 #include <QTreeView>
 #include <QGraphicsPixmapItem>
+#include <QSettings>
+#include <QColorDialog>
+#include <QPixmap>
 
 #include <iostream>
 
@@ -56,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //initialize graphicsview
     GraphicsScene *scene = new GraphicsScene();
     ui->graphicsView->setScene(scene);
-    scene->setBackgroundBrush(QBrush(Qt::darkGray));
+    //scene->setBackgroundBrush(QBrush(Qt::darkGray)); //now set via css
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
     scene->addText("Start by dragging images here.");
     ui->graphicsView->setRenderHints(QPainter::HighQualityAntialiasing | QPainter::SmoothPixmapTransform);
@@ -84,6 +87,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //hide queue progressbar
     ui->progressBar_Queue->hide();
+
+    //default UI colors
+    useCustomUiColors = false;
+    uiColorMainDefault = QColor("#444");
+    uiColorTextDefault = QColor("#eee");
+    uiColorGraphicsViewDefault = QColor(Qt::darkGray);
+    uiColorMain = uiColorMainDefault;
+    uiColorText = uiColorTextDefault;
+    uiColorGraphicsView = uiColorGraphicsViewDefault;
+
+    //read last window position and color settings from registry
+    readSettings();
+
+    //set UI colors
+    setUiColors();
 
     //if the program was opened via "open with" by the OS, extract the image paths from the arguments
     //(args[0] is the name of the application)
@@ -255,9 +273,9 @@ void MainWindow::loadUserFilePath() {
     QString filter = "Image Formats (" + supportedImageformats.join(" ") + ")";
 
     QList<QUrl> urls = QFileDialog::getOpenFileUrls(this,
-                                                     "Open Image File",
-                                                     QDir::homePath(),
-                                                     filter);
+                                                    "Open Image File",
+                                                    QDir::homePath(),
+                                                    filter);
     loadMultipleDropped(urls);
 }
 
@@ -839,7 +857,7 @@ void MainWindow::enableAutoupdate(bool on) {
 void MainWindow::addImageToQueue(QUrl url) {
     QueueItem *item = new QueueItem(url, url.fileName(), ui->listWidget_queue, 0);
 
-    QIcon icon(url.toLocalFile());
+    QIcon icon(QPixmap(url.toLocalFile()).scaled(64, 64, Qt::KeepAspectRatio));
     item->setIcon(icon);
 
     ui->listWidget_queue->addItem(item);
@@ -876,7 +894,7 @@ int MainWindow::calcPercentage(int value, int percentage) {
 }
 
 void MainWindow::showAboutDialog() {
-    AboutDialog *dialog = new AboutDialog(this);
+    AboutDialog *dialog = new AboutDialog(this, this);
     dialog->show();
 }
 
@@ -984,3 +1002,152 @@ void MainWindow::hideAdvancedSettings() {
     ui->label_method_normal->setVisible(false);
     connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->label_method_normal, SLOT(setVisible(bool)));
 }
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+    writeSettings();
+}
+
+//write window size, position etc. to registry
+void MainWindow::writeSettings()
+{
+    QSettings qsettings( "simon", "normalmapgenerator" );
+
+    qsettings.beginGroup( "mainwindow" );
+
+    qsettings.setValue( "geometry", saveGeometry() );
+    qsettings.setValue( "savestate", saveState() );
+    qsettings.setValue( "maximized", isMaximized() );
+
+    if ( !isMaximized() ) {
+        qsettings.setValue( "pos", pos() );
+        qsettings.setValue( "size", size() );
+    }
+
+    // Custom UI colors
+    qsettings.setValue("use_custom_ui_colors", useCustomUiColors);
+    qsettings.setValue("ui_color_main", uiColorMain.rgba());
+    qsettings.setValue("ui_color_text", uiColorText.rgba());
+    qsettings.setValue("ui_color_graphicsview", uiColorGraphicsView.rgba());
+
+    qsettings.endGroup();
+}
+
+//read window size, position etc. from registry
+void MainWindow::readSettings()
+{
+    QSettings qsettings( "simon", "normalmapgenerator" );
+
+    qsettings.beginGroup( "mainwindow" );
+
+    restoreGeometry(qsettings.value( "geometry", saveGeometry() ).toByteArray());
+    restoreState(qsettings.value( "savestate", saveState() ).toByteArray());
+    move(qsettings.value( "pos", pos() ).toPoint());
+    resize(qsettings.value( "size", size() ).toSize());
+
+    if ( qsettings.value( "maximized", isMaximized() ).toBool() )
+        showMaximized();
+
+    // Custom UI colors
+    if(qsettings.contains("use_custom_ui_colors"))
+        useCustomUiColors = qsettings.value("use_custom_ui_colors").toBool();
+    if(qsettings.contains("ui_color_main"))
+        uiColorMain.setRgba(qsettings.value("ui_color_main").toUInt());
+    if(qsettings.contains("ui_color_text"))
+        uiColorText.setRgba(qsettings.value("ui_color_text").toUInt());
+    if(qsettings.contains("ui_color_graphicsview"))
+        uiColorGraphicsView.setRgba(qsettings.value("ui_color_graphicsview").toUInt());
+
+    qsettings.endGroup();
+}
+
+
+void MainWindow::setUiColors() {
+    if(useCustomUiColors) {
+        QFile file(":/stylesheets/resources/stylesheets/theme_dark.qss");
+        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QString stylesheet(file.readAll());
+            file.close();
+
+            // Replace colorcodes with colors (">uiColorMain" -> "#444")
+            stylesheet.replace("<uiColorMain>", uiColorMain.name());
+            stylesheet.replace("<uiColorText>", uiColorText.name());
+            stylesheet.replace("<uiColorGraphicsView>", uiColorGraphicsView.name());
+
+            // Compute lighter/darker color variants
+            int add = 9;
+            QColor uiColorMainLighter_0(std::min(uiColorMain.red() + add, 255),
+                                        std::min(uiColorMain.green() + add, 255),
+                                        std::min(uiColorMain.blue() + add, 255));
+
+            add = 35;
+            QColor uiColorMainLighter_1(std::min(uiColorMain.red() + add, 255),
+                                        std::min(uiColorMain.green() + add, 255),
+                                        std::min(uiColorMain.blue() + add, 255));
+
+            add = 50;
+            QColor uiColorMainLighter_2(std::min(uiColorMain.red() + add, 255),
+                                        std::min(uiColorMain.green() + add, 255),
+                                        std::min(uiColorMain.blue() + add, 255));
+
+            add = -18;
+            QColor uiColorMainDarker(std::max(uiColorMain.red() + add, 0),
+                                     std::max(uiColorMain.green() + add, 0),
+                                     std::max(uiColorMain.blue() + add, 0));
+
+            stylesheet.replace("<uiColorMainLighter_0>", uiColorMainLighter_0.name());
+            stylesheet.replace("<uiColorMainLighter_1>", uiColorMainLighter_1.name());
+            stylesheet.replace("<uiColorMainLighter_2>", uiColorMainLighter_2.name());
+            stylesheet.replace("<uiColorMainDarker>", uiColorMainLighter_0.name());
+
+            this->setStyleSheet(stylesheet);
+        }
+    }
+    else {
+        setStyleSheet("");
+    }
+}
+
+bool MainWindow::getUseCustomUiColors() {
+    return useCustomUiColors;
+}
+
+void MainWindow::setUseCustomUiColors(bool value) {
+    useCustomUiColors = value;
+    setUiColors();
+}
+
+QColor MainWindow::getUiColorMain() {
+    return uiColorMain;
+}
+
+void MainWindow::setUiColorMain(QColor value) {
+    uiColorMain = value;
+    setUiColors();
+}
+
+QColor MainWindow::getUiColorText() {
+    return uiColorText;
+}
+
+void MainWindow::setUiColorText(QColor value) {
+    uiColorText = value;
+    setUiColors();
+}
+
+QColor MainWindow::getUiColorGraphicsView() {
+    return uiColorGraphicsView;
+}
+
+void MainWindow::setUiColorGraphicsView(QColor value) {
+    uiColorGraphicsView = value;
+    setUiColors();
+}
+
+void MainWindow::resetUiColors() {
+    uiColorMain = uiColorMainDefault;
+    uiColorText = uiColorTextDefault;
+    uiColorGraphicsView = uiColorGraphicsViewDefault;
+    setUiColors();
+}
+
+

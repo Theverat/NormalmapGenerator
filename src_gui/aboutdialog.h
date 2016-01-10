@@ -23,6 +23,7 @@
 #define ABOUTDIALOG_H
 
 #include <QDialog>
+#include "mainwindow.h"
 
 namespace Ui {
 class AboutDialog;
@@ -33,15 +34,19 @@ class AboutDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit AboutDialog(QWidget *parent = 0);
+    explicit AboutDialog(QWidget *parent = 0, MainWindow *mainwindow = 0);
     ~AboutDialog();
     
 private:
     Ui::AboutDialog *ui;
+    MainWindow *mainwindow;
 
 private slots:
     void openSourcecodeLink();
     void openLatestVersionLink();
+    void showMainColorDialog();
+    void showTextColorDialog();
+    void showGraphicsViewColorDialog();
 };
 
 #endif // ABOUTDIALOG_H

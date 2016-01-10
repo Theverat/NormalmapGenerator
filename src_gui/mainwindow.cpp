@@ -1103,7 +1103,8 @@ void MainWindow::setUiColors() {
         }
     }
     else {
-        setStyleSheet("");
+        // Use system colors for everything except the graphicsview background
+        setStyleSheet("QGraphicsView { background-color: #888}");
     }
 }
 

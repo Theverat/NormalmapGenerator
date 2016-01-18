@@ -994,6 +994,34 @@ void MainWindow::connectSignalSlots() {
     //Shortcuts
     QShortcut *save = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this, 0, 0, Qt::ApplicationShortcut);
     connect(save, SIGNAL(activated()), this, SLOT(saveUserFilePath()));
+    QShortcut *load = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_O), this, 0, 0, Qt::ApplicationShortcut);
+    connect(load, SIGNAL(activated()), this, SLOT(loadUserFilePath()));
+
+    QShortcut *tab_1 = new QShortcut(QKeySequence(Qt::Key_1), this, 0, 0, Qt::ApplicationShortcut);
+    connect(tab_1, SIGNAL(activated()), this, SLOT(switchToTab1()));
+    QShortcut *tab_2 = new QShortcut(QKeySequence(Qt::Key_2), this, 0, 0, Qt::ApplicationShortcut);
+    connect(tab_2, SIGNAL(activated()), this, SLOT(switchToTab2()));
+    QShortcut *tab_3 = new QShortcut(QKeySequence(Qt::Key_3), this, 0, 0, Qt::ApplicationShortcut);
+    connect(tab_3, SIGNAL(activated()), this, SLOT(switchToTab3()));
+    QShortcut *tab_4 = new QShortcut(QKeySequence(Qt::Key_4), this, 0, 0, Qt::ApplicationShortcut);
+    connect(tab_4, SIGNAL(activated()), this, SLOT(switchToTab4()));
+
+}
+
+void MainWindow::switchToTab1() {
+    ui->tabWidget->setCurrentIndex(0);
+}
+
+void MainWindow::switchToTab2() {
+    ui->tabWidget->setCurrentIndex(1);
+}
+
+void MainWindow::switchToTab3() {
+    ui->tabWidget->setCurrentIndex(2);
+}
+
+void MainWindow::switchToTab4() {
+    ui->tabWidget->setCurrentIndex(3);
 }
 
 void MainWindow::hideAdvancedSettings() {

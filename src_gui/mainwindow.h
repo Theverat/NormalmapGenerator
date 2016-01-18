@@ -117,6 +117,10 @@ private slots:
     void saveUserFilePath();
     void preview();
     void preview(int tab);
+    void switchToTab1();
+    void switchToTab2();
+    void switchToTab3();
+    void switchToTab4();
     void zoomIn();
     void zoomOut();
     void resetZoom();

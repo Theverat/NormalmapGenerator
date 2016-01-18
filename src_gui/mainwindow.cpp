@@ -38,6 +38,7 @@
 #include <QSettings>
 #include <QColorDialog>
 #include <QPixmap>
+#include <QShortcut>
 
 #include <iostream>
 
@@ -554,6 +555,9 @@ void MainWindow::stopProcessingQueue() {
 
 //save maps using the file dialog
 void MainWindow::saveUserFilePath() {
+    if(input.isNull())
+        return;
+
     QFileDialog::Options options(QFileDialog::DontConfirmOverwrite);
     QUrl url = QFileDialog::getSaveFileUrl(this, "Save as", loadedImagePath,
                                            "Image Formats (*.png *.jpg *.jpeg *.tiff *.ppm *.bmp *.xpm)",
@@ -566,8 +570,8 @@ void MainWindow::saveUserFilePath() {
 }
 
 void MainWindow::save(QUrl url) {
-    //if saving process was aborted
-    if(!url.isValid())
+    //if saving process was aborted or input image is empty
+    if(!url.isValid() or input.isNull())
         return;
 
     QString path = url.toLocalFile();
@@ -986,6 +990,10 @@ void MainWindow::connectSignalSlots() {
     connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(normalmapSizeChanged()));
     //"About" button
     connect(ui->pushButton_about, SIGNAL(clicked()), this, SLOT(showAboutDialog()));
+
+    //Shortcuts
+    QShortcut *save = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this, 0, 0, Qt::ApplicationShortcut);
+    connect(save, SIGNAL(activated()), this, SLOT(saveUserFilePath()));
 }
 
 void MainWindow::hideAdvancedSettings() {

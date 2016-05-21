@@ -38,8 +38,8 @@ public:
     ~AboutDialog();
     
 private:
-    Ui::AboutDialog *ui;
     MainWindow *mainwindow;
+    Ui::AboutDialog *ui;
 
 private slots:
     void openSourcecodeLink();

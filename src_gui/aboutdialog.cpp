@@ -60,22 +60,19 @@ void AboutDialog::openLatestVersionLink() {
 }
 
 void AboutDialog::showMainColorDialog() {
-    QColorDialog *colorDialog = new QColorDialog(mainwindow->getUiColorMain());
-    colorDialog->setWindowFlags(Qt::SubWindow);
+    QColorDialog *colorDialog = new QColorDialog(mainwindow->getUiColorMain(), this);
     connect(colorDialog, SIGNAL(currentColorChanged(QColor)), mainwindow, SLOT(setUiColorMain(QColor)));
     colorDialog->show();
 }
 
 void AboutDialog::showTextColorDialog() {
-    QColorDialog *colorDialog = new QColorDialog(mainwindow->getUiColorText());
-    colorDialog->setWindowFlags(Qt::SubWindow);
+    QColorDialog *colorDialog = new QColorDialog(mainwindow->getUiColorText(), this);
     connect(colorDialog, SIGNAL(currentColorChanged(QColor)), mainwindow, SLOT(setUiColorText(QColor)));
     colorDialog->show();
 }
 
 void AboutDialog::showGraphicsViewColorDialog() {
-    QColorDialog *colorDialog = new QColorDialog(mainwindow->getUiColorGraphicsView());
-    colorDialog->setWindowFlags(Qt::SubWindow);
+    QColorDialog *colorDialog = new QColorDialog(mainwindow->getUiColorGraphicsView(), this);
     connect(colorDialog, SIGNAL(currentColorChanged(QColor)), mainwindow, SLOT(setUiColorGraphicsView(QColor)));
     colorDialog->show();
 }

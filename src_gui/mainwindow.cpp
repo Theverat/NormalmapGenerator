@@ -44,12 +44,19 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    input(QImage()),
+    channelIntensity(QImage()),
+    normalmap(QImage()),
+    specmap(QImage()),
+    displacementmap(QImage()),
+    ssaomap(QImage())
 {
     ui->setupUi(this);
 
-    supportedImageformats << "*.png" << "*.jpg" << "*.jpeg" << "*.tiff" << "*.tif"
-               << "*.ppm" << "*.bmp" << "*.xpm" << "*.tga" << "*.gif";
+    supportedImageformats << "*.png" << "*.jpg" << "*.jpeg" << "*.tiff"
+                          << "*.tif" << "*.ppm" << "*.bmp"  << "*.xpm"
+                          << "*.tga" << "*.gif";
 
     //connect signals of GUI elements with slots of this class
     connectSignalSlots();
@@ -60,19 +67,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //initialize graphicsview
     GraphicsScene *scene = new GraphicsScene();
     ui->graphicsView->setScene(scene);
-    //scene->setBackgroundBrush(QBrush(Qt::darkGray)); //now set via css
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
     scene->addText("Start by dragging images here.");
-    ui->graphicsView->setRenderHints(QPainter::HighQualityAntialiasing | QPainter::SmoothPixmapTransform);
+    ui->graphicsView->setRenderHints(QPainter::HighQualityAntialiasing
+                                     | QPainter::SmoothPixmapTransform);
     ui->graphicsView->setAcceptDrops(true);
-
-    //initialize QImage objects to store the calculated maps
-    input = QImage();
-    channelIntensity = QImage();
-    normalmap = QImage();
-    specmap = QImage();
-    displacementmap = QImage();
-    ssaomap = QImage();
 
     //initialize calctimes
     lastCalctime_normal = 0;
@@ -104,8 +103,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //set UI colors
     setUiColors();
 
-    //if the program was opened via "open with" by the OS, extract the image paths from the arguments
-    //(args[0] is the name of the application)
+    //if the program was opened via "open with" by the OS,
+    //extract the image paths from the arguments
     QStringList args = QCoreApplication::arguments();
     if(args.size() > 1) {
         QList<QUrl> imageUrls;

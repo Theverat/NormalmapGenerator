@@ -1,6 +1,6 @@
 This is a program to generate normal-, spec- and displacementmaps from image textures in one go. It supports stack processing and a few other nice features, but has some rough edges and is still in development. 
 
-## Download
+## [Download](https://github.com/Theverat/NormalmapGenerator/releases)
 
 See the [releases section](https://github.com/Theverat/NormalmapGenerator/releases).
 Usually there are Windows (32 bit) and Linux (64 bit) binaries available on each release.

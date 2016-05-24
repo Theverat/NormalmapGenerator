@@ -1,5 +1,12 @@
 This is a program to generate normal-, spec- and displacementmaps from image textures in one go. It supports stack processing and a few other nice features, but has some rough edges and is still in development. 
 
+## Download
+
+See the [releases section](https://github.com/Theverat/NormalmapGenerator/releases).
+Usually there are Windows (32 bit) and Linux (64 bit) binaries available on each release.
+
+## Screenshot
+
 ![screenshot](screenshots/tabs/tabs_combined.jpg)
 
 ## Features
@@ -26,5 +33,5 @@ Rendered, it looks much better:
 
 ## Planned Features
 
-- Better blurring algorithm for displacementmaps
 - Ambient occlusion maps
+- And the issues marked as [enhancement](https://github.com/Theverat/NormalmapGenerator/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)

@@ -570,7 +570,7 @@ void MainWindow::saveUserFilePath() {
 
 void MainWindow::save(QUrl url) {
     //if saving process was aborted or input image is empty
-    if(!url.isValid() or input.isNull())
+    if(!url.isValid() || input.isNull())
         return;
 
     QString path = url.toLocalFile();

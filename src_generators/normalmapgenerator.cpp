@@ -41,8 +41,11 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
     this->tileable = tileable;
 
     this->intensity = IntensityMap(input, mode, useRed, useGreen, useBlue, useAlpha);
-    if(invert)
+    if(!invert) {
+        // The default "non-inverted" normalmap looks wrong in renderers,
+        // so I use inversion by default
         intensity.invert();
+	}
 
     QImage result(input.width(), input.height(), QImage::Format_ARGB32);
 

@@ -31,7 +31,7 @@ SpecularmapGenerator::SpecularmapGenerator(IntensityMap::Mode mode, double redMu
     this->alphaMultiplier = alphaMultiplier;
 }
 
-QImage SpecularmapGenerator::calculateSpecmap(QImage input, double scale, double contrast) {
+QImage SpecularmapGenerator::calculateSpecmap(const QImage &input, double scale, double contrast) {
     QImage result(input.width(), input.height(), QImage::Format_ARGB32);
     
     //generate contrast lookup table

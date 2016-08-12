@@ -24,19 +24,14 @@
 #include <QColor>
 
 NormalmapGenerator::NormalmapGenerator(IntensityMap::Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
-{
-    this->mode = mode;
-    this->useRed = useRed;
-    this->useGreen = useGreen;
-    this->useBlue = useBlue;
-    this->useAlpha = useAlpha;
-}
+    : tileable(false), useRed(useRed), useGreen(useGreen), useBlue(useBlue), useAlpha(useAlpha), mode(mode)
+{}
 
-IntensityMap NormalmapGenerator::getIntensityMap() {
+const IntensityMap& NormalmapGenerator::getIntensityMap() const {
     return this->intensity;
 }
 
-QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, double strength, bool invert, bool tileable, 
+QImage NormalmapGenerator::calculateNormalmap(const QImage& input, Kernel kernel, double strength, bool invert, bool tileable, 
                                               bool keepLargeDetail, int largeDetailScale, double largeDetailHeight) {
     this->tileable = tileable;
 
@@ -48,6 +43,9 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
 	}
 
     QImage result(input.width(), input.height(), QImage::Format_ARGB32);
+    
+    // optimization
+    double strengthInv = 1.0 / strength;
 
     #pragma omp parallel for  // OpenMP
     //code from http://stackoverflow.com/a/2368794
@@ -56,25 +54,25 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
 
         for(int x = 0; x < input.width(); x++) {
 
-            double topLeft      = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y - 1, input.height()));
-            double top          = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y,     input.height()));
-            double topRight     = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y + 1, input.height()));
-            double right        = intensity.at(handleEdges(x,     input.width()), handleEdges(y + 1, input.height()));
-            double bottomRight  = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y + 1, input.height()));
-            double bottom       = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y,     input.height()));
-            double bottomLeft   = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y - 1, input.height()));
-            double left         = intensity.at(handleEdges(x,     input.width()), handleEdges(y - 1, input.height()));
+            const double topLeft      = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y - 1, input.height()));
+            const double top          = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y,     input.height()));
+            const double topRight     = intensity.at(handleEdges(x - 1, input.width()), handleEdges(y + 1, input.height()));
+            const double right        = intensity.at(handleEdges(x,     input.width()), handleEdges(y + 1, input.height()));
+            const double bottomRight  = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y + 1, input.height()));
+            const double bottom       = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y,     input.height()));
+            const double bottomLeft   = intensity.at(handleEdges(x + 1, input.width()), handleEdges(y - 1, input.height()));
+            const double left         = intensity.at(handleEdges(x,     input.width()), handleEdges(y - 1, input.height()));
 
-            double convolution_kernel[3][3] = {{topLeft, top, topRight},
+            const double convolution_kernel[3][3] = {{topLeft, top, topRight},
                                                {left, 0.0, right},
                                                {bottomLeft, bottom, bottomRight}};
 
             QVector3D normal(0, 0, 0);
 
             if(kernel == SOBEL)
-                normal = sobel(convolution_kernel, strength);
+                normal = sobel(convolution_kernel, strengthInv);
             else if(kernel == PREWITT)
-                normal = prewitt(convolution_kernel, strength);
+                normal = prewitt(convolution_kernel, strengthInv);
 
             scanline[x] = qRgb(mapComponent(normal.x()), mapComponent(normal.y()), mapComponent(normal.z()));
         }
@@ -100,12 +98,12 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
             QRgb *scanlineLargeDetail = (QRgb*) largeDetailMap.scanLine(y);
 
             for(int x = 0; x < input.width(); x++) {
-                QRgb colorResult = scanlineResult[x];
-                QRgb colorLargeDetail = scanlineLargeDetail[x];
+                const QRgb colorResult = scanlineResult[x];
+                const QRgb colorLargeDetail = scanlineLargeDetail[x];
 
-                int r = blendSoftLight(qRed(colorResult), qRed(colorLargeDetail));
-                int g = blendSoftLight(qGreen(colorResult), qGreen(colorLargeDetail));
-                int b = blendSoftLight(qBlue(colorResult), qBlue(colorLargeDetail));
+                const int r = blendSoftLight(qRed(colorResult), qRed(colorLargeDetail));
+                const int g = blendSoftLight(qGreen(colorResult), qGreen(colorLargeDetail));
+                const int b = blendSoftLight(qBlue(colorResult), qBlue(colorLargeDetail));
 
                 scanlineResult[x] = qRgb(r, g, b);
             }
@@ -115,44 +113,44 @@ QImage NormalmapGenerator::calculateNormalmap(QImage input, Kernel kernel, doubl
     return result;
 }
 
-QVector3D NormalmapGenerator::sobel(double convolution_kernel[3][3], double strength) {
-    double top_side    = convolution_kernel[0][0] + 2.0 * convolution_kernel[0][1] + convolution_kernel[0][2];
-    double bottom_side = convolution_kernel[2][0] + 2.0 * convolution_kernel[2][1] + convolution_kernel[2][2];
-    double right_side  = convolution_kernel[0][2] + 2.0 * convolution_kernel[1][2] + convolution_kernel[2][2];
-    double left_side   = convolution_kernel[0][0] + 2.0 * convolution_kernel[1][0] + convolution_kernel[2][0];
+QVector3D NormalmapGenerator::sobel(const double convolution_kernel[3][3], double strengthInv) const {
+    const double top_side    = convolution_kernel[0][0] + 2.0 * convolution_kernel[0][1] + convolution_kernel[0][2];
+    const double bottom_side = convolution_kernel[2][0] + 2.0 * convolution_kernel[2][1] + convolution_kernel[2][2];
+    const double right_side  = convolution_kernel[0][2] + 2.0 * convolution_kernel[1][2] + convolution_kernel[2][2];
+    const double left_side   = convolution_kernel[0][0] + 2.0 * convolution_kernel[1][0] + convolution_kernel[2][0];
 
-    double dY = right_side - left_side;
-    double dX = bottom_side - top_side;
-    double dZ = 1.0 / strength;
-
-    return QVector3D(dX, dY, dZ).normalized();
-}
-
-QVector3D NormalmapGenerator::prewitt(double convolution_kernel[3][3], double strength) {
-    double top_side    = convolution_kernel[0][0] + convolution_kernel[0][1] + convolution_kernel[0][2];
-    double bottom_side = convolution_kernel[2][0] + convolution_kernel[2][1] + convolution_kernel[2][2];
-    double right_side  = convolution_kernel[0][2] + convolution_kernel[1][2] + convolution_kernel[2][2];
-    double left_side   = convolution_kernel[0][0] + convolution_kernel[1][0] + convolution_kernel[2][0];
-
-    double dY = right_side - left_side;
-    double dX = top_side - bottom_side;
-    double dZ = 1.0 / strength;
+    const double dY = right_side - left_side;
+    const double dX = bottom_side - top_side;
+    const double dZ = strengthInv;
 
     return QVector3D(dX, dY, dZ).normalized();
 }
 
-int NormalmapGenerator::handleEdges(int iterator, int max) {
-    if(iterator >= max) {
+QVector3D NormalmapGenerator::prewitt(const double convolution_kernel[3][3], double strengthInv) const {
+    const double top_side    = convolution_kernel[0][0] + convolution_kernel[0][1] + convolution_kernel[0][2];
+    const double bottom_side = convolution_kernel[2][0] + convolution_kernel[2][1] + convolution_kernel[2][2];
+    const double right_side  = convolution_kernel[0][2] + convolution_kernel[1][2] + convolution_kernel[2][2];
+    const double left_side   = convolution_kernel[0][0] + convolution_kernel[1][0] + convolution_kernel[2][0];
+
+    const double dY = right_side - left_side;
+    const double dX = top_side - bottom_side;
+    const double dZ = strengthInv;
+
+    return QVector3D(dX, dY, dZ).normalized();
+}
+
+int NormalmapGenerator::handleEdges(int iterator, int maxValue) const {
+    if(iterator >= maxValue) {
         //move iterator from end to beginning + overhead
         if(tileable)
-            return max - iterator;
+            return maxValue - iterator;
         else
-            return max - 1;
+            return maxValue - 1;
     }
     else if(iterator < 0) {
         //move iterator from beginning to end - overhead
         if(tileable)
-            return max + iterator;
+            return maxValue + iterator;
         else
             return 0;
     }
@@ -162,15 +160,15 @@ int NormalmapGenerator::handleEdges(int iterator, int max) {
 }
 
 //transform -1..1 to 0..255
-int NormalmapGenerator::mapComponent(double value) {
+int NormalmapGenerator::mapComponent(double value) const {
     return (value + 1.0) * (255.0 / 2.0);
 }
 
 //uses a similar algorithm like "soft light" in PS, 
 //see http://www.michael-kreil.de/algorithmen/photoshop-layer-blending-equations/index.php
-int NormalmapGenerator::blendSoftLight(int color1, int color2) {
-    float a = color1;
-    float b = color2;
+int NormalmapGenerator::blendSoftLight(int color1, int color2) const {
+    const float a = color1;
+    const float b = color2;
     
     if(2.0f * b < 255.0f) {
         return (int) (((a + 127.5f) * b) / 255.0f);

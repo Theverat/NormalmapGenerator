@@ -27,7 +27,7 @@ GaussianBlur::GaussianBlur()
 {
 }
 
-IntensityMap GaussianBlur::calculate(IntensityMap input, double radius, bool tileable) {
+IntensityMap GaussianBlur::calculate(IntensityMap &input, double radius, bool tileable) {
     IntensityMap result = IntensityMap(input.getWidth(), input.getHeight());
 
     gaussBlur(input, result, radius, tileable);
@@ -114,7 +114,7 @@ void GaussianBlur::boxBlurT(IntensityMap &input, IntensityMap &result, double ra
     }
 }
 
-int GaussianBlur::handleEdges(int iterator, int max, bool tileable) {
+int GaussianBlur::handleEdges(int iterator, int max, bool tileable) const {
     if(iterator < 0) {
         if(tileable) {
             int corrected = max + iterator;

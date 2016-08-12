@@ -31,7 +31,7 @@ IntensityMap::IntensityMap(int width, int height) {
     map = std::vector< std::vector<double> >(height, std::vector<double>(width, 0.0));
 }
 
-IntensityMap::IntensityMap(QImage rgbImage, Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
+IntensityMap::IntensityMap(const QImage& rgbImage, Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
 {
     map = std::vector< std::vector<double> >(rgbImage.height(), std::vector<double>(rgbImage.width(), 0.0));
 
@@ -141,7 +141,7 @@ void IntensityMap::invert() {
     }
 }
 
-QImage IntensityMap::convertToQImage() {
+QImage IntensityMap::convertToQImage() const {
     QImage result(this->getWidth(), this->getHeight(), QImage::Format_ARGB32);
 
     for(int y = 0; y < this->getHeight(); y++) {

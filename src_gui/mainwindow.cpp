@@ -45,12 +45,11 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    input(QImage()),
-    channelIntensity(QImage()),
-    normalmap(QImage()),
-    specmap(QImage()),
-    displacementmap(QImage()),
-    ssaomap(QImage())
+    lastCalctime_normal(0),
+    lastCalctime_specular(0),
+    lastCalctime_displace(0),
+    lastCalctime_ssao(0),
+    stopQueue(false)
 {
     ui->setupUi(this);
 
@@ -72,15 +71,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setRenderHints(QPainter::HighQualityAntialiasing
                                      | QPainter::SmoothPixmapTransform);
     ui->graphicsView->setAcceptDrops(true);
-
-    //initialize calctimes
-    lastCalctime_normal = 0;
-    lastCalctime_specular = 0;
-    lastCalctime_displace = 0;
-    lastCalctime_ssao = 0;
-
-    //initialize stopQueue flag
-    stopQueue = false;
 
     //show default status message
     ui->statusBar->showMessage("Drag images into the empty preview window to load them.");

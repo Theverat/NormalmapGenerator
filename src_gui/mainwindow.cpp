@@ -77,6 +77,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //hide queue progressbar
     ui->progressBar_Queue->hide();
+    
+    // SSAO map generator is not ready yet, remove it from the UI
+    ui->tabWidget->removeTab(4);
 
     //default UI colors
     useCustomUiColors = false;
@@ -910,6 +913,7 @@ void MainWindow::connectSignalSlots() {
     connect(ui->pushButton_calcSsao, SIGNAL(clicked()), this, SLOT(calcSsaoAndPreview()));
     //switch between tabs
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)), this, SLOT(preview(int)));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(preview(int)));
     //display channel intensity
     connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked(bool)), this, SLOT(preview()));
     connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked(bool)), ui->radioButton_displayRed, SLOT(setEnabled(bool)));

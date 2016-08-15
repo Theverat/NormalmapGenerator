@@ -615,7 +615,7 @@ void MainWindow::save(QUrl url) {
         QMessageBox::information(this, "Maps not saved", "One or more of the maps was NOT saved!");
     
     //store export path
-    setExportPath(url.adjusted(QUrl::RemoveFilename));
+    setExportPath(url.adjusted(QUrl::RemoveFilename | QUrl::StripTrailingSlash));
     //enable "Open Export Folder" gui button
     ui->pushButton_openExportFolder->setEnabled(true);
 }

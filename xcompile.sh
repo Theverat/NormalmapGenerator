@@ -22,8 +22,8 @@ case "$1" in
         make -j 8
 
         cd release
-        rm $PROJECTNAME_win64.zip
-        zip $PROJECTNAME_win64 $PROJECTNAME.exe
+        rm ${PROJECTNAME}_win64.zip
+        zip ${PROJECTNAME}_win64 ${PROJECTNAME}.exe
         cd ..
 
         # Cleanup
@@ -34,8 +34,8 @@ case "$1" in
         make -j 8
 
         cd release
-        rm $PROJECTNAME_win32.zip
-        zip $PROJECTNAME_win32 $PROJECTNAME.exe
+        rm ${PROJECTNAME}_win32.zip
+        zip ${PROJECTNAME}_win32 ${PROJECTNAME}.exe
         cd ..
         
         make clean

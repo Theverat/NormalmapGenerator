@@ -1,8 +1,14 @@
 #!/bin/bash
 # Cross-compiling script - generates Win 32bit static binaries
 # See https://stackoverflow.com/questions/10934683/how-do-i-configure-qt-for-cross-compilation-from-linux-to-windows-target/13211922#13211922
+# I built mxe with "make MXE_TARGETS=x86_64-w64-mingw32.static qt5"
 
-MXE_ROOT="/home/simon/Projekte/qt/mxe"
+# Get project name from current folder name
+# Has to match with the name of the compiled binaries!
+# Set it manually otherwise
+PROJECTNAME=${PWD##*/}
+
+MXE_ROOT="../mxe"
 
 export PATH=$MXE_ROOT/usr/bin:$PATH
 
@@ -16,8 +22,8 @@ case "$1" in
         make -j 8
 
         cd release
-        rm NormalmapGenerator_win64.zip
-        zip NormalmapGenerator_win64 NormalmapGenerator.exe
+        rm $PROJECTNAME_win64.zip
+        zip $PROJECTNAME_win64 $PROJECTNAME.exe
         cd ..
 
         # Cleanup
@@ -28,8 +34,8 @@ case "$1" in
         make -j 8
 
         cd release
-        rm NormalmapGenerator_win32.zip
-        zip NormalmapGenerator_win32 NormalmapGenerator.exe
+        rm $PROJECTNAME_win32.zip
+        zip $PROJECTNAME_win32 $PROJECTNAME.exe
         cd ..
         
         make clean

@@ -53,10 +53,10 @@ std::vector<double> GaussianBlur::boxesForGauss(double sigma, int n) {
     if(wl % 2 == 0)
         wl--;
 
-    int wu = wl + 2;
+    const int wu = wl + 2;
 
-    double mIdeal = (12 * sigma * sigma - n * wl * wl - 4 * n * wl - 3 * n) / (-4 * wl - 4);
-    int m = round(mIdeal);
+    const double mIdeal = (12 * sigma * sigma - n * wl * wl - 4 * n * wl - 3 * n) / (-4 * wl - 4);
+    const int m = round(mIdeal);
 
     std::vector<double> sizes;
 
@@ -77,8 +77,8 @@ void GaussianBlur::boxBlur(IntensityMap &input, IntensityMap &result, double rad
 }
 
 void GaussianBlur::boxBlurH(IntensityMap &input, IntensityMap &result, double radius, bool tileable) {
-    int width = input.getWidth();
-    int height = input.getHeight();
+    const int width = input.getWidth();
+    const int height = input.getHeight();
 
     #pragma omp parallel for  // OpenMP
     for(int i = 0; i < height; i++) {
@@ -86,7 +86,7 @@ void GaussianBlur::boxBlurH(IntensityMap &input, IntensityMap &result, double ra
             double val = 0.0;
 
             for(int ix = j - radius; ix < j + radius + 1; ix++) {
-                int x = handleEdges(ix, width, tileable);
+                const int x = handleEdges(ix, width, tileable);
                 val += input.at(x, i);
             }
 
@@ -96,8 +96,8 @@ void GaussianBlur::boxBlurH(IntensityMap &input, IntensityMap &result, double ra
 }
 
 void GaussianBlur::boxBlurT(IntensityMap &input, IntensityMap &result, double radius, bool tileable) {
-    int width = input.getWidth();
-    int height = input.getHeight();
+    const int width = input.getWidth();
+    const int height = input.getHeight();
 
     #pragma omp parallel for  // OpenMP
     for(int i = 0; i < height; i++) {
@@ -105,7 +105,7 @@ void GaussianBlur::boxBlurT(IntensityMap &input, IntensityMap &result, double ra
             double val = 0.0;
 
             for(int iy = i - radius; iy < i + radius + 1; iy++) {
-                int y = handleEdges(iy, height, tileable);
+                const int y = handleEdges(iy, height, tileable);
                 val += input.at(j, y);
             }
 

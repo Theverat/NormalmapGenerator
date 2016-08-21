@@ -39,8 +39,8 @@ public:
     double at(int pos) const;
     void setValue(int x, int y, double value);
     void setValue(int pos, double value);
-    int getWidth() const;
-    int getHeight() const;
+    size_t getWidth() const;
+    size_t getHeight() const;
     void invert();
     QImage convertToQImage() const;
 

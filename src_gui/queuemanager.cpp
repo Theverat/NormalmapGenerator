@@ -21,6 +21,6 @@
 
 #include "queuemanager.h"
 
-QueueManager::QueueManager(QListWidget *queue)
+QueueManager::QueueManager(QListWidget *queue) : queue(queue)
 {
 }

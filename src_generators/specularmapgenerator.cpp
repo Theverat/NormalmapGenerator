@@ -53,6 +53,11 @@ QImage SpecularmapGenerator::calculateSpecmap(const QImage &input, double scale,
         
         contrastLookup[i] = (unsigned short)newValue;
     }
+    
+    // This is outside of the loop because the multipliers are the same for every pixel
+    double multiplierSum = (redMultiplier + greenMultiplier + blueMultiplier + alphaMultiplier);
+    if(multiplierSum == 0.0)
+        multiplierSum = 1.0;
 
     #pragma omp parallel for  // OpenMP
     //for every row of the image
@@ -61,35 +66,30 @@ QImage SpecularmapGenerator::calculateSpecmap(const QImage &input, double scale,
 
         //for every column of the image
         for(int x = 0; x < result.width(); x++) {
-            double r, g, b, a;
             double intensity = 0.0;
 
-            QColor pxColor = QColor(input.pixel(x, y));
+            const QColor pxColor = QColor(input.pixel(x, y));
 
-            r = pxColor.redF() * redMultiplier;
-            g = pxColor.greenF() * greenMultiplier;
-            b = pxColor.blueF() * blueMultiplier;
-            a = pxColor.alphaF() * alphaMultiplier;
+            const double r = pxColor.redF() * redMultiplier;
+            const double g = pxColor.greenF() * greenMultiplier;
+            const double b = pxColor.blueF() * blueMultiplier;
+            const double a = pxColor.alphaF() * alphaMultiplier;
 
             if(mode == IntensityMap::AVERAGE) {
                 //take the average out of all selected channels
-                double multiplierSum = (redMultiplier + greenMultiplier + blueMultiplier + alphaMultiplier);
-
-                if(multiplierSum == 0.0)
-                    multiplierSum = 1.0;
-
                 intensity = (r + g + b + a) / multiplierSum;
             }
             else if(mode == IntensityMap::MAX) {
                 //take the maximum out of all selected channels
-                double tempMaxRG = std::max(r, g);
-                double tempMaxBA = std::max(b, a);
+                const double tempMaxRG = std::max(r, g);
+                const double tempMaxBA = std::max(b, a);
                 intensity = std::max(tempMaxRG, tempMaxBA);
             }
 
             //apply scale (brightness)
             intensity *= scale;
 
+            //clamp
             if(intensity > 1.0)
                 intensity = 1.0;
 

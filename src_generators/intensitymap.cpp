@@ -40,13 +40,12 @@ IntensityMap::IntensityMap(const QImage& rgbImage, Mode mode, bool useRed, bool 
     for(int y = 0; y < rgbImage.height(); y++) {
         //for every column of the image
         for(int x = 0; x < rgbImage.width(); x++) {
-            double r, g, b, a;
             double intensity = 0.0;
 
-            r = QColor(rgbImage.pixel(x, y)).redF();
-            g = QColor(rgbImage.pixel(x, y)).greenF();
-            b = QColor(rgbImage.pixel(x, y)).blueF();
-            a = QColor(rgbImage.pixel(x, y)).alphaF();
+            const double r = QColor(rgbImage.pixel(x, y)).redF();
+            const double g = QColor(rgbImage.pixel(x, y)).greenF();
+            const double b = QColor(rgbImage.pixel(x, y)).blueF();
+            const double  a = QColor(rgbImage.pixel(x, y)).alphaF();
 
             if(mode == AVERAGE) {
                 //take the average out of all selected channels
@@ -76,22 +75,12 @@ IntensityMap::IntensityMap(const QImage& rgbImage, Mode mode, bool useRed, bool 
             }
             else if(mode == MAX) {
                 //take the maximum out of all selected channels
-                double tempR = r;
-                double tempG = g;
-                double tempB = b;
-                double tempA = a;
-
-                if(!useRed)
-                    tempR = 0.0;
-                if(!useGreen)
-                    tempG = 0.0;
-                if(!useBlue)
-                    tempB = 0.0;
-                if(!useAlpha)
-                    tempA = 0.0;
-
-                double tempMaxRG = std::max(tempR, tempG);
-                double tempMaxBA = std::max(tempB, tempA);
+                const double tempR = useRed ? r : 0.0;
+                const double tempG = useGreen ? g : 0.0;
+                const double tempB = useBlue ? b : 0.0;
+                const double tempA = useAlpha ? a : 0.0;
+                const double tempMaxRG = std::max(tempR, tempG);
+                const double tempMaxBA = std::max(tempB, tempA);
                 intensity = std::max(tempMaxRG, tempMaxBA);
             }
 
@@ -106,8 +95,8 @@ double IntensityMap::at(int x, int y) const {
 }
 
 double IntensityMap::at(int pos) const {
-    int x = pos % this->getWidth();
-    int y = pos / this->getWidth();
+    const int x = pos % this->getWidth();
+    const int y = pos / this->getWidth();
 
     return this->at(x, y);
 }
@@ -117,25 +106,25 @@ void IntensityMap::setValue(int x, int y, double value) {
 }
 
 void IntensityMap::setValue(int pos, double value) {
-    int x = pos % this->getWidth();
-    int y = pos / this->getWidth();
+    const int x = pos % this->getWidth();
+    const int y = pos / this->getWidth();
 
     this->map.at(y).at(x) = value;
 }
 
-int IntensityMap::getWidth() const {
+size_t IntensityMap::getWidth() const {
     return this->map.at(0).size();
 }
 
-int IntensityMap::getHeight() const {
+size_t IntensityMap::getHeight() const {
     return this->map.size();
 }
 
 void IntensityMap::invert() {
     #pragma omp parallel for
-    for(unsigned int y = 0; y < this->map.size(); y++) {
-        for(unsigned int x = 0; x < this->map.at(0).size(); x++) {
-            double inverted = 1.0 - this->map.at(y).at(x);
+    for(int y = 0; y < this->getHeight(); y++) {
+        for(int x = 0; x < this->getWidth(); x++) {
+            const double inverted = 1.0 - this->map.at(y).at(x);
             this->map.at(y).at(x) = inverted;
         }
     }
@@ -148,7 +137,7 @@ QImage IntensityMap::convertToQImage() const {
         QRgb *scanline = (QRgb*) result.scanLine(y);
 
         for(int x = 0; x < this->getWidth(); x++) {
-            int c = 255 * map.at(y).at(x);
+            const int c = 255 * map.at(y).at(x);
             scanline[x] = qRgba(c, c, c, 255);
         }
     }

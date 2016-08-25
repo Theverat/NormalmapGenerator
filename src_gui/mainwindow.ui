@@ -312,26 +312,39 @@
            <attribute name="title">
             <string>Input Image</string>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <layout class="QHBoxLayout" name="horizontalLayout_16">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_9">
-              <item>
-               <widget class="QCheckBox" name="checkBox_displayChannelIntensity">
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="1" column="5">
+               <widget class="QRadioButton" name="radioButton_displayAlpha">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>Display Channel:</string>
+                 <string>A</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">buttonGroup_displayChannelIntensity</string>
+                </attribute>
                </widget>
               </item>
-              <item>
-               <widget class="QRadioButton" name="radioButton_displayRed">
+              <item row="1" column="4">
+               <widget class="QRadioButton" name="radioButton_displayBlue">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>Red</string>
+                 <string>B</string>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">buttonGroup_displayChannelIntensity</string>
+                </attribute>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QRadioButton" name="radioButton_displayRGBA">
+                <property name="text">
+                 <string>All</string>
                 </property>
                 <property name="checked">
                  <bool>true</bool>
@@ -341,46 +354,46 @@
                 </attribute>
                </widget>
               </item>
-              <item>
+              <item row="0" column="1">
+               <widget class="ClickableLabel" name="label_channelRGBA">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>rgba</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="ClickableLabel" name="label_channelRed">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>red</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
                <widget class="QRadioButton" name="radioButton_displayGreen">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text">
-                 <string>Green</string>
+                 <string>G</string>
                 </property>
                 <attribute name="buttonGroup">
                  <string notr="true">buttonGroup_displayChannelIntensity</string>
                 </attribute>
                </widget>
               </item>
-              <item>
-               <widget class="QRadioButton" name="radioButton_displayBlue">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>Blue</string>
-                </property>
-                <attribute name="buttonGroup">
-                 <string notr="true">buttonGroup_displayChannelIntensity</string>
-                </attribute>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="radioButton_displayAlpha">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>Alpha</string>
-                </property>
-                <attribute name="buttonGroup">
-                 <string notr="true">buttonGroup_displayChannelIntensity</string>
-                </attribute>
-               </widget>
-              </item>
-              <item>
+              <item row="0" column="6">
                <spacer name="horizontalSpacer_9">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -393,22 +406,67 @@
                 </property>
                </spacer>
               </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_10">
-              <item>
-               <spacer name="horizontalSpacer_10">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
+              <item row="0" column="5">
+               <widget class="ClickableLabel" name="label_channelAlpha">
+                <property name="minimumSize">
                  <size>
-                  <width>40</width>
-                  <height>20</height>
+                  <width>50</width>
+                  <height>0</height>
                  </size>
                 </property>
-               </spacer>
+                <property name="text">
+                 <string>alpha</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="4">
+               <widget class="ClickableLabel" name="label_channelBlue">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>blue</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="ClickableLabel" name="label_channelGreen">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>green</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QRadioButton" name="radioButton_displayRed">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>R</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">buttonGroup_displayChannelIntensity</string>
+                </attribute>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_26">
+                <property name="text">
+                 <string>View Channel:</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -1608,6 +1666,11 @@
    <class>ListWidget</class>
    <extends>QListWidget</extends>
    <header>src_gui/listwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>src_gui/clickablelabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

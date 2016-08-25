@@ -211,9 +211,21 @@ bool MainWindow::load(QUrl url) {
     ui->pushButton_calcSpec->setEnabled(true);
     ui->pushButton_calcDisplace->setEnabled(true);
     ui->pushButton_calcSsao->setEnabled(true);
-    ui->checkBox_displayChannelIntensity->setEnabled(true);
     ui->spinBox_normalmapSize->setEnabled(true);
     enableAutoupdate(true);
+    
+    //extract R/G/B/A channels
+    const int h = ui->label_channelRed->height();
+    QImage inputSmall(input.scaled(h, h, Qt::KeepAspectRatio));
+    IntensityMap red(inputSmall, IntensityMap::MAX, true, false, false, false);
+    IntensityMap green(inputSmall, IntensityMap::MAX, false, true, false, false);
+    IntensityMap blue(inputSmall, IntensityMap::MAX, false, false, true, false);
+    IntensityMap alpha(inputSmall, IntensityMap::MAX, false, false, false, true);
+    ui->label_channelRGBA->setPixmap(QPixmap::fromImage(inputSmall));
+    ui->label_channelRed->setPixmap(QPixmap::fromImage(red.convertToQImage()));
+    ui->label_channelGreen->setPixmap(QPixmap::fromImage(green.convertToQImage()));
+    ui->label_channelBlue->setPixmap(QPixmap::fromImage(blue.convertToQImage()));
+    ui->label_channelAlpha->setPixmap(QPixmap::fromImage(alpha.convertToQImage()));
     
     //algorithm to find best settings for KeepLargeDetail
     int imageSize = std::max(input.width(), input.height());
@@ -241,7 +253,7 @@ bool MainWindow::load(QUrl url) {
     ssaomap = QImage();
 
     //display single image channels if the option was already chosen
-    if(ui->checkBox_displayChannelIntensity->isChecked())
+    if(ui->radioButton_displayRGBA->isChecked())
         displayChannelIntensity();
     else
         preview(0);
@@ -671,13 +683,15 @@ void MainWindow::preview(int tab) {
     case 0:
     {
         //input
-        if(ui->checkBox_displayChannelIntensity->isChecked() && !input.isNull()) {
-            QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(channelIntensity));
-            pixmap->setTransformationMode(Qt::SmoothTransformation);
-        }
-        else {
-            QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(input));
-            pixmap->setTransformationMode(Qt::SmoothTransformation);
+        if(!input.isNull()) {
+            if(ui->radioButton_displayRGBA->isChecked()) {
+                QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(input));
+                pixmap->setTransformationMode(Qt::SmoothTransformation);
+            }
+            else {
+                QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(channelIntensity));
+                pixmap->setTransformationMode(Qt::SmoothTransformation);
+            }
         }
         break;
     }
@@ -915,17 +929,18 @@ void MainWindow::connectSignalSlots() {
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)), this, SLOT(preview(int)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(preview(int)));
     //display channel intensity
-    connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked(bool)), this, SLOT(preview()));
-    connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked(bool)), ui->radioButton_displayRed, SLOT(setEnabled(bool)));
-    connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked(bool)), ui->radioButton_displayGreen, SLOT(setEnabled(bool)));
-    connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked(bool)), ui->radioButton_displayBlue, SLOT(setEnabled(bool)));
-    connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked(bool)), ui->radioButton_displayAlpha, SLOT(setEnabled(bool)));
-
+    //radio buttons
+    connect(ui->radioButton_displayRGBA, SIGNAL(clicked()), this, SLOT(displayChannelIntensity()));
     connect(ui->radioButton_displayRed, SIGNAL(clicked()), this, SLOT(displayChannelIntensity()));
     connect(ui->radioButton_displayGreen, SIGNAL(clicked()), this, SLOT(displayChannelIntensity()));
     connect(ui->radioButton_displayBlue, SIGNAL(clicked()), this, SLOT(displayChannelIntensity()));
     connect(ui->radioButton_displayAlpha, SIGNAL(clicked()), this, SLOT(displayChannelIntensity()));
-    connect(ui->checkBox_displayChannelIntensity, SIGNAL(clicked()), this, SLOT(displayChannelIntensity()));
+    //labels (channel images)
+    connect(ui->label_channelRGBA, SIGNAL(clicked()), ui->radioButton_displayRGBA, SLOT(click()));
+    connect(ui->label_channelRed, SIGNAL(clicked()), ui->radioButton_displayRed, SLOT(click()));
+    connect(ui->label_channelGreen, SIGNAL(clicked()), ui->radioButton_displayGreen, SLOT(click()));
+    connect(ui->label_channelBlue, SIGNAL(clicked()), ui->radioButton_displayBlue, SLOT(click()));
+    connect(ui->label_channelAlpha, SIGNAL(clicked()), ui->radioButton_displayAlpha, SLOT(click()));
     //autoupdate after changed values
     // spec autoupdate
     connect(ui->doubleSpinBox_spec_redMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));

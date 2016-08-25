@@ -56,7 +56,8 @@ HEADERS  += src_gui/mainwindow.h \
     src_generators/boxblur.h \
     src_generators/ssaogenerator.h \
     src_gui/aboutdialog.h \
-    src_gui/listwidget.h
+    src_gui/listwidget.h \
+    src_gui/clickablelabel.h
 
 FORMS    += src_gui/mainwindow.ui \
     src_gui/aboutdialog.ui

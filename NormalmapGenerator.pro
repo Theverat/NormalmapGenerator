@@ -78,3 +78,4 @@ win32:RC_FILE = resources.rc
 
 RESOURCES += \
     stylesheets.qrc \
+    others.qrc

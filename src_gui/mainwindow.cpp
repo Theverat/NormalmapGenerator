@@ -899,8 +899,11 @@ void MainWindow::normalmapSizeChanged() {
     ui->label_normalmapSize->setText(text);
 }
 
+// Used to scale down the input image if a value less than 100 
+// is set in spinBox_normalmapSize. We have to make sure size is at least 1
 int MainWindow::calcPercentage(int value, int percentage) {
-    return (int) (((double)value / 100.0) * percentage);
+    const int newValue = (((double)value / 100.0) * percentage);
+    return std::max(newValue, 1);
 }
 
 void MainWindow::showAboutDialog() {

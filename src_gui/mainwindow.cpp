@@ -185,7 +185,7 @@ bool MainWindow::load(QUrl url) {
 
     //load the image
     input = QImage(url.toLocalFile());
-
+    ui->openGLWidget->addDiffuse(input);
     if(input.isNull()) {
         QString errorMessage("Image not loaded!");
 
@@ -332,6 +332,8 @@ void MainWindow::calcNormal() {
     NormalmapGenerator normalmapGenerator(mode, useRed, useGreen, useBlue, useAlpha);
     normalmap = normalmapGenerator.calculateNormalmap(inputScaled, kernel, strength, invert, tileable, keepLargeDetail, largeDetailScale, largeDetailHeight);
     normalmapRawIntensity = normalmapGenerator.getIntensityMap().convertToQImage();
+
+    ui->openGLWidget->addNormal(normalmap);
 }
 
 void MainWindow::calcSpec() {
@@ -391,6 +393,8 @@ void MainWindow::calcDisplace() {
         IntensityMap outputMap = filter.calculate(inputMap, radius, tileable);
         displacementmap = outputMap.convertToQImage();
     }
+
+    ui->openGLWidget->addDisplacement(displacementmap);
 }
 
 void MainWindow::calcSsao() {
@@ -867,10 +871,10 @@ void MainWindow::enableAutoupdate(bool on) {
 void MainWindow::addImageToQueue(QUrl url) {
     QueueItem *item = new QueueItem(url, url.fileName(), ui->listWidget_queue, 0);
 
-    QIcon icon(QPixmap(url.toLocalFile()).scaled(64, 64, Qt::KeepAspectRatio));
-    item->setIcon(icon);
+    //QIcon icon(QPixmap(url.toLocalFile()).scaled(64, 64, Qt::KeepAspectRatio));
+    //item->setIcon(icon);
 
-    ui->listWidget_queue->addItem(item);
+    //ui->listWidget_queue->addItem(item);
 }
 
 //add multiple images to queue
@@ -1107,7 +1111,6 @@ void MainWindow::readSettings()
     qsettings.endGroup();
 }
 
-
 void MainWindow::setUiColors() {
     if(useCustomUiColors) {
         QFile file(":/stylesheets/resources/stylesheets/theme_dark.qss");
@@ -1198,4 +1201,20 @@ void MainWindow::resetUiColors() {
     setUiColors();
 }
 
+void MainWindow::on_horizontalSlider_valueChanged(int value)
+{
+    if(value != 50)
+        value -= 50;
+    else value = 1;
+    ui->openGLWidget->setDepthValue(float(value) / 5.0f);
+}
 
+void MainWindow::on_horizontalSlider_2_valueChanged(int value)
+{
+    ui->openGLWidget->setPartitionFrequency(value);
+}
+
+void MainWindow::on_checkBox_clicked(bool checked)
+{
+    ui->openGLWidget->setRotating(checked);
+}

@@ -134,6 +134,9 @@ private slots:
     void queueItemDoubleClicked(QListWidgetItem *item);
     void normalmapSizeChanged();
     void showAboutDialog();
+    void on_horizontalSlider_valueChanged(int value);
+    void on_horizontalSlider_2_valueChanged(int value);
+    void on_checkBox_clicked(bool checked);
 };
 
 #endif // MAINWINDOW_H

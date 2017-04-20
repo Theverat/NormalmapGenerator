@@ -42,7 +42,13 @@ SOURCES += main.cpp\
     src_generators/boxblur.cpp \
     src_generators/ssaogenerator.cpp \
     src_gui/aboutdialog.cpp \
-    src_gui/listwidget.cpp
+    src_gui/listwidget.cpp \
+    src_viewer/camera.cpp \
+    src_viewer/light.cpp \
+    src_viewer/scene.cpp \
+    src_viewer/transform.cpp \
+    src_viewer/window.cpp
+
 
 HEADERS  += src_gui/mainwindow.h \
     src_generators/intensitymap.h \
@@ -57,7 +63,13 @@ HEADERS  += src_gui/mainwindow.h \
     src_generators/ssaogenerator.h \
     src_gui/aboutdialog.h \
     src_gui/listwidget.h \
-    src_gui/clickablelabel.h
+    src_gui/clickablelabel.h \
+    src_viewer/camera.h \
+    src_viewer/light.h \
+    src_viewer/scene.h \
+    src_viewer/transform.h \
+    src_viewer/vertex.h \
+    src_viewer/window.h
 
 FORMS    += src_gui/mainwindow.ui \
     src_gui/aboutdialog.ui
@@ -65,4 +77,5 @@ FORMS    += src_gui/mainwindow.ui \
 win32:RC_FILE = resources.rc
 
 RESOURCES += \
-    stylesheets.qrc
+    stylesheets.qrc \
+    others.qrc

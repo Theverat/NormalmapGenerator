@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/shaders">
+        <file>shader.frag</file>
+        <file>shader.geom</file>
+        <file>shader.tessc</file>
+        <file>shader.tesse</file>
+        <file>shader.vert</file>
+    </qresource>
+</RCC>

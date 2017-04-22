@@ -12,6 +12,7 @@ out TSE_OUT
 
 uniform sampler2D displacementMap;
 uniform float depth;
+uniform bool applyingDisplacement;
 
 bool lowerToEdge(vec2 a)
 {
@@ -40,8 +41,9 @@ void main(void)
     // find height and set it to zero if we are too close to the edge
     float height = texture(displacementMap, tseOut.tc).r;
     if(lowerToEdge(tseOut.tc))
-        height = 0;
-
+        height = 0.0;
+    if(!applyingDisplacement)
+        height = 0.0;
     // applay new height
     p += vec4(normal, 0.0) * height * depth;
     gl_Position = p;

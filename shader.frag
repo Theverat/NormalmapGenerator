@@ -19,6 +19,10 @@ uniform sampler2D diffuseMap;
 uniform sampler2D normalMap;
 uniform sampler2D specularMap;
 
+uniform bool applyingDiffuse;
+uniform bool applyingSpecular;
+uniform bool applyingNormal;
+
 uniform vec3 cameraPos;
 
 struct Light
@@ -35,7 +39,10 @@ uniform Light light;
 
 vec4 lightFactorNormal()
 {
-    vec3 bumpMapNormal = texture(normalMap, fsIn.tc).xyz;
+    vec3 bumpMapNormal;
+    if(applyingNormal)
+        bumpMapNormal = texture(normalMap, fsIn.tc).xyz;
+    else bumpMapNormal = vec3(0.0, 0.0, 1.0);
     bumpMapNormal = 2.0 * bumpMapNormal - vec3(1.0);
     bumpMapNormal = fsIn.tbn * bumpMapNormal;
     float factor = dot(bumpMapNormal, light.Direction);
@@ -51,17 +58,22 @@ vec4 lightFactorNormal()
 
 vec4 lightFactorSpecular()
 {
-    vec3 dir = normalize(light.Direction);
-    vec3 lightPosition = 100.0 * (-light.Direction);
-    vec3 incidenceVector = normalize(fsIn.position.xyz - lightPosition);
-    vec3 reflectionVector = reflect(incidenceVector, fsIn.normal);
-    vec3 surfaceToCamera = normalize(cameraPos - fsIn.position.xyz);
-    float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
-    float specularCoefficient = pow(cosAngle, light.MatShines);
-    vec4 specularComponent = specularCoefficient *
-                             texture(specularMap, fsIn.tc) *
-                             light.SpecPower;
-    return specularComponent;
+    if(applyingSpecular)
+    {
+        vec3 dir = normalize(light.Direction);
+        vec3 lightPosition = 100.0 * (-light.Direction);
+        vec3 incidenceVector = normalize(fsIn.position.xyz - lightPosition);
+        vec3 reflectionVector = reflect(incidenceVector, fsIn.normal);
+        vec3 surfaceToCamera = normalize(cameraPos - fsIn.position.xyz);
+        float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
+        float specularCoefficient = pow(cosAngle, light.MatShines);
+        vec4 specularComponent = specularCoefficient *
+                                 texture(specularMap, fsIn.tc) *
+                                 light.SpecPower;
+        return specularComponent;
+    }
+    else
+        return vec4(0.0, 0.0, 0.0, 0.0);
 }
 
 
@@ -70,7 +82,12 @@ void main()
     gl_FragDepth = fsIn.depth;
     vec4 diffuseLight = lightFactorNormal();
     vec4 specularLight = lightFactorSpecular();
-    fColor = texture(diffuseMap, fsIn.tc) *
+    vec4 textureColor;
+    if(applyingDiffuse)
+        textureColor = texture(diffuseMap, fsIn.tc);
+    else
+        textureColor = vec4(0.7, 0.7, 0.7, 1.0);
+    fColor = textureColor *
             (diffuseLight +
              specularLight +
              light.AmbientIntensity);

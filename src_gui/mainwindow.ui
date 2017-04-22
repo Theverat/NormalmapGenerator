@@ -1799,6 +1799,70 @@
             <string>Roughness</string>
            </property>
           </widget>
+          <widget class="QCheckBox" name="applyDiffuse">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>0</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Diffuse map</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="applyNormal">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>20</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Normal map</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="applySpecular">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>40</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Specular map</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="applyDisplacement">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>60</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Displacement map</string>
+           </property>
+          </widget>
          </widget>
         </item>
         <item>

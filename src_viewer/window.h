@@ -42,6 +42,11 @@ public:
     void setRotating(bool value);
 
     void setRoughness(float value);
+
+    void setApplyingDiffuse(bool value);
+    void setApplyingNormal(bool value);
+    void setApplyingSpecular(bool value);
+    void setApplyingDisplacement(bool value);
 signals:
     void compiledShaders(bool success);
 protected:
@@ -88,6 +93,11 @@ private:
 
     GLuint u_depth;
     GLuint u_partFreq;
+
+    GLuint u_applyingDiffuse;
+    GLuint u_applyingNormal;
+    GLuint u_applyingSpecular;
+    GLuint u_applyingDisplacement;
 
     QOpenGLTexture *diffuseMap;
     QOpenGLTexture *displacementMap;

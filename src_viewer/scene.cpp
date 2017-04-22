@@ -45,11 +45,6 @@ void Scene::changeProjection(int width, int height)
     projection.perspective(45.0f, width / float(height), 0.0f, 1000.0f);
 }
 
-bool Scene::isReady()
-{
-    return ready;
-}
-
 const QMatrix4x4 &Scene::getModelToWorldMatrix()
 {
     return transform.toMatrix();
@@ -68,29 +63,21 @@ const QMatrix4x4 &Scene::getCameraToViewMatrix()
 void Scene::addDiffuseMap(QImage &diffuseMap, QOpenGLShaderProgram &program)
 {
     diffuse = QImage(diffuseMap);
-    diffuseMapStored = true;
-    ready = checkForReady();
 }
 
 void Scene::addDisplacementMap(QImage &displacementMap, QOpenGLShaderProgram &program)
 {
     displacement = QImage(displacementMap);
-    displacementMapStored = true;
-    ready = checkForReady();
 }
 
 void Scene::addNormalMap(QImage &normalMap, QOpenGLShaderProgram &program)
 {
     normal = QImage(normalMap);
-    normalMapStored = true;
-    ready = checkForReady();
 }
 
 void Scene::addSpecularMap(QImage &specularMap, QOpenGLShaderProgram &program)
 {
     specular = QImage(specularMap);
-    specularMapStored = true;
-    ready = checkForReady();
 }
 
 void Scene::calculateVertices()
@@ -151,10 +138,10 @@ void Scene::calculateVertices()
 
 bool Scene::checkForReady()
 {
-    return (diffuseMapStored &&
-            displacementMapStored &&
-            normalMapStored &&
-            specularMapStored);
+    return (applyingDiffuse ||
+            applyingDisplacement ||
+            applyingNormal ||
+            applyingSpecular);
 }
 
 

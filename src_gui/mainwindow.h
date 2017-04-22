@@ -138,6 +138,10 @@ private slots:
     void on_horizontalSlider_2_valueChanged(int value);
     void on_checkBox_clicked(bool checked);
     void on_horizontalSlider_3_valueChanged(int value);
+    void on_applyDiffuse_clicked(bool checked);
+    void on_applyNormal_clicked(bool checked);
+    void on_applySpecular_clicked(bool checked);
+    void on_applyDisplacement_clicked(bool checked);
 };
 
 #endif // MAINWINDOW_H

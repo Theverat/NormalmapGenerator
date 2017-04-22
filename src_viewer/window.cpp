@@ -79,6 +79,11 @@ void Window::initializeGL()
     u_depth = program->uniformLocation("depth");
     u_partFreq = program->uniformLocation("partFreq");
 
+    u_applyingDiffuse         = program->uniformLocation("applyingDiffuse");
+    u_applyingNormal          = program->uniformLocation("applyingNormal");
+    u_applyingSpecular        = program->uniformLocation("applyingSpecular");
+    u_applyingDisplacement    = program->uniformLocation("applyingDisplacement");
+
     // Create Buffer for vao
     bufferForVertices.create();
     bufferForVertices.bind();
@@ -205,26 +210,30 @@ void Window::paintGL()
     glClear(GL_DEPTH_BUFFER_BIT);
     program->bind();
 
-    if(scene.isReady())
+    if(scene.checkForReady())
     {        
+        if(scene.applyingDiffuse)
         // diffuse map attaching
         {
             glActiveTexture(GL_TEXTURE0);
             this->diffuseMap->bind();
             glUniform1i(program->uniformLocation("diffuseMap"), 0);
         }
+        if(scene.applyingDisplacement)
         // displacement map attaching
         {
             glActiveTexture(GL_TEXTURE1);
             this->displacementMap->bind();
             glUniform1i(program->uniformLocation("displacementMap"), 1);
         }
+        if(scene.applyingNormal)
         // normal map attaching
         {
             glActiveTexture(GL_TEXTURE2);
             this->normalMap->bind();
             glUniform1i(program->uniformLocation("normalMap"), 2);
         }
+        if(scene.applyingSpecular)
         // specular map attaching
         {
             glActiveTexture(GL_TEXTURE3);
@@ -232,11 +241,17 @@ void Window::paintGL()
             glUniform1i(program->uniformLocation("specularMap"), 3);
         }
         vao.bind();
+
         glDrawArrays(GL_PATCHES, 0, sizeof(scene.vertices) / sizeof(scene.vertices[0]));
-        this->diffuseMap->release();
-        this->displacementMap->release();
-        this->normalMap->release();
-        this->specularMap->release();
+
+        if(scene.applyingDiffuse)
+            this->diffuseMap->release();
+        if(scene.applyingDisplacement)
+            this->displacementMap->release();
+        if(scene.applyingNormal)
+            this->normalMap->release();
+        if(scene.applyingSpecular)
+            this->specularMap->release();
         vao.release();
     }
     program->release();
@@ -255,6 +270,8 @@ void Window::addDisplacement(QImage &displacementMap)
     this->displacementMap = new QOpenGLTexture(scene.getDisplacement().mirrored());
     this->displacementMap->setMinificationFilter(QOpenGLTexture::Linear);
     this->displacementMap->setMagnificationFilter(QOpenGLTexture::Linear);
+
+    setApplyingDisplacement(true);
 }
 
 void Window::addDiffuse(QImage &diffuseMap)
@@ -263,6 +280,8 @@ void Window::addDiffuse(QImage &diffuseMap)
     this->diffuseMap = new QOpenGLTexture(scene.getDiffuse().mirrored());
     this->diffuseMap->setMinificationFilter(QOpenGLTexture::Linear);
     this->diffuseMap->setMagnificationFilter(QOpenGLTexture::Linear);
+
+    setApplyingDiffuse(true);
 }
 
 void Window::addNormal(QImage &normalMap)
@@ -271,6 +290,8 @@ void Window::addNormal(QImage &normalMap)
     this->normalMap = new QOpenGLTexture(scene.getNormal().mirrored());
     this->normalMap->setMinificationFilter(QOpenGLTexture::Linear);
     this->normalMap->setMagnificationFilter(QOpenGLTexture::Linear);
+
+    setApplyingNormal(true);
 }
 
 void Window::addSpecular(QImage &specularMap)
@@ -279,6 +300,8 @@ void Window::addSpecular(QImage &specularMap)
     this->specularMap = new QOpenGLTexture(scene.getSpecular().mirrored());
     this->specularMap->setMinificationFilter(QOpenGLTexture::Linear);
     this->specularMap->setMagnificationFilter(QOpenGLTexture::Linear);
+
+    setApplyingSpecular(true);
 }
 
 void Window::setDepthValue(float newDepth)
@@ -310,5 +333,37 @@ void Window::setRoughness(float value)
 
     program->bind();
     program->setUniformValue(u_lightMatShiness, light.MatertialShines());
+    program->release();
+}
+
+void Window::setApplyingDiffuse(bool value)
+{
+    scene.applyingDiffuse = value;
+    program->bind();
+    program->setUniformValue(u_applyingDiffuse, scene.applyingDiffuse);
+    program->release();
+}
+
+void Window::setApplyingNormal(bool value)
+{
+    scene.applyingNormal = value;
+    program->bind();
+    program->setUniformValue(u_applyingNormal, scene.applyingNormal);
+    program->release();
+}
+
+void Window::setApplyingSpecular(bool value)
+{
+    scene.applyingSpecular = value;
+    program->bind();
+    program->setUniformValue(u_applyingSpecular, scene.applyingSpecular);
+    program->release();
+}
+
+void Window::setApplyingDisplacement(bool value)
+{
+    scene.applyingDisplacement = value;
+    program->bind();
+    program->setUniformValue(u_applyingDisplacement, scene.applyingDisplacement);
     program->release();
 }

@@ -185,7 +185,21 @@ bool MainWindow::load(QUrl url) {
 
     //load the image
     input = QImage(url.toLocalFile());
+
+    ui->openGLWidget->setApplyingDisplacement(false);
+    ui->openGLWidget->setApplyingSpecular(false);
+    ui->openGLWidget->setApplyingNormal(false);
+    ui->applyDisplacement->setEnabled(false);
+    ui->applyNormal->setEnabled(false);
+    ui->applySpecular->setEnabled(false);
+    ui->applyDisplacement->setChecked(false);
+    ui->applyNormal->setChecked(false);
+    ui->applySpecular->setChecked(false);
+
     ui->openGLWidget->addDiffuse(input);
+    ui->applyDiffuse->setEnabled(true);
+    ui->applyDiffuse->setChecked(true);
+
     if(input.isNull()) {
         QString errorMessage("Image not loaded!");
 
@@ -334,6 +348,8 @@ void MainWindow::calcNormal() {
     normalmapRawIntensity = normalmapGenerator.getIntensityMap().convertToQImage();
 
     ui->openGLWidget->addNormal(normalmap);
+    ui->applyNormal->setEnabled(true);
+    ui->applyNormal->setChecked(true);
 }
 
 void MainWindow::calcSpec() {
@@ -359,6 +375,8 @@ void MainWindow::calcSpec() {
     SpecularmapGenerator specularmapGenerator(mode, redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
     specmap = specularmapGenerator.calculateSpecmap(input, scale, contrast);
     ui->openGLWidget->addSpecular(specmap);
+    ui->applySpecular->setEnabled(true);
+    ui->applySpecular->setChecked(true);
 }
 
 //the displacement map is generated with the specularmapGenerator (similar controls and output needed)
@@ -396,6 +414,8 @@ void MainWindow::calcDisplace() {
     }
 
     ui->openGLWidget->addDisplacement(displacementmap);
+    ui->applyDisplacement->setEnabled(true);
+    ui->applyDisplacement->setChecked(true);
 }
 
 void MainWindow::calcSsao() {
@@ -1222,4 +1242,24 @@ void MainWindow::on_checkBox_clicked(bool checked)
 void MainWindow::on_horizontalSlider_3_valueChanged(int value)
 {
     ui->openGLWidget->setRoughness(float(value));
+}
+
+void MainWindow::on_applyDiffuse_clicked(bool checked)
+{
+    ui->openGLWidget->setApplyingDiffuse(checked);
+}
+
+void MainWindow::on_applyNormal_clicked(bool checked)
+{
+    ui->openGLWidget->setApplyingNormal(checked);
+}
+
+void MainWindow::on_applySpecular_clicked(bool checked)
+{
+    ui->openGLWidget->setApplyingSpecular(checked);
+}
+
+void MainWindow::on_applyDisplacement_clicked(bool checked)
+{
+    ui->openGLWidget->setApplyingDisplacement(checked);
 }

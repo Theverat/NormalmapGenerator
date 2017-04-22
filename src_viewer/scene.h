@@ -50,7 +50,6 @@ public:
 
     void initializeSceneOpenGLFunctions();
     void changeProjection(int width, int height);
-    bool isReady();
 
 
     // transformation matrice getters
@@ -71,31 +70,28 @@ public:
     QImage &getNormal()         { return normal; }
     QImage &getSpecular()       { return specular; }
 
+    // flags for textures
+    bool applyingDiffuse       = false;
+    bool applyingDisplacement  = false;
+    bool applyingNormal        = false;
+    bool applyingSpecular      = false;
+
     // vertices
     Vertex vertices[2400];
     void calculateVertices();
+
+    bool checkForReady();
 private:
     // transformation matrice
     Camera camera;
     Transform transform;
     QMatrix4x4 projection;
 
-    // set to true when all needed maps are here
-    bool ready = false;
-    bool checkForReady();
-
-
     // Textures
     QImage diffuse;
     QImage displacement;
     QImage normal;
     QImage specular;
-
-    // flags for textures
-    bool diffuseMapStored       = false;
-    bool displacementMapStored  = false;
-    bool normalMapStored        = false;
-    bool specularMapStored      = false;
 };
 
 

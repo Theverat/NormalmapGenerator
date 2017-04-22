@@ -38,7 +38,7 @@ vec4 lightFactorNormal()
     vec3 bumpMapNormal = texture(normalMap, fsIn.tc).xyz;
     bumpMapNormal = 2.0 * bumpMapNormal - vec3(1.0);
     bumpMapNormal = fsIn.tbn * bumpMapNormal;
-    float factor = dot(bumpMapNormal, -light.Direction);
+    float factor = dot(bumpMapNormal, light.Direction);
     if(factor > 0.0)
     {
         return vec4(light.Color, 1.0) *
@@ -51,10 +51,17 @@ vec4 lightFactorNormal()
 
 vec4 lightFactorSpecular()
 {
+    vec3 dir = normalize(light.Direction);
+    vec3 lightPosition = 100.0 * (-light.Direction);
+    vec3 incidenceVector = normalize(fsIn.position.xyz - lightPosition);
+    vec3 reflectionVector = reflect(incidenceVector, fsIn.normal);
     vec3 surfaceToCamera = normalize(cameraPos - fsIn.position.xyz);
-    float specularFactor = pow(max(0.0, normalize(dot(surfaceToCamera, reflect(-light.Direction, fsIn.normal)))), light.MatShines);
-    vec4 specular = vec4(specularFactor * texture(specularMap, fsIn.tc).xyz * light.SpecPower, 1.0);
-    return specular;
+    float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
+    float specularCoefficient = pow(cosAngle, light.MatShines);
+    vec4 specularComponent = specularCoefficient *
+                             texture(specularMap, fsIn.tc) *
+                             light.SpecPower;
+    return specularComponent;
 }
 
 
@@ -65,6 +72,6 @@ void main()
     vec4 specularLight = lightFactorSpecular();
     fColor = texture(diffuseMap, fsIn.tc) *
             (diffuseLight +
+             specularLight +
              light.AmbientIntensity);
-    //fColor = specularLight;
 }

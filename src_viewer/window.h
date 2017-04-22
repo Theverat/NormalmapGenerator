@@ -42,6 +42,8 @@ public:
     void setRotating(bool value);
 
     void setRoughness(float value);
+signals:
+    void compiledShaders(bool success);
 protected:
     void keyPressEvent(QKeyEvent* event);
     void mousePressEvent(QMouseEvent* pe);

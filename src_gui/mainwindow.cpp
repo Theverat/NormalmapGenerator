@@ -1006,6 +1006,8 @@ void MainWindow::connectSignalSlots() {
     connect(ui->spinBox_normalmapSize, SIGNAL(valueChanged(int)), this, SLOT(normalmapSizeChanged()));
     //"About" button
     connect(ui->pushButton_about, SIGNAL(clicked()), this, SLOT(showAboutDialog()));
+    // OpenGL window (show error message if shader compilation failed)
+    connect(ui->openGLWidget, SIGNAL(compiledShaders(bool)), ui->label_openGLErrors, SLOT(setVisible(bool)));
 
     //Shortcuts
     QShortcut *save = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this, 0, 0, Qt::ApplicationShortcut);

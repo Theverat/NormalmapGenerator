@@ -33,16 +33,26 @@ void Window::initializeGL()
 
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-    // Add shaders sourse code
+    // Add shaders source code
     program = new QOpenGLShaderProgram();
-    program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/shader.vert");
-    program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/shader.frag");
-    program->addShaderFromSourceFile(QOpenGLShader::TessellationControl, ":/shaders/shader.tessc");
-    program->addShaderFromSourceFile(QOpenGLShader::TessellationEvaluation, ":/shaders/shader.tesse");
-    program->addShaderFromSourceFile(QOpenGLShader::Geometry, ":/shaders/shader.geom");
-    program->link();
-    program->bind();
-
+    bool success = true;
+    success &= program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/shader.vert");
+    success &= program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/shader.frag");
+    success &= program->addShaderFromSourceFile(QOpenGLShader::TessellationControl, ":/shaders/shader.tessc");
+    success &= program->addShaderFromSourceFile(QOpenGLShader::TessellationEvaluation, ":/shaders/shader.tesse");
+    success &= program->addShaderFromSourceFile(QOpenGLShader::Geometry, ":/shaders/shader.geom");
+    bool showErrorMessage = !success;
+    
+    // Emit a signal so the UI can react to shader compilation errors by displaying a message
+    if(success) {
+        program->link();
+        program->bind();
+        emit compiledShaders(showErrorMessage);
+    } else {
+        qDebug() << "Shader compilation failed";
+        emit compiledShaders(showErrorMessage);
+        return;
+    }
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -196,7 +206,7 @@ void Window::paintGL()
     program->bind();
 
     if(scene.isReady())
-    {
+    {        
         // diffuse map attaching
         {
             glActiveTexture(GL_TEXTURE0);

@@ -40,6 +40,8 @@ public:
     void setDepthValue(float newDepth);
     void setPartitionFrequency(int newPartFreq);
     void setRotating(bool value);
+
+    void setRoughness(float value);
 protected:
     void keyPressEvent(QKeyEvent* event);
     void mousePressEvent(QMouseEvent* pe);

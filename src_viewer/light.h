@@ -23,7 +23,7 @@ public:
     void inline setDirection(const QVector3D& direction)    { this->direction = direction; }
     void inline setDiffuseIntensity(const float& difInt)    { this->diffuseIntensity = difInt; }
     void inline setSpecularPower(const float& specPower)    { this->specularPower = specPower; }
-    void inline setMaterialShines(const float& matShines)    { this->materialShines = matShines; }
+    void inline setMaterialShines(const float& matShines)   { this->materialShines = matShines; }
 
 
     // accessors

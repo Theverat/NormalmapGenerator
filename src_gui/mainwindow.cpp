@@ -1216,3 +1216,8 @@ void MainWindow::on_checkBox_clicked(bool checked)
 {
     ui->openGLWidget->setRotating(checked);
 }
+
+void MainWindow::on_horizontalSlider_3_valueChanged(int value)
+{
+    ui->openGLWidget->setRoughness(float(value));
+}

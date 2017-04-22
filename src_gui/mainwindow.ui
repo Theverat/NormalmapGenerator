@@ -1754,8 +1754,8 @@
           <widget class="QCheckBox" name="checkBox">
            <property name="geometry">
             <rect>
-             <x>180</x>
-             <y>0</y>
+             <x>220</x>
+             <y>20</y>
              <width>70</width>
              <height>17</height>
             </rect>
@@ -1764,43 +1764,39 @@
             <string>Rotating</string>
            </property>
           </widget>
-          <widget class="QLabel" name="label_29">
+          <widget class="QSlider" name="horizontalSlider_3">
            <property name="geometry">
             <rect>
-             <x>260</x>
-             <y>0</y>
-             <width>251</width>
+             <x>220</x>
+             <y>60</y>
+             <width>161</width>
              <height>16</height>
             </rect>
            </property>
-           <property name="text">
-            <string>Use W A S D and Q E (down and up) to move camera</string>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>30</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
           </widget>
-          <widget class="QLabel" name="label_30">
+          <widget class="QLabel" name="label_32">
            <property name="geometry">
             <rect>
-             <x>260</x>
-             <y>20</y>
-             <width>251</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Mouse with any button pressed to look around</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_31">
-           <property name="geometry">
-            <rect>
-             <x>260</x>
+             <x>220</x>
              <y>40</y>
-             <width>251</width>
+             <width>151</width>
              <height>16</height>
             </rect>
            </property>
            <property name="text">
-            <string>I J K L to change light direction</string>
+            <string>Roughness</string>
            </property>
           </widget>
          </widget>

@@ -293,3 +293,12 @@ void Window::setRotating(bool value)
 {
     areWeRotating = value;
 }
+
+void Window::setRoughness(float value)
+{
+    light.setMaterialShines(value);
+
+    program->bind();
+    program->setUniformValue(u_lightMatShiness, light.MatertialShines());
+    program->release();
+}

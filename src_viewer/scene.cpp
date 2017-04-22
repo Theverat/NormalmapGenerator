@@ -86,6 +86,13 @@ void Scene::addNormalMap(QImage &normalMap, QOpenGLShaderProgram &program)
     ready = checkForReady();
 }
 
+void Scene::addSpecularMap(QImage &specularMap, QOpenGLShaderProgram &program)
+{
+    specular = QImage(specularMap);
+    specularMapStored = true;
+    ready = checkForReady();
+}
+
 void Scene::calculateVertices()
 {
     int count = 0;
@@ -146,7 +153,8 @@ bool Scene::checkForReady()
 {
     return (diffuseMapStored &&
             displacementMapStored &&
-            normalMapStored);
+            normalMapStored &&
+            specularMapStored);
 }
 
 

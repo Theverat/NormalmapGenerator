@@ -39,7 +39,6 @@ void main(void)
 
     // find height and set it to zero if we are too close to the edge
     float height = texture(displacementMap, tseOut.tc).r;
-    height = (height * 2) - 1;
     if(lowerToEdge(tseOut.tc))
         height = 0;
 

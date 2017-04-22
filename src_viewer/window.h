@@ -35,6 +35,7 @@ public:
     void addDisplacement(QImage &displacementMap);
     void addDiffuse(QImage &diffuseMap);
     void addNormal(QImage &normalMap);
+    void addSpecular(QImage &specularMap);
 
     void setDepthValue(float newDepth);
     void setPartitionFrequency(int newPartFreq);
@@ -56,7 +57,7 @@ private:
     bool areWeRotating = false;
 
     // renderer properties
-    float depth = 4.0f;
+    float depth = 3.0f;
     int partitionFrequency = 20;
 
     // Input stuff
@@ -73,6 +74,7 @@ private:
     GLuint u_lightDifI;
     GLuint u_lightDir;
     GLuint u_lightSpec;
+    GLuint u_lightMatShiness;
 
     GLuint u_modelToWorld;
     GLuint u_worldToCamera;
@@ -86,6 +88,8 @@ private:
     QOpenGLTexture *diffuseMap;
     QOpenGLTexture *displacementMap;
     QOpenGLTexture *normalMap;
+    QOpenGLTexture *specularMap;
+
 };
 
 #endif // WINDOW_H

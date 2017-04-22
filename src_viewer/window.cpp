@@ -31,7 +31,7 @@ void Window::initializeGL()
     scene.calculateVertices();
     connect(this, SIGNAL(frameSwapped()), this, SLOT(update()));
 
-    glClearColor(0.55f, 0.5f, 0.65f, 1.0f);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
     // Add shaders sourse code
     program = new QOpenGLShaderProgram();
@@ -55,7 +55,6 @@ void Window::initializeGL()
     u_cameraToView = program->uniformLocation("cameraToView");
     u_worldToCamera = program->uniformLocation("worldToCamera");
 
-    // let's make our own depth buffer
     u_cameraPosition = program->uniformLocation("cameraPos");
 
     // light stuff
@@ -64,6 +63,7 @@ void Window::initializeGL()
     u_lightDifI = program->uniformLocation("light.DiffuseIntensity");
     u_lightDir = program->uniformLocation("light.Direction");
     u_lightSpec = program->uniformLocation("light.SpecPower");
+    u_lightMatShiness = program->uniformLocation("light.MatShines");
 
     // renderer properties
     u_depth = program->uniformLocation("depth");
@@ -94,6 +94,7 @@ void Window::initializeGL()
     program->setUniformValue(u_lightDifI, light.DiffuseIntensity());
     program->setUniformValue(u_lightSpec, light.SpecularPower());
     program->setUniformValue(u_lightDir, light.Direction());
+    program->setUniformValue(u_lightMatShiness, light.MatertialShines());
     ///////////////////////////////////////////////////////////////
 
 
@@ -138,6 +139,7 @@ void Window::keyPressEvent(QKeyEvent *event)
     program->setUniformValue(u_worldToCamera, scene.getWorldToCameraMatrix());
     program->setUniformValue(u_cameraPosition, scene.getCameraPosition());
     program->setUniformValue(u_lightDir, light.Direction());
+    program->setUniformValue(u_lightMatShiness, light.MatertialShines());
     program->release();
 
     QWidget::update();
@@ -213,11 +215,18 @@ void Window::paintGL()
             this->normalMap->bind();
             glUniform1i(program->uniformLocation("normalMap"), 2);
         }
+        // specular map attaching
+        {
+            glActiveTexture(GL_TEXTURE3);
+            this->specularMap->bind();
+            glUniform1i(program->uniformLocation("specularMap"), 3);
+        }
         vao.bind();
         glDrawArrays(GL_PATCHES, 0, sizeof(scene.vertices) / sizeof(scene.vertices[0]));
         this->diffuseMap->release();
         this->displacementMap->release();
         this->normalMap->release();
+        this->specularMap->release();
         vao.release();
     }
     program->release();
@@ -252,6 +261,14 @@ void Window::addNormal(QImage &normalMap)
     this->normalMap = new QOpenGLTexture(scene.getNormal().mirrored());
     this->normalMap->setMinificationFilter(QOpenGLTexture::Linear);
     this->normalMap->setMagnificationFilter(QOpenGLTexture::Linear);
+}
+
+void Window::addSpecular(QImage &specularMap)
+{
+    scene.addSpecularMap(specularMap, *program);
+    this->specularMap = new QOpenGLTexture(scene.getSpecular().mirrored());
+    this->specularMap->setMinificationFilter(QOpenGLTexture::Linear);
+    this->specularMap->setMagnificationFilter(QOpenGLTexture::Linear);
 }
 
 void Window::setDepthValue(float newDepth)

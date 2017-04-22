@@ -1697,7 +1697,7 @@
             </rect>
            </property>
            <property name="value">
-            <number>70</number>
+            <number>30</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -1748,7 +1748,7 @@
             </rect>
            </property>
            <property name="text">
-            <string>Partition frequency</string>
+            <string>Mesh resolution</string>
            </property>
           </widget>
           <widget class="QCheckBox" name="checkBox">

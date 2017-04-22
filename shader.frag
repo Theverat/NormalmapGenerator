@@ -7,6 +7,7 @@ in GEOM_OUT
     float depth;
     mat3 tbn;
     vec3 normal;
+    vec4 position;
 } fsIn;
 
 out highp vec4 fColor;
@@ -16,6 +17,9 @@ uniform mat4 cameraToView;
 
 uniform sampler2D diffuseMap;
 uniform sampler2D normalMap;
+uniform sampler2D specularMap;
+
+uniform vec3 cameraPos;
 
 struct Light
 {
@@ -24,6 +28,7 @@ struct Light
     float DiffuseIntensity;
     vec3 Direction;
     float SpecPower;
+    float MatShines;
 };
 
 uniform Light light;
@@ -44,14 +49,22 @@ vec4 lightFactorNormal()
         return vec4(0.0, 0.0, 0.0, 0.0);
 }
 
+vec4 lightFactorSpecular()
+{
+    vec3 surfaceToCamera = normalize(cameraPos - fsIn.position.xyz);
+    float specularFactor = pow(max(0.0, normalize(dot(surfaceToCamera, reflect(-light.Direction, fsIn.normal)))), light.MatShines);
+    vec4 specular = vec4(specularFactor * texture(specularMap, fsIn.tc).xyz * light.SpecPower, 1.0);
+    return specular;
+}
+
 
 void main()
 {
-    mat3 l;
     gl_FragDepth = fsIn.depth;
     vec4 diffuseLight = lightFactorNormal();
-    //fColor = vec4(fsIn.tbn[2], 1.0);
+    vec4 specularLight = lightFactorSpecular();
     fColor = texture(diffuseMap, fsIn.tc) *
             (diffuseLight +
              light.AmbientIntensity);
+    //fColor = specularLight;
 }

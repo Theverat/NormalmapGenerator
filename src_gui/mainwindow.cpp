@@ -358,6 +358,7 @@ void MainWindow::calcSpec() {
     //setup generator and calculate map
     SpecularmapGenerator specularmapGenerator(mode, redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
     specmap = specularmapGenerator.calculateSpecmap(input, scale, contrast);
+    ui->openGLWidget->addSpecular(specmap);
 }
 
 //the displacement map is generated with the specularmapGenerator (similar controls and output needed)
@@ -1203,10 +1204,7 @@ void MainWindow::resetUiColors() {
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
-    if(value != 50)
-        value -= 50;
-    else value = 1;
-    ui->openGLWidget->setDepthValue(float(value) / 5.0f);
+    ui->openGLWidget->setDepthValue(float(value) / 10.0f);
 }
 
 void MainWindow::on_horizontalSlider_2_valueChanged(int value)

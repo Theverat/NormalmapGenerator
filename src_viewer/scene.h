@@ -63,11 +63,13 @@ public:
     void addDiffuseMap(QImage &diffuseMap, QOpenGLShaderProgram &program);
     void addDisplacementMap(QImage &displacementMap, QOpenGLShaderProgram &program);
     void addNormalMap(QImage &normalMap, QOpenGLShaderProgram &program);
+    void addSpecularMap(QImage &specularMap, QOpenGLShaderProgram &program);
 
     // getters for texture
     QImage &getDiffuse()        { return diffuse; }
     QImage &getDisplacement()   { return displacement; }
     QImage &getNormal()         { return normal; }
+    QImage &getSpecular()       { return specular; }
 
     // vertices
     Vertex vertices[2400];
@@ -87,11 +89,13 @@ private:
     QImage diffuse;
     QImage displacement;
     QImage normal;
+    QImage specular;
 
     // flags for textures
     bool diffuseMapStored       = false;
     bool displacementMapStored  = false;
     bool normalMapStored        = false;
+    bool specularMapStored      = false;
 };
 
 

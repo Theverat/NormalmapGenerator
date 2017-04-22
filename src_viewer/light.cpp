@@ -7,7 +7,8 @@ Light::Light()
     Light::color = QVector3D(1.0f, 1.0f, 1.0f);
     Light::diffuseIntensity = 0.7f;
     Light::direction = QVector3D(1.0f, 1.0f, 1.0f);
-    Light::specularPower = 100.0f;
+    Light::specularPower = 1.0f;
+    Light::materialShines = 100.0f;
 }
 
 

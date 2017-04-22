@@ -18,6 +18,7 @@ out GEOM_OUT
     float depth;
     mat3 tbn;
     vec3 normal;
+    vec4 position;
 } geomOut;
 
 
@@ -61,10 +62,11 @@ void main(void)
     for(i = 0; i<gl_in.length(); i++)
     {
         geomOut.tbn = calculateTBN();
+        geomOut.position = gl_in[i].gl_Position;
         gl_Position = cameraToView * worldToCamera * modelToWorld * gl_in[i].gl_Position;
         geomOut.tc = geomIn[i].tc;
         geomOut.depth = (gl_Position.z) / 5.0;
-        geomOut.normal = normalize(cross(b - a, c - a));//vec3((gl_Position.z) / 5.0); //cross(b - a, c - a);
+        geomOut.normal = normalize(cross(c - a, b - a));
         EmitVertex();
     }
     EndPrimitive();

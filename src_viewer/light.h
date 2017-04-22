@@ -12,6 +12,7 @@ private:
     QVector3D direction;
     float diffuseIntensity;
     float specularPower;
+    float materialShines;
 
     QMatrix4x4 world;
     QQuaternion rotator;
@@ -22,6 +23,8 @@ public:
     void inline setDirection(const QVector3D& direction)    { this->direction = direction; }
     void inline setDiffuseIntensity(const float& difInt)    { this->diffuseIntensity = difInt; }
     void inline setSpecularPower(const float& specPower)    { this->specularPower = specPower; }
+    void inline setMaterialShines(const float& matShines)    { this->materialShines = matShines; }
+
 
     // accessors
     inline const QVector3D& Color()         { return color; }
@@ -29,6 +32,7 @@ public:
     QVector3D& Direction()           { return direction; }
     inline const float& DiffuseIntensity()  { return diffuseIntensity; }
     inline const float& SpecularPower()     { return specularPower; }
+    inline const float& MatertialShines()   { return materialShines; }
     Light();
 
     void rotate(const QQuaternion &dr) { rotator = dr; }

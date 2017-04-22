@@ -40,6 +40,8 @@ public:
     void setDepthValue(float newDepth);
     void setPartitionFrequency(int newPartFreq);
     void setRotating(bool value);
+signals:
+    void compiledShaders(bool success);
 protected:
     void keyPressEvent(QKeyEvent* event);
     void mousePressEvent(QMouseEvent* pe);

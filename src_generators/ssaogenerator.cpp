@@ -24,6 +24,8 @@
 #include <QMatrix4x4>
 #include <QColor>
 
+#include <cmath>
+
 SsaoGenerator::SsaoGenerator() {
 }
 

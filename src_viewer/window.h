@@ -1,5 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
+
 #include <QImage>
 #include <QMatrix4x4>
 #include <QGroupBox>
@@ -11,8 +12,6 @@
 #include <QOpenGLVertexArrayObject>
 
 #include "src_viewer/scene.h"
-
-
 
 
 class QOpenGLShaderProgram;

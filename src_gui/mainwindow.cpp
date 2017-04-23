@@ -1243,22 +1243,22 @@ void MainWindow::resetUiColors() {
     setUiColors();
 }
 
-void MainWindow::on_horizontalSlider_valueChanged(int value)
+void MainWindow::on_slider_displaceStrength_valueChanged(int value)
 {
     ui->openGLWidget->setDepthValue(float(value) / 10.0f);
 }
 
-void MainWindow::on_horizontalSlider_2_valueChanged(int value)
+void MainWindow::on_slider_meshResolution_valueChanged(int value)
 {
     ui->openGLWidget->setPartitionFrequency(value);
 }
 
-void MainWindow::on_checkBox_clicked(bool checked)
+void MainWindow::on_checkBox_rotate_clicked(bool checked)
 {
     ui->openGLWidget->setRotating(checked);
 }
 
-void MainWindow::on_horizontalSlider_3_valueChanged(int value)
+void MainWindow::on_slider_roughness_valueChanged(int value)
 {
     ui->openGLWidget->setRoughness(float(value));
 }

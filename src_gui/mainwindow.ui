@@ -1670,7 +1670,7 @@
         </size>
        </property>
        <property name="title">
-        <string>Preview</string>
+        <string>3D Preview</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1687,7 +1687,7 @@
           <property name="title">
            <string/>
           </property>
-          <widget class="QSlider" name="horizontalSlider">
+          <widget class="QSlider" name="slider_displaceStrength">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -1703,7 +1703,7 @@
             <enum>Qt::Horizontal</enum>
            </property>
           </widget>
-          <widget class="QSlider" name="horizontalSlider_2">
+          <widget class="QSlider" name="slider_meshResolution">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -1735,7 +1735,7 @@
             </rect>
            </property>
            <property name="text">
-            <string>Depth value</string>
+            <string>Displacement Height</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_28">
@@ -1743,28 +1743,28 @@
             <rect>
              <x>10</x>
              <y>40</y>
-             <width>151</width>
+             <width>161</width>
              <height>16</height>
             </rect>
            </property>
            <property name="text">
-            <string>Mesh resolution</string>
+            <string>Mesh Resolution (Subdivisions)</string>
            </property>
           </widget>
-          <widget class="QCheckBox" name="checkBox">
+          <widget class="QCheckBox" name="checkBox_rotate">
            <property name="geometry">
             <rect>
              <x>220</x>
              <y>20</y>
-             <width>70</width>
+             <width>91</width>
              <height>17</height>
             </rect>
            </property>
            <property name="text">
-            <string>Rotating</string>
+            <string>Rotate Cube</string>
            </property>
           </widget>
-          <widget class="QSlider" name="horizontalSlider_3">
+          <widget class="QSlider" name="slider_roughness">
            <property name="geometry">
             <rect>
              <x>220</x>
@@ -1796,7 +1796,7 @@
             </rect>
            </property>
            <property name="text">
-            <string>Roughness</string>
+            <string>Specular Roughness</string>
            </property>
           </widget>
           <widget class="QCheckBox" name="applyDiffuse">

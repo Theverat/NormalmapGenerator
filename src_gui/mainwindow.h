@@ -134,10 +134,10 @@ private slots:
     void queueItemDoubleClicked(QListWidgetItem *item);
     void normalmapSizeChanged();
     void showAboutDialog();
-    void on_horizontalSlider_valueChanged(int value);
-    void on_horizontalSlider_2_valueChanged(int value);
-    void on_checkBox_clicked(bool checked);
-    void on_horizontalSlider_3_valueChanged(int value);
+    void on_slider_displaceStrength_valueChanged(int value);
+    void on_slider_meshResolution_valueChanged(int value);
+    void on_checkBox_rotate_clicked(bool checked);
+    void on_slider_roughness_valueChanged(int value);
     void on_applyDiffuse_clicked(bool checked);
     void on_applyNormal_clicked(bool checked);
     void on_applySpecular_clicked(bool checked);

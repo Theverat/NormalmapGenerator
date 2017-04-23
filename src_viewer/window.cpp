@@ -1,8 +1,6 @@
 #include "window.h"
 #include <QDebug>
-#include <QString>
 #include <QMouseEvent>
-#include "src_gui/mainwindow.h"
 
 Window::Window(QGroupBox *)
 {

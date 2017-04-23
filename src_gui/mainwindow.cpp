@@ -170,7 +170,7 @@ void MainWindow::loadAllFromDir(QUrl url) {
 //load the image specified in the url
 bool MainWindow::load(QUrl url) {
     if(!url.isValid()) {
-        throw "[load] invalid url!";
+        QMessageBox::information(this, "Error while loading image", "invalid filepath");
         return false;
     }
 
@@ -186,20 +186,7 @@ bool MainWindow::load(QUrl url) {
     //load the image
     input = QImage(url.toLocalFile());
 
-    ui->openGLWidget->setApplyingDisplacement(false);
-    ui->openGLWidget->setApplyingSpecular(false);
-    ui->openGLWidget->setApplyingNormal(false);
-    ui->applyDisplacement->setEnabled(false);
-    ui->applyNormal->setEnabled(false);
-    ui->applySpecular->setEnabled(false);
-    ui->applyDisplacement->setChecked(false);
-    ui->applyNormal->setChecked(false);
-    ui->applySpecular->setChecked(false);
-
-    ui->openGLWidget->addDiffuse(input);
-    ui->applyDiffuse->setEnabled(true);
-    ui->applyDiffuse->setChecked(true);
-
+    // Check if image loading was successful
     if(input.isNull()) {
         QString errorMessage("Image not loaded!");
 
@@ -214,6 +201,21 @@ bool MainWindow::load(QUrl url) {
         QMessageBox::information(this, "Error while loading image", errorMessage);
         return false;
     }
+    
+    // Reset settings of OpenGL preview
+    ui->openGLWidget->setApplyingDisplacement(false);
+    ui->openGLWidget->setApplyingSpecular(false);
+    ui->openGLWidget->setApplyingNormal(false);
+    ui->applyDisplacement->setEnabled(false);
+    ui->applyNormal->setEnabled(false);
+    ui->applySpecular->setEnabled(false);
+    ui->applyDisplacement->setChecked(false);
+    ui->applyNormal->setChecked(false);
+    ui->applySpecular->setChecked(false);
+
+    ui->openGLWidget->addDiffuse(input);
+    ui->applyDiffuse->setEnabled(true);
+    ui->applyDiffuse->setChecked(true);
 
     //store the path the image was loaded from (for saving later)
     if(exportPath.isEmpty())
@@ -226,9 +228,8 @@ bool MainWindow::load(QUrl url) {
     ui->pushButton_calcDisplace->setEnabled(true);
     ui->pushButton_calcSsao->setEnabled(true);
     ui->spinBox_normalmapSize->setEnabled(true);
-    enableAutoupdate(true);
     
-    //extract R/G/B/A channels
+    //extract R/G/B/A channels for the channel button thumbnails
     const int h = ui->label_channelRed->height();
     QImage inputSmall(input.scaled(h, h, Qt::KeepAspectRatio));
     IntensityMap red(inputSmall, IntensityMap::MAX, true, false, false, false);
@@ -240,6 +241,9 @@ bool MainWindow::load(QUrl url) {
     ui->label_channelGreen->setPixmap(QPixmap::fromImage(green.convertToQImage()));
     ui->label_channelBlue->setPixmap(QPixmap::fromImage(blue.convertToQImage()));
     ui->label_channelAlpha->setPixmap(QPixmap::fromImage(alpha.convertToQImage()));
+    
+    // Disable autoupdate so it does not trigger when large detail settings etc. are adjusted
+    enableAutoupdate(false);
     
     //algorithm to find best settings for KeepLargeDetail
     int imageSize = std::max(input.width(), input.height());
@@ -256,22 +260,25 @@ bool MainWindow::load(QUrl url) {
     
     ui->spinBox_largeDetailScale->setValue(largeDetailScale);
     
-    //switch active tab to input
-    ui->tabWidget->setCurrentIndex(0);
-
+    enableAutoupdate(true);
+    
     //clear all previously generated images
     channelIntensity = QImage();
     normalmap = QImage();
     specmap = QImage();
     displacementmap = QImage();
     ssaomap = QImage();
-
-    //display single image channels if the option was already chosen
-    if(ui->radioButton_displayRGBA->isChecked())
-        displayChannelIntensity();
-    else
-        preview(0);
     
+    // Make sure we show the RGB image, block signals to avoid triggering an update
+    ui->radioButton_displayRGBA->blockSignals(true);
+    ui->radioButton_displayRGBA->setChecked(true);
+    ui->radioButton_displayRGBA->blockSignals(false);
+    // switch active tab to input
+    ui->tabWidget->blockSignals(true);
+    ui->tabWidget->setCurrentIndex(0);
+    ui->tabWidget->blockSignals(false);
+    preview(0);
+
     //image smaller than graphicsview: fitInView, then resetZoom (this way it is centered)
     //image larger than graphicsview: just fitInView
     fitInView();
@@ -703,33 +710,38 @@ void MainWindow::preview() {
 //preview the map in the selected tab
 void MainWindow::preview(int tab) {
     ui->graphicsView->scene()->clear();
+    
+    if(input.isNull()) {
+        // We can't do anything meaningful without an input image
+        return;
+    }
+    
+    // Pointer to the image in the graphicsView
+    QGraphicsPixmapItem *pixmap = NULL;
 
     switch(tab) {
     case 0:
     {
         //input
-        if(!input.isNull()) {
-            if(ui->radioButton_displayRGBA->isChecked()) {
-                QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(input));
-                pixmap->setTransformationMode(Qt::SmoothTransformation);
-            }
-            else {
-                QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(channelIntensity));
-                pixmap->setTransformationMode(Qt::SmoothTransformation);
-            }
+        if(ui->radioButton_displayRGBA->isChecked()) {
+            // Unchanged input image
+            pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(input));
+        }
+        else {
+            // black/white representation of selected image channel
+            pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(channelIntensity));
         }
         break;
     }
     case 1:
     {
         //normal
-        if(!input.isNull() && normalmap.isNull()) {
+        if(normalmap.isNull()) {
             //if an image was loaded and a normalmap was not yet generated and the image is not too large
             //automatically generate the normalmap
             calcNormalAndPreview();
         }
-        QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(normalmap));
-        pixmap->setTransformationMode(Qt::SmoothTransformation);
+        pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(normalmap));
         //display size of the image
         normalmapSizeChanged();
         break;
@@ -737,39 +749,43 @@ void MainWindow::preview(int tab) {
     case 2:
     {
         //spec
-        if(!input.isNull() && specmap.isNull()) {
+        if(specmap.isNull()) {
             //if an image was loaded and a specmap was not yet generated and the image is not too large
             //automatically generate the specmap
             calcSpecAndPreview();
         }
-        QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(specmap));
-        pixmap->setTransformationMode(Qt::SmoothTransformation);
+        pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(specmap));
         break;
     }
     case 3:
     {
         //displacement
-        if(!input.isNull() && displacementmap.isNull()) {
+        if(displacementmap.isNull()) {
             //if an image was loaded and a dispmap was not yet generated and the image is not too large
             //automatically generate the displacementmap
             calcDisplaceAndPreview();
         }
-        QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(displacementmap));
-        pixmap->setTransformationMode(Qt::SmoothTransformation);
+        pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(displacementmap));
         break;
     }
     case 4:
     {
         //ambient occlusion
-        if(!input.isNull() && ssaomap.isNull()) {
+        if(ssaomap.isNull()) {
             //if an image was loaded and a ssaomap was not yet generated and the image is not too large
             //automatically generate the ambient occlusion map
             calcSsaoAndPreview();
         }
-        QGraphicsPixmapItem *pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(ssaomap));
-        pixmap->setTransformationMode(Qt::SmoothTransformation);
+        pixmap = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(ssaomap));
         break;
     }
+    default:
+        QMessageBox::information(this, "Error", "Tab " + QString::number(tab) + " does not exist");
+        break;
+    }
+    
+    if(pixmap) {
+        pixmap->setTransformationMode(Qt::SmoothTransformation);
     }
 }
 
@@ -798,17 +814,20 @@ void MainWindow::displayChannelIntensity() {
     if(input.isNull())
         return;
 
-    IntensityMap temp;
-    if(ui->radioButton_displayRed->isChecked())
-        temp = IntensityMap(input, IntensityMap::AVERAGE, true, false, false, false);
-    else if(ui->radioButton_displayGreen->isChecked())
-        temp = IntensityMap(input, IntensityMap::AVERAGE, false, true, false, false);
-    else if(ui->radioButton_displayBlue->isChecked())
-        temp = IntensityMap(input, IntensityMap::AVERAGE, false, false, true, false);
-    else
-        temp = IntensityMap(input, IntensityMap::AVERAGE, false, false, false, true);
-
-    this->channelIntensity = temp.convertToQImage();
+    if(!ui->radioButton_displayRGBA->isChecked()) {
+        IntensityMap temp;
+        if(ui->radioButton_displayRed->isChecked())
+            temp = IntensityMap(input, IntensityMap::AVERAGE, true, false, false, false);
+        else if(ui->radioButton_displayGreen->isChecked())
+            temp = IntensityMap(input, IntensityMap::AVERAGE, false, true, false, false);
+        else if(ui->radioButton_displayBlue->isChecked())
+            temp = IntensityMap(input, IntensityMap::AVERAGE, false, false, true, false);
+        else  // Alpha
+            temp = IntensityMap(input, IntensityMap::AVERAGE, false, false, false, true);
+    
+        this->channelIntensity = temp.convertToQImage();
+    }
+    
     preview(0);
 }
 

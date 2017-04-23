@@ -2,7 +2,8 @@
 #include <QDebug>
 #include <QMouseEvent>
 
-Window::Window(QGroupBox *)
+Window::Window(QWidget *parent) : 
+    QOpenGLWidget(parent)
 {
 }
 

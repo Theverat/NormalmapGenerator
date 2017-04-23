@@ -23,10 +23,10 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="layoutWidget">
+      <widget class="QWidget" name="">
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_7_queue">
+         <layout class="QVBoxLayout" name="layout_queue">
           <property name="sizeConstraint">
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
@@ -289,1366 +289,1370 @@
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <property name="spacing">
-           <number>0</number>
-          </property>
+         <layout class="QHBoxLayout" name="layout_tabs">
           <item>
-           <widget class="QTabWidget" name="tabWidget">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="tabShape">
-             <enum>QTabWidget::Rounded</enum>
-            </property>
-            <property name="currentIndex">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="spacing">
              <number>0</number>
             </property>
-            <property name="elideMode">
-             <enum>Qt::ElideNone</enum>
-            </property>
-            <widget class="QWidget" name="tab_input">
-             <attribute name="title">
-              <string>Input Image</string>
-             </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_16">
-              <item>
-               <layout class="QGridLayout" name="gridLayout">
-                <item row="1" column="5">
-                 <widget class="QRadioButton" name="radioButton_displayAlpha">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>A</string>
-                  </property>
-                  <attribute name="buttonGroup">
-                   <string notr="true">buttonGroup_displayChannelIntensity</string>
-                  </attribute>
-                 </widget>
-                </item>
-                <item row="1" column="4">
-                 <widget class="QRadioButton" name="radioButton_displayBlue">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>B</string>
-                  </property>
-                  <attribute name="buttonGroup">
-                   <string notr="true">buttonGroup_displayChannelIntensity</string>
-                  </attribute>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QRadioButton" name="radioButton_displayRGBA">
-                  <property name="text">
-                   <string>All</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                  <attribute name="buttonGroup">
-                   <string notr="true">buttonGroup_displayChannelIntensity</string>
-                  </attribute>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="ClickableLabel" name="label_channelRGBA">
-                  <property name="minimumSize">
-                   <size>
-                    <width>50</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>rgba</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="ClickableLabel" name="label_channelRed">
-                  <property name="minimumSize">
-                   <size>
-                    <width>50</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>red</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="3">
-                 <widget class="QRadioButton" name="radioButton_displayGreen">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>G</string>
-                  </property>
-                  <attribute name="buttonGroup">
-                   <string notr="true">buttonGroup_displayChannelIntensity</string>
-                  </attribute>
-                 </widget>
-                </item>
-                <item row="0" column="6">
-                 <spacer name="horizontalSpacer_9">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item row="0" column="5">
-                 <widget class="ClickableLabel" name="label_channelAlpha">
-                  <property name="minimumSize">
-                   <size>
-                    <width>50</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>alpha</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="4">
-                 <widget class="ClickableLabel" name="label_channelBlue">
-                  <property name="minimumSize">
-                   <size>
-                    <width>50</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>blue</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3">
-                 <widget class="ClickableLabel" name="label_channelGreen">
-                  <property name="minimumSize">
-                   <size>
-                    <width>50</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>green</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QRadioButton" name="radioButton_displayRed">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>R</string>
-                  </property>
-                  <property name="checked">
-                   <bool>false</bool>
-                  </property>
-                  <attribute name="buttonGroup">
-                   <string notr="true">buttonGroup_displayChannelIntensity</string>
-                  </attribute>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_26">
-                  <property name="text">
-                   <string>View Channel:</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="tab_normal">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <attribute name="title">
-              <string>Normalmap</string>
-             </attribute>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <item>
-                 <widget class="QPushButton" name="pushButton_calcNormal">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="toolTip">
-                   <string>Generate the normalmap (happens automatically when &quot;Autoupdate&quot; is checked and calculation took less than the max. allowed calculation time)</string>
-                  </property>
-                  <property name="text">
-                   <string>Calculate</string>
-                  </property>
-                  <property name="flat">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_advanced_normal">
-                  <property name="toolTip">
-                   <string>Configure additional expert settings</string>
-                  </property>
-                  <property name="text">
-                   <string>Advanced Settings</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_4">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>Channels:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_useRed_normal">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>Red</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_useGreen_normal">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>Green</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_useBlue_normal">
-                  <property name="text">
-                   <string>Blue</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_useAlpha_normal">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>Alpha</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="comboBox_mode_normal">
-                  <item>
-                   <property name="text">
-                    <string>Average</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Max</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line_7">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_12">
-                  <property name="text">
-                   <string>Normalmap Size:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="spinBox_normalmapSize">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="suffix">
-                   <string>%</string>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>100</number>
-                  </property>
-                  <property name="value">
-                   <number>100</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_normalmapSize">
-                  <property name="text">
-                   <string>0 x 0 px</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_4">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>0</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="Line" name="line_5">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <item>
-                 <widget class="QLabel" name="label_method_normal">
-                  <property name="text">
-                   <string>Method:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="comboBox_method">
-                  <property name="toolTip">
-                   <string>Edge detection algorithm to use</string>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string>Sobel</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Prewitt</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label">
-                  <property name="text">
-                   <string>Height:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_strength">
-                  <property name="prefix">
-                   <string/>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="minimum">
-                   <double>0.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>99.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_invertHeight">
-                  <property name="text">
-                   <string>Invert Height</string>
-                  </property>
-                  <property name="checked">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_tileable">
-                  <property name="toolTip">
-                   <string>Activate if the input is a tileable texture</string>
-                  </property>
-                  <property name="text">
-                   <string>Tileable</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line_9">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_keepLargeDetail">
-                  <property name="toolTip">
-                   <string>Keep both the main features and the fine details of the texture visible by mixing a scaled-down normalmap (large detail) with the generated normalmap (fine detail)</string>
-                  </property>
-                  <property name="text">
-                   <string>Keep Large Detail</string>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                  <property name="tristate">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_19">
-                  <property name="text">
-                   <string>LD Size:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="spinBox_largeDetailScale">
-                  <property name="toolTip">
-                   <string>Size of the large detail. The optimal setting for the current image size is auto-detected</string>
-                  </property>
-                  <property name="suffix">
-                   <string>%</string>
-                  </property>
-                  <property name="prefix">
-                   <string/>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>100</number>
-                  </property>
-                  <property name="singleStep">
-                   <number>5</number>
-                  </property>
-                  <property name="value">
-                   <number>25</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_20">
-                  <property name="text">
-                   <string>LD Height:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_largeDetailHeight">
-                  <property name="toolTip">
-                   <string>Height of the large detail</string>
-                  </property>
-                  <property name="minimum">
-                   <double>0.010000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>0</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="tab_spec">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <attribute name="title">
-              <string>Specularmap</string>
-             </attribute>
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_5">
-                <item>
-                 <widget class="QPushButton" name="pushButton_calcSpec">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string>Calculate</string>
-                  </property>
-                  <property name="flat">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line_2">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_5">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>Channels:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_7">
-                  <property name="text">
-                   <string>Red:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_redMul">
-                  <property name="decimals">
-                   <number>2</number>
-                  </property>
-                  <property name="maximum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_8">
-                  <property name="text">
-                   <string>Green:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_greenMul">
-                  <property name="decimals">
-                   <number>2</number>
-                  </property>
-                  <property name="maximum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_9">
-                  <property name="text">
-                   <string>Blue:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_blueMul">
-                  <property name="decimals">
-                   <number>2</number>
-                  </property>
-                  <property name="maximum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_10">
-                  <property name="text">
-                   <string>Alpha:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_alphaMul">
-                  <property name="decimals">
-                   <number>2</number>
-                  </property>
-                  <property name="maximum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>0.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="comboBox_mode_spec">
-                  <item>
-                   <property name="text">
-                    <string>Average</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Max</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_5">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::MinimumExpanding</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>1</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="Line" name="line_4">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_8">
-                <item>
-                 <widget class="QLabel" name="label_11">
-                  <property name="text">
-                   <string>Brightness:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_scale">
-                  <property name="decimals">
-                   <number>3</number>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.050000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>0.550000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_13">
-                  <property name="text">
-                   <string>Contrast:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_contrast">
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.600000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_7">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="tab_displace">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <attribute name="title">
-              <string>Displacementmap</string>
-             </attribute>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_6">
-                <item>
-                 <widget class="QPushButton" name="pushButton_calcDisplace">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string>Calculate</string>
-                  </property>
-                  <property name="flat">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line_3">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_6">
-                  <property name="text">
-                   <string>Channels:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_14">
-                  <property name="text">
-                   <string>Red:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_redMul">
-                  <property name="decimals">
-                   <number>2</number>
-                  </property>
-                  <property name="maximum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_15">
-                  <property name="text">
-                   <string>Green:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_greenMul">
-                  <property name="decimals">
-                   <number>2</number>
-                  </property>
-                  <property name="maximum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_16">
-                  <property name="text">
-                   <string>Blue:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_blueMul">
-                  <property name="decimals">
-                   <number>2</number>
-                  </property>
-                  <property name="maximum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="comboBox_mode_displace">
-                  <item>
-                   <property name="text">
-                    <string>Average</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Max</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_6">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="Line" name="line_8">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_7">
-                <item>
-                 <widget class="QLabel" name="label_17">
-                  <property name="text">
-                   <string>Brightness:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_scale">
-                  <property name="decimals">
-                   <number>3</number>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_18">
-                  <property name="text">
-                   <string>Contrast:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_contrast">
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line_11">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_displace_blur">
-                  <property name="text">
-                   <string>Blur</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_21">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>Radius:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="spinBox_displace_blurRadius">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>999</number>
-                  </property>
-                  <property name="value">
-                   <number>5</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_displace_blur_tileable">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="text">
-                   <string>Tileable</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_8">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="tab_ssao">
-             <attribute name="title">
-              <string>Ambient Occlusion Map (Experimental)</string>
-             </attribute>
-             <layout class="QVBoxLayout" name="verticalLayout_9">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout">
-                <item>
-                 <widget class="QPushButton" name="pushButton_calcSsao">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string>Calculate</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_3">
-                  <property name="text">
-                   <string>This thing is still in development, the result is probably not usable at the moment</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="Line" name="line_10">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_14">
-                <item>
-                 <widget class="QLabel" name="label_22">
-                  <property name="text">
-                   <string>Radius</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="doubleSpinBox_ssao_size">
-                  <property name="minimum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>5.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_23">
-                  <property name="text">
-                   <string>Samples:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="spinBox_ssao_samples">
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>999</number>
-                  </property>
-                  <property name="value">
-                   <number>32</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_24">
-                  <property name="text">
-                   <string>Noise Texture Size:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="spinBox_ssao_noiseTexSize">
-                  <property name="minimum">
-                   <number>2</number>
-                  </property>
-                  <property name="maximum">
-                   <number>999</number>
-                  </property>
-                  <property name="value">
-                   <number>16</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_11">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-          </item>
-          <item>
-           <widget class="GraphicsView" name="graphicsView">
-            <property name="dragMode">
-             <enum>QGraphicsView::NoDrag</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Maximum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>6</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="Line" name="line_6">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_2">
-              <property name="text">
-               <string>Zoom:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_zoomIn">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>35</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Zoom in</string>
-              </property>
-              <property name="text">
-               <string>+</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_zoomOut">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>35</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Zoom out</string>
-              </property>
-              <property name="text">
-               <string>-</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_resetZoom">
+             <widget class="QTabWidget" name="tabWidget">
               <property name="enabled">
                <bool>true</bool>
               </property>
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>35</width>
-                <height>16777215</height>
-               </size>
+              <property name="tabShape">
+               <enum>QTabWidget::Rounded</enum>
               </property>
-              <property name="toolTip">
-               <string>100% view (real size of the image)</string>
+              <property name="currentIndex">
+               <number>0</number>
               </property>
-              <property name="text">
-               <string>1:1</string>
+              <property name="elideMode">
+               <enum>Qt::ElideNone</enum>
+              </property>
+              <widget class="QWidget" name="tab_input">
+               <attribute name="title">
+                <string>Input Image</string>
+               </attribute>
+               <layout class="QHBoxLayout" name="horizontalLayout_16">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout">
+                  <item row="1" column="5">
+                   <widget class="QRadioButton" name="radioButton_displayAlpha">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>A</string>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">buttonGroup_displayChannelIntensity</string>
+                    </attribute>
+                   </widget>
+                  </item>
+                  <item row="1" column="4">
+                   <widget class="QRadioButton" name="radioButton_displayBlue">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>B</string>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">buttonGroup_displayChannelIntensity</string>
+                    </attribute>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QRadioButton" name="radioButton_displayRGBA">
+                    <property name="text">
+                     <string>All</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">buttonGroup_displayChannelIntensity</string>
+                    </attribute>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="ClickableLabel" name="label_channelRGBA">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>rgba</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="ClickableLabel" name="label_channelRed">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>red</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="3">
+                   <widget class="QRadioButton" name="radioButton_displayGreen">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>G</string>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">buttonGroup_displayChannelIntensity</string>
+                    </attribute>
+                   </widget>
+                  </item>
+                  <item row="0" column="6">
+                   <spacer name="horizontalSpacer_9">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item row="0" column="5">
+                   <widget class="ClickableLabel" name="label_channelAlpha">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>alpha</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="4">
+                   <widget class="ClickableLabel" name="label_channelBlue">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>blue</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="3">
+                   <widget class="ClickableLabel" name="label_channelGreen">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>green</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="2">
+                   <widget class="QRadioButton" name="radioButton_displayRed">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>R</string>
+                    </property>
+                    <property name="checked">
+                     <bool>false</bool>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">buttonGroup_displayChannelIntensity</string>
+                    </attribute>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_26">
+                    <property name="text">
+                     <string>View Channel:</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_normal">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <attribute name="title">
+                <string>Normalmap</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <widget class="QPushButton" name="pushButton_calcNormal">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="toolTip">
+                     <string>Generate the normalmap (happens automatically when &quot;Autoupdate&quot; is checked and calculation took less than the max. allowed calculation time)</string>
+                    </property>
+                    <property name="text">
+                     <string>Calculate</string>
+                    </property>
+                    <property name="flat">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_advanced_normal">
+                    <property name="toolTip">
+                     <string>Configure additional expert settings</string>
+                    </property>
+                    <property name="text">
+                     <string>Advanced Settings</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="Line" name="line">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_4">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>Channels:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_useRed_normal">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>Red</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_useGreen_normal">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>Green</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_useBlue_normal">
+                    <property name="text">
+                     <string>Blue</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_useAlpha_normal">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>Alpha</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_mode_normal">
+                    <item>
+                     <property name="text">
+                      <string>Average</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Max</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="Line" name="line_7">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_12">
+                    <property name="text">
+                     <string>Normalmap Size:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_normalmapSize">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="suffix">
+                     <string>%</string>
+                    </property>
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>100</number>
+                    </property>
+                    <property name="value">
+                     <number>100</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_normalmapSize">
+                    <property name="text">
+                     <string>0 x 0 px</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_4">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>0</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="Line" name="line_5">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <item>
+                   <widget class="QLabel" name="label_method_normal">
+                    <property name="text">
+                     <string>Method:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_method">
+                    <property name="toolTip">
+                     <string>Edge detection algorithm to use</string>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>Sobel</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Prewitt</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label">
+                    <property name="text">
+                     <string>Height:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_strength">
+                    <property name="prefix">
+                     <string/>
+                    </property>
+                    <property name="decimals">
+                     <number>1</number>
+                    </property>
+                    <property name="minimum">
+                     <double>0.000000000000000</double>
+                    </property>
+                    <property name="maximum">
+                     <double>99.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_invertHeight">
+                    <property name="text">
+                     <string>Invert Height</string>
+                    </property>
+                    <property name="checked">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_tileable">
+                    <property name="toolTip">
+                     <string>Activate if the input is a tileable texture</string>
+                    </property>
+                    <property name="text">
+                     <string>Tileable</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="Line" name="line_9">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_keepLargeDetail">
+                    <property name="toolTip">
+                     <string>Keep both the main features and the fine details of the texture visible by mixing a scaled-down normalmap (large detail) with the generated normalmap (fine detail)</string>
+                    </property>
+                    <property name="text">
+                     <string>Keep Large Detail</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                    <property name="tristate">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_19">
+                    <property name="text">
+                     <string>LD Size:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_largeDetailScale">
+                    <property name="toolTip">
+                     <string>Size of the large detail. The optimal setting for the current image size is auto-detected</string>
+                    </property>
+                    <property name="suffix">
+                     <string>%</string>
+                    </property>
+                    <property name="prefix">
+                     <string/>
+                    </property>
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>100</number>
+                    </property>
+                    <property name="singleStep">
+                     <number>5</number>
+                    </property>
+                    <property name="value">
+                     <number>25</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_20">
+                    <property name="text">
+                     <string>LD Height:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_largeDetailHeight">
+                    <property name="toolTip">
+                     <string>Height of the large detail</string>
+                    </property>
+                    <property name="minimum">
+                     <double>0.010000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>0</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_spec">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <attribute name="title">
+                <string>Specularmap</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_4">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_5">
+                  <item>
+                   <widget class="QPushButton" name="pushButton_calcSpec">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="text">
+                     <string>Calculate</string>
+                    </property>
+                    <property name="flat">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="Line" name="line_2">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_5">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>Channels:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_7">
+                    <property name="text">
+                     <string>Red:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_redMul">
+                    <property name="decimals">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>Green:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_greenMul">
+                    <property name="decimals">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_9">
+                    <property name="text">
+                     <string>Blue:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_blueMul">
+                    <property name="decimals">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_10">
+                    <property name="text">
+                     <string>Alpha:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_alphaMul">
+                    <property name="decimals">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>0.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_mode_spec">
+                    <item>
+                     <property name="text">
+                      <string>Average</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Max</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_5">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::MinimumExpanding</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>1</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="Line" name="line_4">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <item>
+                   <widget class="QLabel" name="label_11">
+                    <property name="text">
+                     <string>Brightness:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_scale">
+                    <property name="decimals">
+                     <number>3</number>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.050000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>0.550000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_13">
+                    <property name="text">
+                     <string>Contrast:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_spec_contrast">
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.600000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_7">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_displace">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <attribute name="title">
+                <string>Displacementmap</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_5">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                  <item>
+                   <widget class="QPushButton" name="pushButton_calcDisplace">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="text">
+                     <string>Calculate</string>
+                    </property>
+                    <property name="flat">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="Line" name="line_3">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_6">
+                    <property name="text">
+                     <string>Channels:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_14">
+                    <property name="text">
+                     <string>Red:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_redMul">
+                    <property name="decimals">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_15">
+                    <property name="text">
+                     <string>Green:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_greenMul">
+                    <property name="decimals">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_16">
+                    <property name="text">
+                     <string>Blue:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_blueMul">
+                    <property name="decimals">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_mode_displace">
+                    <item>
+                     <property name="text">
+                      <string>Average</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Max</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_6">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="Line" name="line_8">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+                  <item>
+                   <widget class="QLabel" name="label_17">
+                    <property name="text">
+                     <string>Brightness:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_scale">
+                    <property name="decimals">
+                     <number>3</number>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_18">
+                    <property name="text">
+                     <string>Contrast:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_displace_contrast">
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="Line" name="line_11">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_displace_blur">
+                    <property name="text">
+                     <string>Blur</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_21">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>Radius:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_displace_blurRadius">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                    <property name="value">
+                     <number>5</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_displace_blur_tileable">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>Tileable</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_8">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_ssao">
+               <attribute name="title">
+                <string>Ambient Occlusion Map (Experimental)</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_9">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <item>
+                   <widget class="QPushButton" name="pushButton_calcSsao">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="text">
+                     <string>Calculate</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string>This thing is still in development, the result is probably not usable at the moment</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="Line" name="line_10">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_14">
+                  <item>
+                   <widget class="QLabel" name="label_22">
+                    <property name="text">
+                     <string>Radius</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_ssao_size">
+                    <property name="minimum">
+                     <double>1.000000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>5.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_23">
+                    <property name="text">
+                     <string>Samples:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_ssao_samples">
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                    <property name="value">
+                     <number>32</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_24">
+                    <property name="text">
+                     <string>Noise Texture Size:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_ssao_noiseTexSize">
+                    <property name="minimum">
+                     <number>2</number>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                    <property name="value">
+                     <number>16</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_11">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="GraphicsView" name="graphicsView">
+              <property name="dragMode">
+               <enum>QGraphicsView::NoDrag</enum>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_fitInView">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>35</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Fit image into preview window</string>
-              </property>
-              <property name="text">
-               <string>Fit</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_2">
+             <spacer name="verticalSpacer">
               <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Maximum</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
-                <height>20</height>
+                <width>20</width>
+                <height>6</height>
                </size>
               </property>
              </spacer>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_autoUpdate">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="toolTip">
-               <string>Re-calculate the current map when settings where changed</string>
-              </property>
-              <property name="text">
-               <string>Autoupdate</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_autoUpdate_text">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Max. Calculation Time:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QDoubleSpinBox" name="doubleSpinBox_autoUpdateThreshold">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="toolTip">
-               <string>If it took longer than this to calculate the map, autoupdate will not re-calculate the map</string>
-              </property>
-              <property name="suffix">
-               <string>s</string>
-              </property>
-              <property name="decimals">
-               <number>1</number>
-              </property>
-              <property name="value">
-               <double>0.500000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_autoUpdate_lastCalcTime">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>(Last Calc. Time: 0.00s)</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_about">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Settings</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="Line" name="line_6">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Zoom:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_zoomIn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>35</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Zoom in</string>
+                </property>
+                <property name="text">
+                 <string>+</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_zoomOut">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>35</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Zoom out</string>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_resetZoom">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>35</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>100% view (real size of the image)</string>
+                </property>
+                <property name="text">
+                 <string>1:1</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_fitInView">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>35</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Fit image into preview window</string>
+                </property>
+                <property name="text">
+                 <string>Fit</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox_autoUpdate">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="toolTip">
+                 <string>Re-calculate the current map when settings where changed</string>
+                </property>
+                <property name="text">
+                 <string>Autoupdate</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_autoUpdate_text">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Max. Calculation Time:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_autoUpdateThreshold">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="toolTip">
+                 <string>If it took longer than this to calculate the map, autoupdate will not re-calculate the map</string>
+                </property>
+                <property name="suffix">
+                 <string>s</string>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+                <property name="value">
+                 <double>0.500000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_autoUpdate_lastCalcTime">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>(Last Calc. Time: 0.00s)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_about">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Settings</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </item>
@@ -1656,45 +1660,36 @@
         </item>
        </layout>
       </widget>
-      <widget class="QGroupBox" name="groupBoxForPreview">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>700</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>3D Preview</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <layout class="QVBoxLayout" name="layout_3dpreview">
         <item>
-         <widget class="QGroupBox" name="groupBoxInstruments">
-          <property name="maximumSize">
+         <widget class="QWidget" name="widgetForPreview" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
            <size>
-            <width>16777215</width>
-            <height>80</height>
+            <width>500</width>
+            <height>120</height>
            </size>
           </property>
-          <property name="title">
-           <string/>
-          </property>
-          <widget class="QSlider" name="slider_displaceStrength">
+          <widget class="QSlider" name="slider_roughness">
            <property name="geometry">
             <rect>
-             <x>10</x>
-             <y>20</y>
+             <x>220</x>
+             <y>90</y>
              <width>161</width>
              <height>16</height>
             </rect>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
            </property>
            <property name="value">
             <number>30</number>
@@ -1703,11 +1698,85 @@
             <enum>Qt::Horizontal</enum>
            </property>
           </widget>
+          <widget class="QLabel" name="label_28">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>70</y>
+             <width>161</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Mesh Resolution (Subdivisions)</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="applyNormal">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>50</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Normal map</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="applyDisplacement">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>90</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Displacement map</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="applyDiffuse">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>30</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Diffuse map</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="checkBox_rotate">
+           <property name="geometry">
+            <rect>
+             <x>220</x>
+             <y>50</y>
+             <width>91</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Rotate Cube</string>
+           </property>
+          </widget>
           <widget class="QSlider" name="slider_meshResolution">
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>60</y>
+             <y>90</y>
              <width>161</width>
              <height>16</height>
             </rect>
@@ -1729,106 +1798,13 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>0</y>
+             <y>30</y>
              <width>141</width>
              <height>16</height>
             </rect>
            </property>
            <property name="text">
             <string>Displacement Height</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_28">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>40</y>
-             <width>161</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Mesh Resolution (Subdivisions)</string>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="checkBox_rotate">
-           <property name="geometry">
-            <rect>
-             <x>220</x>
-             <y>20</y>
-             <width>91</width>
-             <height>17</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Rotate Cube</string>
-           </property>
-          </widget>
-          <widget class="QSlider" name="slider_roughness">
-           <property name="geometry">
-            <rect>
-             <x>220</x>
-             <y>60</y>
-             <width>161</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>100</number>
-           </property>
-           <property name="value">
-            <number>30</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_32">
-           <property name="geometry">
-            <rect>
-             <x>220</x>
-             <y>40</y>
-             <width>151</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Specular Roughness</string>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="applyDiffuse">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="geometry">
-            <rect>
-             <x>410</x>
-             <y>0</y>
-             <width>151</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Diffuse map</string>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="applyNormal">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="geometry">
-            <rect>
-             <x>410</x>
-             <y>20</y>
-             <width>151</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Normal map</string>
            </property>
           </widget>
           <widget class="QCheckBox" name="applySpecular">
@@ -1838,7 +1814,7 @@
            <property name="geometry">
             <rect>
              <x>410</x>
-             <y>40</y>
+             <y>70</y>
              <width>151</width>
              <height>21</height>
             </rect>
@@ -1847,20 +1823,33 @@
             <string>Specular map</string>
            </property>
           </widget>
-          <widget class="QCheckBox" name="applyDisplacement">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
+          <widget class="QLabel" name="label_32">
            <property name="geometry">
             <rect>
-             <x>410</x>
-             <y>60</y>
+             <x>220</x>
+             <y>70</y>
              <width>151</width>
-             <height>21</height>
+             <height>16</height>
             </rect>
            </property>
            <property name="text">
-            <string>Displacement map</string>
+            <string>Specular Roughness</string>
+           </property>
+          </widget>
+          <widget class="QSlider" name="slider_displaceStrength">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>50</y>
+             <width>161</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="value">
+            <number>30</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
           </widget>
          </widget>
@@ -1916,7 +1905,14 @@
          </widget>
         </item>
         <item>
-         <widget class="Window" name="openGLWidget"/>
+         <widget class="Window" name="openGLWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

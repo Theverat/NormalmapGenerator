@@ -24,7 +24,7 @@ class Window : public QOpenGLWidget,
 // OpenGL Events
 public:
     ~Window();
-    Window(QGroupBox*);
+    Window(QWidget *parent = 0);
     void initializeGL();
     void resizeGL(int width, int height);
     void paintGL();

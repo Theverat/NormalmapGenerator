@@ -41,10 +41,12 @@ vec4 lightFactorNormal()
 {
     vec3 bumpMapNormal;
     if(applyingNormal)
+    {
         bumpMapNormal = texture(normalMap, fsIn.tc).xyz;
-    else bumpMapNormal = vec3(0.0, 0.0, 1.0);
-    bumpMapNormal = 2.0 * bumpMapNormal - vec3(1.0);
-    bumpMapNormal = fsIn.tbn * bumpMapNormal;
+        bumpMapNormal = 2.0 * bumpMapNormal - vec3(1.0);
+        bumpMapNormal = fsIn.tbn * bumpMapNormal;
+    }
+    else bumpMapNormal = -fsIn.normal;
     float factor = dot(bumpMapNormal, light.Direction);
     if(factor > 0.0)
     {

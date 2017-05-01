@@ -53,6 +53,7 @@ protected:
     void mousePressEvent(QMouseEvent* pe);
     void mouseMoveEvent(QMouseEvent* pe);
     void mouseReleaseEvent(QMouseEvent*);
+    void wheelEvent(QWheelEvent* pe);
 protected slots:
     void update();
 private:
@@ -60,7 +61,7 @@ private:
     Light light;
 
     float cameraSpeed = 0.1f;
-    float rotatingSpeed = 100.0f;
+    float rotatingSpeed = 5.0f;
 
     bool areWeRotating = false;
 

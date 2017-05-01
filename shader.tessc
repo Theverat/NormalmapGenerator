@@ -10,12 +10,6 @@ uniform mat4 worldToCamera;
 uniform mat4 cameraToView;
 uniform int partFreq;
 
-float lenght(vec2 a)
-{
-    float temp = a.x * a.x + a.y * a.y;
-    return sqrt(temp);
-}
-
 void main(void)
 {
     int side = gl_PrimitiveID / 100;

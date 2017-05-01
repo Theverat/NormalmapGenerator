@@ -99,7 +99,7 @@ void Window::initializeGL()
 
 
     program->enableAttributeArray(0);
-    program->setAttributeBuffer(0, GL_FLOAT, 0, 3, sizeof(Vertex));
+    program->setAttributeBuffer(0, GL_FLOAT, 0, 3, sizeof(Vertex)   );
 
     // THIS GOTTA BE IN THE PLACE THERE LIGHT STATS ARE CHANGING
     ///////////////////////////////////////////////////////////////
@@ -128,18 +128,6 @@ void Window::initializeGL()
 
 void Window::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_W)
-        scene.translateCameraBy(cameraSpeed, scene.forwardCamera());
-    if(event->key() == Qt::Key_S)
-        scene.translateCameraBy(-cameraSpeed, scene.forwardCamera());
-    if(event->key() == Qt::Key_A)
-        scene.translateCameraBy(-cameraSpeed, scene.rightCamera());
-    if(event->key() == Qt::Key_D)
-        scene.translateCameraBy(cameraSpeed, scene.rightCamera());
-    if(event->key() == Qt::Key_Q)
-        scene.translateCameraBy(-cameraSpeed, scene.upCamera());
-    if(event->key() == Qt::Key_E)
-        scene.translateCameraBy(cameraSpeed, scene.upCamera());
     if(event->key() == Qt::Key_I)
         light.rotateUp();
     if(event->key() == Qt::Key_K)
@@ -150,10 +138,7 @@ void Window::keyPressEvent(QKeyEvent *event)
         light.rotateRight();
 
     program->bind();
-    program->setUniformValue(u_worldToCamera, scene.getWorldToCameraMatrix());
-    program->setUniformValue(u_cameraPosition, scene.getCameraPosition());
     program->setUniformValue(u_lightDir, light.Direction());
-    program->setUniformValue(u_lightMatShiness, light.MatertialShines());
     program->release();
 
     QWidget::update();
@@ -170,19 +155,17 @@ void Window::mouseMoveEvent(QMouseEvent *pe)
 {
     if(pressed)
     {
-        scene.setCameraRotation(
-                    rotatingSpeed * (GLfloat)(pe->x() - ptrMousePosition.x()) / width(),
-                    scene.upLocalCamera());
-        scene.setCameraRotation(
-                    rotatingSpeed * (GLfloat)(pe->y() - ptrMousePosition.y()) / height(),
-                    scene.rightCamera());
-        ptrMousePosition = pe->pos();
+        scene.rotateCameraX(rotatingSpeed * (GLfloat)(pe->x() - ptrMousePosition.x()) / width());
+        scene.rotateCameraY(rotatingSpeed * (GLfloat)(pe->y() - ptrMousePosition.y()) / height());
 
+        ptrMousePosition = pe->pos();
         // new camera position and world to camera matrice going to the shader
         program->bind();
         program->setUniformValue(u_worldToCamera, scene.getWorldToCameraMatrix());
         program->setUniformValue(u_cameraPosition, scene.getCameraPosition());
         program->release();
+
+        //qDebug() << (sqrt(scene.getCameraPosition().x() * scene.getCameraPosition().x() + scene.getCameraPosition().y() * scene.getCameraPosition().y() + scene.getCameraPosition().z() * scene.getCameraPosition().z()));
 
         QWidget::update();
     }
@@ -200,6 +183,19 @@ void Window::resizeGL(int width, int height)
 void Window::mouseReleaseEvent(QMouseEvent *)
 {
     pressed = false;
+    QWidget::update();
+}
+
+void Window::wheelEvent(QWheelEvent *pe)
+{
+    if(pe->delta() < 0.0f)
+        scene.zoomCameraIn();
+    else scene.zoomCameraOut();
+    // new camera position and world to camera matrice going to the shader
+    program->bind();
+    program->setUniformValue(u_worldToCamera, scene.getWorldToCameraMatrix());
+    program->setUniformValue(u_cameraPosition, scene.getCameraPosition());
+    program->release();
     QWidget::update();
 }
 

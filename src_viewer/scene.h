@@ -21,20 +21,12 @@ public:
     Scene();
 
     // camera
-    void setCameraTranslation(const QVector3D &translation);
-    void setCameraRotation(float xRot, const QVector3D axis);
-    void translateCameraBy(float speed, const QVector3D axis);
-    // right handed
-    // relative to rotations
-    QVector3D forwardCamera() const         { return camera.forward(); }
-    QVector3D upCamera() const              { return camera.up(); }
-    QVector3D rightCamera() const           { return camera.right(); }
-    // local
-    QVector3D forwardLocalCamera() const    { return camera.localForward(); }
-    QVector3D upLocalCamera() const         { return camera.localUp(); }
-    QVector3D rightLocalCamera() const      { return camera.localRight(); }
-    //
-    QVector3D getCameraPosition()           { return camera.getPosition(); }
+    void rotateCameraX(float angle) { camera.rotateX(angle); }
+    void rotateCameraY(float angle) { camera.rotateY(angle); }
+    void zoomCameraIn()             { camera.zoomIn(); }
+    void zoomCameraOut()            { camera.zoomOut(); }
+
+    QVector3D getCameraPosition()   { return camera.getPosition(); }
 
 
     // transform

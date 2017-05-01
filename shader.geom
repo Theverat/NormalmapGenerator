@@ -65,7 +65,7 @@ void main(void)
         geomOut.position = gl_in[i].gl_Position;
         gl_Position = cameraToView * worldToCamera * modelToWorld * gl_in[i].gl_Position;
         geomOut.tc = geomIn[i].tc;
-        geomOut.depth = (gl_Position.z) / 5.0;
+        geomOut.depth = (gl_Position.z - 0.1) / 100.0;
         geomOut.normal = normalize(cross(c - a, b - a));
         EmitVertex();
     }

@@ -1,50 +1,37 @@
 #include "camera.h"
-
-
-const QVector3D Camera::LOCAL_FORWARD(0.0f, 0.0f, -1.0f);
-const QVector3D Camera::LOCAL_UP(0.0f, 1.0f, 0.0f);
-const QVector3D Camera::LOCAL_RIGHT(1.0f, 0.0f, 0.0f);
-
 Camera::Camera()
 {
     dirty = true;
-    setTranslation(QVector3D(2.0f, 0.0f, 2.0f));
-    setRotation(45.0f, LOCAL_UP);
+    xAngle = M_PI / 4.0;
+    yAngle = M_PI / 6.0;
+    radius = 2.0f;
 }
 
-void Camera::setTranslation(const QVector3D &translation)
+void Camera::rotateX(float angle)
 {
     dirty = true;
-    this->translation = translation;
+    xAngle += angle;
 }
 
-
-void Camera::setRotation(float xRot, const QVector3D axis)
+void Camera::rotateY(float angle)
 {
     dirty = true;
-    this->rotation = QQuaternion::fromAxisAndAngle(axis, xRot)
-            * this->rotation;
+    if(fabs(yAngle + angle) < M_PI / 2.0)
+        yAngle += angle;
 }
 
-void Camera::translateBy(float speed, const QVector3D axis)
+void Camera::zoomIn()
 {
     dirty = true;
-    translation += speed * axis;
+    if(radius < 10.0f)
+        radius *= 1.1f;
 }
 
-QVector3D Camera::forward() const
+void Camera::zoomOut()
 {
-    return rotation.rotatedVector(LOCAL_FORWARD);
-}
-
-QVector3D Camera::up() const
-{
-    return rotation.rotatedVector(LOCAL_UP);
-}
-
-QVector3D Camera::right() const
-{
-    return rotation.rotatedVector(LOCAL_RIGHT);
+    dirty = true;
+    if(radius > 1.0f / 0.9f)
+        radius *= 0.9f;
 }
 
 const QMatrix4x4 &Camera::toMatrix()
@@ -52,8 +39,10 @@ const QMatrix4x4 &Camera::toMatrix()
     if(dirty)
     {
         world.setToIdentity();
-        world.rotate(rotation.conjugated());
-        world.translate(-translation);
+        position = QVector3D(radius * sin(xAngle) * cos(yAngle),
+                             radius * sin(yAngle),
+                             radius * (cos(xAngle) * cos(yAngle)));
+        world.lookAt(position, QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f));
         dirty = false;
     }
     return world;

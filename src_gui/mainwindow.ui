@@ -23,7 +23,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
          <layout class="QVBoxLayout" name="layout_queue">
@@ -33,7 +33,7 @@
           <item>
            <widget class="QPushButton" name="pushButton_load">
             <property name="text">
-             <string>Load</string>
+             <string>Open Image</string>
             </property>
            </widget>
           </item>

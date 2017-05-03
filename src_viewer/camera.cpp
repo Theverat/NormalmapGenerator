@@ -10,7 +10,7 @@ Camera::Camera()
 void Camera::rotateX(float angle)
 {
     dirty = true;
-    xAngle += angle;
+    xAngle -= angle;
 }
 
 void Camera::rotateY(float angle)

@@ -1,4 +1,6 @@
 #include "camera.h"
+#include <cmath>
+
 Camera::Camera()
 {
     dirty = true;

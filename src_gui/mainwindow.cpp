@@ -598,25 +598,28 @@ void MainWindow::save(QUrl url) {
     bool successfullySaved = true;
     
     if(ui->checkBox_queue_generateNormal->isChecked()) {
-        if(normalmap.isNull())
+        if(normalmap.isNull()) {
             ui->statusBar->showMessage("calculating normalmap...");
             calcNormal();
+        }
         
         successfullySaved &= normalmap.save(name_normal);
     }    
     
     if(ui->checkBox_queue_generateSpec->isChecked()) {
-        if(specmap.isNull())
+        if(specmap.isNull()) {
             ui->statusBar->showMessage("calculating specularmap...");
             calcSpec();
+        }
         
         successfullySaved &= specmap.save(name_specular);
     }
 
     if(ui->checkBox_queue_generateDisplace->isChecked()) {
-        if(displacementmap.isNull())
+        if(displacementmap.isNull()) {
             ui->statusBar->showMessage("calculating displacementmap...");
             calcDisplace();
+        }
         
         successfullySaved &= displacementmap.save(name_displace);
     }

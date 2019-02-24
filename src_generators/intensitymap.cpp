@@ -31,7 +31,8 @@ IntensityMap::IntensityMap(int width, int height) {
     map = std::vector< std::vector<double> >(height, std::vector<double>(width, 0.0));
 }
 
-IntensityMap::IntensityMap(const QImage& rgbImage, Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
+IntensityMap::IntensityMap(const QImage& rgbImage, Mode mode, double redMultiplier, double greenMultiplier,
+                           double blueMultiplier, double alphaMultiplier)
 {
     map = std::vector< std::vector<double> >(rgbImage.height(), std::vector<double>(rgbImage.width(), 0.0));
 
@@ -42,28 +43,28 @@ IntensityMap::IntensityMap(const QImage& rgbImage, Mode mode, bool useRed, bool 
         for(int x = 0; x < rgbImage.width(); x++) {
             double intensity = 0.0;
 
-            const double r = QColor(rgbImage.pixel(x, y)).redF();
-            const double g = QColor(rgbImage.pixel(x, y)).greenF();
-            const double b = QColor(rgbImage.pixel(x, y)).blueF();
-            const double  a = QColor(rgbImage.pixel(x, y)).alphaF();
+            const double r = QColor(rgbImage.pixel(x, y)).redF() * redMultiplier;
+            const double g = QColor(rgbImage.pixel(x, y)).greenF() * greenMultiplier;
+            const double b = QColor(rgbImage.pixel(x, y)).blueF() * blueMultiplier;
+            const double  a = QColor(rgbImage.pixel(x, y)).alphaF() * alphaMultiplier;
 
             if(mode == AVERAGE) {
                 //take the average out of all selected channels
                 int num_channels = 0;
 
-                if(useRed) {
+                if(redMultiplier != 0.0) {
                     intensity += r;
                     num_channels++;
                 }
-                if(useGreen) {
+                if(greenMultiplier != 0.0) {
                     intensity += g;
                     num_channels++;
                 }
-                if(useBlue) {
+                if(blueMultiplier != 0.0) {
                     intensity += b;
                     num_channels++;
                 }
-                if(useAlpha) {
+                if(alphaMultiplier != 0.0) {
                     intensity += a;
                     num_channels++;
                 }
@@ -75,12 +76,8 @@ IntensityMap::IntensityMap(const QImage& rgbImage, Mode mode, bool useRed, bool 
             }
             else if(mode == MAX) {
                 //take the maximum out of all selected channels
-                const double tempR = useRed ? r : 0.0;
-                const double tempG = useGreen ? g : 0.0;
-                const double tempB = useBlue ? b : 0.0;
-                const double tempA = useAlpha ? a : 0.0;
-                const double tempMaxRG = std::max(tempR, tempG);
-                const double tempMaxBA = std::max(tempB, tempA);
+                const double tempMaxRG = std::max(r, g);
+                const double tempMaxBA = std::max(b, a);
                 intensity = std::max(tempMaxRG, tempMaxBA);
             }
 

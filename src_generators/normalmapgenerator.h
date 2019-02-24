@@ -33,7 +33,8 @@ public:
         PREWITT
     };
 
-    NormalmapGenerator(IntensityMap::Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha);
+    NormalmapGenerator(IntensityMap::Mode mode, double redMultiplier, double greenMultiplier,
+                       double blueMultiplier, double alphaMultiplier);
     QImage calculateNormalmap(const QImage& input, Kernel kernel, double strength = 2.0, bool invert = false, 
                               bool tileable = true, bool keepLargeDetail = true,
                               int largeDetailScale = 25, double largeDetailHeight = 1.0);
@@ -42,7 +43,7 @@ public:
 private:
     IntensityMap intensity;
     bool tileable;
-    bool useRed, useGreen, useBlue, useAlpha;
+    double redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier;
     IntensityMap::Mode mode;
 
     int handleEdges(int iterator, int maxValue) const;

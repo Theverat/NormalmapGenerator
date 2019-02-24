@@ -55,7 +55,8 @@ QImage SpecularmapGenerator::calculateSpecmap(const QImage &input, double scale,
     }
     
     // This is outside of the loop because the multipliers are the same for every pixel
-    double multiplierSum = (redMultiplier + greenMultiplier + blueMultiplier + alphaMultiplier);
+    double multiplierSum = ((redMultiplier != 0.0) + (greenMultiplier != 0.0) +
+            (blueMultiplier != 0.0) + (alphaMultiplier != 0.0));
     if(multiplierSum == 0.0)
         multiplierSum = 1.0;
 

@@ -375,6 +375,12 @@
                   <height>0</height>
                  </size>
                 </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>64</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>red</string>
                 </property>
@@ -526,48 +532,82 @@
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="checkBox_useRed_normal">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
+               <widget class="QLabel" name="label_27">
                 <property name="text">
-                 <string>Red</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
+                 <string>Red:</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="checkBox_useGreen_normal">
-                <property name="enabled">
-                 <bool>true</bool>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_normal_redMul">
+                <property name="maximum">
+                 <double>1.000000000000000</double>
                 </property>
-                <property name="text">
-                 <string>Green</string>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
                 </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_useBlue_normal">
-                <property name="text">
-                 <string>Blue</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
+                <property name="value">
+                 <double>1.000000000000000</double>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="checkBox_useAlpha_normal">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
+               <widget class="QLabel" name="label_28">
                 <property name="text">
-                 <string>Alpha</string>
+                 <string>Green:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_normal_greenMul">
+                <property name="maximum">
+                 <double>1.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_29">
+                <property name="text">
+                 <string>Blue:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_normal_blueMul">
+                <property name="maximum">
+                 <double>1.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_normal_alpha">
+                <property name="text">
+                 <string>Alpha:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_normal_alphaMul">
+                <property name="maximum">
+                 <double>1.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.000000000000000</double>
                 </property>
                </widget>
               </item>

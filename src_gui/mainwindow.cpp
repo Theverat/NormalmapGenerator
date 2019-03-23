@@ -301,10 +301,10 @@ void MainWindow::calcNormal() {
         mode = IntensityMap::MAX;
 
     //color channels to use
-    bool useRed = ui->checkBox_useRed_normal->isChecked();
-    bool useGreen = ui->checkBox_useGreen_normal->isChecked();
-    bool useBlue = ui->checkBox_useBlue_normal->isChecked();
-    bool useAlpha = ui->checkBox_useAlpha_normal->isChecked();
+    double redMultiplier = ui->doubleSpinBox_normal_redMul->value();
+    double greenMultiplier = ui->doubleSpinBox_normal_greenMul->value();
+    double blueMultiplier = ui->doubleSpinBox_normal_blueMul->value();
+    double alphaMultiplier = ui->doubleSpinBox_normal_alphaMul->value();
 
     //kernel to use
     NormalmapGenerator::Kernel kernel = NormalmapGenerator::SOBEL;
@@ -329,7 +329,7 @@ void MainWindow::calcNormal() {
     }
     
     //setup generator and calculate map
-    NormalmapGenerator normalmapGenerator(mode, useRed, useGreen, useBlue, useAlpha);
+    NormalmapGenerator normalmapGenerator(mode, redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
     normalmap = normalmapGenerator.calculateNormalmap(inputScaled, kernel, strength, invert, tileable, keepLargeDetail, largeDetailScale, largeDetailHeight);
     normalmapRawIntensity = normalmapGenerator.getIntensityMap().convertToQImage();
 }
@@ -957,10 +957,10 @@ void MainWindow::connectSignalSlots() {
     connect(ui->comboBox_mode_spec, SIGNAL(currentIndexChanged(int)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_spec_contrast, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     // normal autoupdate
-    connect(ui->checkBox_useRed_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
-    connect(ui->checkBox_useGreen_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
-    connect(ui->checkBox_useBlue_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
-    connect(ui->checkBox_useAlpha_normal, SIGNAL(clicked()), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_normal_redMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_normal_greenMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_normal_blueMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
+    connect(ui->doubleSpinBox_normal_alphaMul, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
     connect(ui->comboBox_mode_normal, SIGNAL(currentIndexChanged(int)), this, SLOT(autoUpdate()));
     connect(ui->comboBox_method, SIGNAL(currentIndexChanged(int)), this, SLOT(autoUpdate()));
     connect(ui->doubleSpinBox_strength, SIGNAL(valueChanged(double)), this, SLOT(autoUpdate()));
@@ -1041,8 +1041,10 @@ void MainWindow::switchToTab4() {
 void MainWindow::hideAdvancedSettings() {
     //Normalmap
     //"Alpha" checkbox
-    ui->checkBox_useAlpha_normal->setVisible(false);
-    connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->checkBox_useAlpha_normal, SLOT(setVisible(bool)));
+    ui->doubleSpinBox_normal_alphaMul->setVisible(false);
+    ui->label_normal_alpha->setVisible(false);
+    connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->doubleSpinBox_normal_alphaMul, SLOT(setVisible(bool)));
+    connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->label_normal_alpha, SLOT(setVisible(bool)));
     //"Average/Max" combobox
     ui->comboBox_mode_normal->setVisible(false);
     connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->comboBox_mode_normal, SLOT(setVisible(bool)));
@@ -1200,5 +1202,6 @@ void MainWindow::resetUiColors() {
     uiColorGraphicsView = uiColorGraphicsViewDefault;
     setUiColors();
 }
+
 
 

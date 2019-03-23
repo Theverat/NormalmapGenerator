@@ -34,7 +34,8 @@ public:
 
     IntensityMap();
     IntensityMap(int width, int height);
-    IntensityMap(const QImage &rgbImage, Mode mode, bool useRed = true, bool useGreen = true, bool useBlue = true, bool useAlpha = false);
+    IntensityMap(const QImage &rgbImage, Mode mode, double redMultiplier = 1.0, double greenMultiplier = 1.0,
+                 double blueMultiplier = 1.0, double alphaMultiplier = 0.0);
     double at(int x, int y) const;
     double at(int pos) const;
     void setValue(int x, int y, double value);

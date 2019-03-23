@@ -23,8 +23,8 @@
 #include <QVector3D>
 #include <QColor>
 
-NormalmapGenerator::NormalmapGenerator(IntensityMap::Mode mode, bool useRed, bool useGreen, bool useBlue, bool useAlpha)
-    : tileable(false), useRed(useRed), useGreen(useGreen), useBlue(useBlue), useAlpha(useAlpha), mode(mode)
+NormalmapGenerator::NormalmapGenerator(IntensityMap::Mode mode, double redMultiplier, double greenMultiplier, double blueMultiplier, double alphaMultiplier)
+    : tileable(false), redMultiplier(redMultiplier), greenMultiplier(greenMultiplier), blueMultiplier(blueMultiplier), alphaMultiplier(alphaMultiplier), mode(mode)
 {}
 
 const IntensityMap& NormalmapGenerator::getIntensityMap() const {
@@ -35,7 +35,7 @@ QImage NormalmapGenerator::calculateNormalmap(const QImage& input, Kernel kernel
                                               bool keepLargeDetail, int largeDetailScale, double largeDetailHeight) {
     this->tileable = tileable;
 
-    this->intensity = IntensityMap(input, mode, useRed, useGreen, useBlue, useAlpha);
+    this->intensity = IntensityMap(input, mode, redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier);
     if(!invert) {
         // The default "non-inverted" normalmap looks wrong in renderers,
         // so I use inversion by default

@@ -66,3 +66,6 @@ win32:RC_FILE = resources.rc
 
 RESOURCES += \
     stylesheets.qrc
+
+target.path = /usr/local/bin
+INSTALLS += target

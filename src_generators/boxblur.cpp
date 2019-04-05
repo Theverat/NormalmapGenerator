@@ -33,8 +33,8 @@ IntensityMap BoxBlur::calculate(IntensityMap input, int radius, bool tileable) {
     int kernelPixelAmount = (2 * radius + 1) * (2 * radius + 1);
 
     #pragma omp parallel for  // OpenMP
-    for(int y = 0; y < input.getHeight(); y++) {
-        for(int x = 0; x < input.getWidth(); x++) {
+    for(size_t y = 0; y < input.getHeight(); y++) {
+        for(size_t x = 0; x < input.getWidth(); x++) {
             float sum = 0.0;
 
             //blur kernel loops

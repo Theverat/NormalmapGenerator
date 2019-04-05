@@ -119,8 +119,8 @@ size_t IntensityMap::getHeight() const {
 
 void IntensityMap::invert() {
     #pragma omp parallel for
-    for(int y = 0; y < this->getHeight(); y++) {
-        for(int x = 0; x < this->getWidth(); x++) {
+    for(size_t y = 0; y < this->getHeight(); y++) {
+        for(size_t x = 0; x < this->getWidth(); x++) {
             const double inverted = 1.0 - this->map.at(y).at(x);
             this->map.at(y).at(x) = inverted;
         }
@@ -130,10 +130,10 @@ void IntensityMap::invert() {
 QImage IntensityMap::convertToQImage() const {
     QImage result(this->getWidth(), this->getHeight(), QImage::Format_ARGB32);
 
-    for(int y = 0; y < this->getHeight(); y++) {
+    for(size_t y = 0; y < this->getHeight(); y++) {
         QRgb *scanline = (QRgb*) result.scanLine(y);
 
-        for(int x = 0; x < this->getWidth(); x++) {
+        for(size_t x = 0; x < this->getWidth(); x++) {
             const int c = 255 * map.at(y).at(x);
             scanline[x] = qRgba(c, c, c, 255);
         }

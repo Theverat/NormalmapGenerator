@@ -1055,7 +1055,7 @@ void MainWindow::hideAdvancedSettings() {
     connect(ui->checkBox_advanced_normal, SIGNAL(clicked(bool)), ui->label_method_normal, SLOT(setVisible(bool)));
 }
 
-void MainWindow::closeEvent(QCloseEvent* event) {
+void MainWindow::closeEvent(QCloseEvent *) {
     writeSettings();
 }
 

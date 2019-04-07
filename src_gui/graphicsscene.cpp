@@ -36,12 +36,3 @@ GraphicsScene::GraphicsScene(qreal x, qreal y, qreal width, qreal height, QObjec
     : QGraphicsScene(x, y, width, height, parent)
 {
 }
-
-void GraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event) {
-}
-
-void GraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
-}
-
-void GraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
-}

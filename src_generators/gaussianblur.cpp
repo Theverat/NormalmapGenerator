@@ -68,7 +68,7 @@ std::vector<double> GaussianBlur::boxesForGauss(double sigma, int n) {
 }
 
 void GaussianBlur::boxBlur(IntensityMap &input, IntensityMap &result, double radius, bool tileable) {
-    for(int i = 0; i < input.getWidth() * input.getHeight(); i++) {
+    for(size_t i = 0; i < input.getWidth() * input.getHeight(); i++) {
         result.setValue(i, input.at(i));
     }
 

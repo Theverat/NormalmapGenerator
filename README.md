@@ -1,3 +1,12 @@
+### Advertisement
+
+If you are a Blender user, this addon I created might be interesting for you:
+
+[![Image Node Preview Addon](https://www.dropbox.com/s/74omtut0sys4j2h/banner_normalmapgen_github2.png?raw=1)](https://blendermarket.com/products/image-node-preview)
+
+
+# NormalmapGenerator
+
 This is a program to generate normal-, spec- and displacementmaps from image textures in one go. It supports stack processing and a few other nice features, but has some rough edges and is still in development. 
 
 ## [Download](https://github.com/Theverat/NormalmapGenerator/releases)
@@ -31,7 +40,3 @@ What the feature I called "Keep Large Detail" does is that it blends a downscale
 Rendered, it looks much better:
 ![kld_enabled_render](screenshots/KLD_jpg/KLD_enabled_render_converted.jpg)
 
-## Planned Features
-
-- Ambient occlusion maps
-- And the issues marked as [enhancement](https://github.com/Theverat/NormalmapGenerator/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)

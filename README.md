@@ -2,7 +2,7 @@
 
 If you are a Blender user, this addon I created might be interesting for you:
 
-[![Image Node Preview Addon](https://www.dropbox.com/s/74omtut0sys4j2h/banner_normalmapgen_github2.png?raw=1)](https://blendermarket.com/products/image-node-preview)
+[![Node Preview Addon](https://www.dropbox.com/s/2nd9jbe89k6bbs4/banner_normalmapgen_github3.png?raw=1)](https://blendermarket.com/products/node-preview)
 
 
 # NormalmapGenerator
